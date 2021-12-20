@@ -8,81 +8,56 @@ function App() {
 	const [isExistChat, setIsExistChat] = useState(false);
 	const [chatInfo, setChatInfo] = useState({});
 	const [createChat, setCreateChat] = useState({
-		siteName: "handle",
-		roomTitle: "채팅방생성",
-		userName: "방예은",
-		userPhoneNumber: "01099720602",
-		userId: "byebye62",
+		siteName: "",
+		roomTitle: "",
+		userName: "",
+		userPhoneNumber: "",
+		userId: "",
 	});
+
 	const createChatHandler = (e, name) => {
 		setCreateChat({ ...createChat, [name]: e.target.value });
 		console.log(createChat);
 	};
 
 	const createChatRoom = () => {
-		axios
-			.post("https://api.handle.market/v1/chat/create", createChat, {
-				header: {
-					withCredentials: true,
-				},
-			})
-			.then((el) => {
-				console.log(el);
-				// if (res.message === "") setIsExistChat(true);
-				// setChatInfo(res.data);
-			});
-	};
 
-	return (
-		<div className="Appjs">
-			<div className="createChatRoom">
-				<form onSubmit={(e) => e.preventDefault()}>
-					<input
-						name="siteName"
-						onChange={(e) => {
-							createChatHandler(e, "siteName");
-						}}
-					></input>
-					<label for="siteName">site name</label>
-					<input
-						name="roomTitle"
-						onChange={(e) => {
-							createChatHandler(e, "roomTitle");
-						}}
-					></input>
-					<label for="roomTitle">room title</label>
-					<input
-						name="userName"
-						onChange={(e) => {
-							createChatHandler(e, "userName");
-						}}
-					></input>
-					<label for="userName">user name</label>
-					<input
-						name="userPhoneNumber"
-						onChange={(e) => {
-							createChatHandler(e, "userPhoneNumber");
-						}}
-					></input>
-					<label for="userPhoneNumber">user phone number</label>
-					<input
-						name="userId"
-						onChange={(e) => {
-							createChatHandler(e, "userId");
-						}}
-					></input>
-					<label for="userId">user id</label>
-					<button className="createButton" onClick={createChatRoom}>
-						create chatting room
-					</button>
-				</form>
-			</div>
-			<Chat></Chat>
-			{
-				// isExistChat ? <Chat chatInfo={chatInfo}></Chat> : null
-			}
+		axios.post('https://api.handle.market/v1/chat/create', createChat)
+		.then(res => {
+			console.log(res)
+			if(res.status === 200) setIsExistChat(true);
+			setChatInfo({
+				code: res.data.code,
+				member: res.data.member,
+				room: res.data.room
+			});
+		})
+	}
+
+	return <div className='Appjs'>
+		{
+			isExistChat ? <Chat chatInfo={chatInfo}></Chat> 
+			:
+			<div className='createChatRoom'>
+			<form onSubmit={(e) => e.preventDefault()}>
+				<input name="siteName" id="siteName" className='formCreate' onChange={(e) => {createChatHandler(e, 'siteName')}}></input>
+				<label htmlFor="siteName">site name</label>
+				<input name="roomTitle" id="roomTitle" className='formCreate' onChange={(e) => {createChatHandler(e,'roomTitle')}}></input>
+				<label htmlFor="roomTitle">room title</label>
+				<input name="userName" id="userName" className='formCreate' onChange={(e) => {createChatHandler(e,'userName')}}></input>
+				<label htmlFor="userName">user name</label>
+				<input name="userPhoneNumber" id="userPhoneNumber" className='formCreate' onChange={(e) => {createChatHandler(e, 'userPhoneNumber')}}></input>
+				<label htmlFor="userPhoneNumber">user phone number</label>
+				<input name="userId" id="userId" className='formCreate' onChange={(e) => {createChatHandler(e, 'userId')}}></input>
+				<label htmlFor="userId">user id</label>
+				<button className="createButton" onClick={createChatRoom}>
+					create chatting room
+				</button>
+			</form>
 		</div>
-	);
+		}
+	</div>;
+
 }
 
 export default App;

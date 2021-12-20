@@ -7,6 +7,8 @@ import Input from "./Input";
 
 
 function Chat ({chatInfo}) {
+	
+
     return (<div>
 		<ChatHeader></ChatHeader>
 		<TaskInfo></TaskInfo>
