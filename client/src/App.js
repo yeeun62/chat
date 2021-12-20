@@ -2,11 +2,7 @@ import "./App.css";
 import ChatHeader from "./ChatHeader";
 
 function App() {
-	return (
-		<div>
-			<ChatHeader></ChatHeader>
-		</div>
-	);
+	return <div></div>;
 }
 
 export default App;
