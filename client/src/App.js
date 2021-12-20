@@ -1,27 +1,27 @@
-import axios from 'axios';
+import axios from "axios";
 import React, { useState } from "react";
-import Chat from './chat/Chat';
+import Chat from "./chat/Chat";
 
 import "./App.css";
-
 
 function App() {
 	const [isExistChat, setIsExistChat] = useState(false);
 	const [chatInfo, setChatInfo] = useState({});
 	const [createChat, setCreateChat] = useState({
-		siteName: '',
-		roomTitle: '',
-		userName: '',
-		userPhoneNumber: '',
-		userId: ''
+		siteName: "",
+		roomTitle: "",
+		userName: "",
+		userPhoneNumber: "",
+		userId: "",
 	});
 
 	const createChatHandler = (e, name) => {
-		setCreateChat({...createChat,  [name]: e.target.value});
-		console.log(createChat)
-	}
+		setCreateChat({ ...createChat, [name]: e.target.value });
+		console.log(createChat);
+	};
 
 	const createChatRoom = () => {
+
 		axios.post('https://api.handle.market/v1/chat/create', createChat)
 		.then(res => {
 			console.log(res)
@@ -57,6 +57,7 @@ function App() {
 		</div>
 		}
 	</div>;
+
 }
 
 export default App;
