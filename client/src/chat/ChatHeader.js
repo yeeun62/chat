@@ -17,7 +17,7 @@ function ChatHeader({header}) {
 		//axios.get('',)
 	}
 
-	
+	console.log(header,'헤더')
 
 	return (
 		<div className="ChatHeader">

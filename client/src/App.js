@@ -8,11 +8,7 @@ import "./App.css";
 
 function App() {
 	const redirect = useHref;
-	const [chatInfo, setChatInfo] = useState({
-		code: '',
-		member: '',
-		room: ''
-	});
+	const [chatInfo, setChatInfo] = useState({});
 	const [createChat, setCreateChat] = useState({
 		siteName: "",
 		roomTitle: "",
@@ -24,23 +20,27 @@ function App() {
 	const [errorInput, setErrorInptut] = useState(false);
 	const createChatHandler = (e, name) => {
 		setCreateChat({ ...createChat, [name]: e.target.value });
-		let num = createChat.userPhoneNumber.toString().split('');
-		const numCheck = (num) => num.filter( s => typeof(s) === "Number");
-		setCreateChat({...createChat, 'userPhoneNumber': numCheck(num)});
-		if(createChat.userPhoneNumber.toString().length !== 11) setErrorInptut(true);
+		console.log()
+		
 	};
 
 	const createChatRoom = () => {
+		let num = createChat.userPhoneNumber.toString().split('');
+		const numCheck = (num) => num.filter( s => typeof(s) === "Number");
+		setCreateChat({...createChat, 'userPhoneNumber': Number(numCheck(num))});
+		if(createChat.userPhoneNumber.toString().length !== 11) setErrorInptut(true);
+
 		axios.post(process.env.REACT_APP_HANDLE_CHAT, createChat).then((res) => {
-			console.log(res);
 			if (res.status === 200) {
+				console.log(res.data)
 				setChatInfo({
-					code: res.data.code,
-					member: res.data.member,
-					room: res.data.room,
+					'code': res.data.code,
+					'member': res.data.member,
+					'room': res.data.room,
 				});
+				console.log(chatInfo,'chatinfo')
 				let ROOM_CODE = res.data.code;
-				window.location.href='http://localhost:3000/chat'
+				//window.location.href='http://localhost:3000/chat'
 				//window.location.href=`https://chat.handle.market/${ROOM_CODE}`
 			} else {
 				alert('이런, 요청이 실패했어요 🥲 다시 입력해주세요!')

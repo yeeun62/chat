@@ -7,7 +7,7 @@ import Input from "./Input";
 
 
 function Chat ({chatInfo}) {
-	console.log(chatInfo)
+	console.log(chatInfo,'챗인포')
 	let logDate = (time) => {
         var date = new Date(time * 1000);
         var year = date.getFullYear().toString().slice(-4);
