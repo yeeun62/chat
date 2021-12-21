@@ -17,7 +17,6 @@ function App() {
 
 	const createChatHandler = (e, name) => {
 		setCreateChat({ ...createChat, [name]: e.target.value });
-		console.log(createChat);
 	};
 
 	const createChatRoom = () => {
