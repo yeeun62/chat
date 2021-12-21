@@ -6,7 +6,7 @@ function TaskInfo () {
     return (
         <div className="TaskInfo">
             <h1 className="taskName">업무 관련 정보들</h1>
-            <progressBar now={20}></progressBar>
+            <ProgressBar now={20}></ProgressBar>
             <ul>
                 <li>
                     <div className="userNameTaskInfo"></div> username

@@ -22,7 +22,8 @@ function App() {
 	}
 
 	const createChatRoom = () => {
-		axios.post('https://api.handle.market/v1/chat/create', createChat)
+		console.log(process.env.REACT_APP_HANDLE_CHAT)
+		axios.post(process.env.REACT_APP_HANDLE_CHAT, createChat)
 		.then(res => {
 			console.log(res)
 			if(res.status === 200) setIsExistChat(true);
@@ -42,9 +43,9 @@ function App() {
 			<form onSubmit={(e) => e.preventDefault()}>
 				<input name="siteName" id="siteName" className='formCreate' onChange={(e) => {createChatHandler(e, 'siteName')}}></input>
 				<label htmlFor="siteName">site name</label>
-				<input name="roomTitle" id="roomTitle" className='formCreate' onChange={(e) => {createChatHandler(e,'roomTitle')}}></input>
+				<input name="roomTitle" id="roomTitle" className='formCreate' onChange={(e) => {createChatHandler(e, 'roomTitle')}}></input>
 				<label htmlFor="roomTitle">room title</label>
-				<input name="userName" id="userName" className='formCreate' onChange={(e) => {createChatHandler(e,'userName')}}></input>
+				<input name="userName" id="userName" className='formCreate' onChange={(e) => {createChatHandler(e, 'userName')}}></input>
 				<label htmlFor="userName">user name</label>
 				<input name="userPhoneNumber" id="userPhoneNumber" className='formCreate' onChange={(e) => {createChatHandler(e, 'userPhoneNumber')}}></input>
 				<label htmlFor="userPhoneNumber">user phone number</label>

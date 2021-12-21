@@ -10,7 +10,7 @@ function Chat ({chatInfo}) {
 	
 
     return (<div>
-		<ChatHeader></ChatHeader>
+		<ChatHeader ></ChatHeader>
 		<TaskInfo></TaskInfo>
 		<Conversation ></Conversation>
 		<Input></Input>
