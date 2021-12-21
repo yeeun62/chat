@@ -7,6 +7,7 @@ import Input from "./Input";
 
 
 function Chat ({chatInfo}) {
+	console.log(chatInfo)
 	let logDate = (time) => {
         var date = new Date(time * 1000);
         var year = date.getFullYear().toString().slice(-4);
@@ -19,14 +20,14 @@ function Chat ({chatInfo}) {
         return returnDate;
     };
 
-
-
 	const [header, setHeader] = useState({
 		code: chatInfo.code,
 		title: chatInfo.room.title,
 		createDate: logDate(chatInfo.room.time),
 		member: chatInfo.member
 	})
+
+	//const chatCode = 
 
     return (<div>
 		<ChatHeader header={header}></ChatHeader>

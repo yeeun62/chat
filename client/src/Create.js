@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Create ({createChatHandler, createChatRoom}) {
+function Create ({createChatHandler, createChatRoom, errorInput}) {
     
 
     return (
@@ -14,6 +14,7 @@ function Create ({createChatHandler, createChatRoom}) {
 				<input name="userName" id="userName" className='formCreate' onChange={(e) => {createChatHandler(e, 'userName')}}></input>
 				<label htmlFor="userName">user name</label>
 				<input name="userPhoneNumber" id="userPhoneNumber" className='formCreate' onChange={(e) => {createChatHandler(e, 'userPhoneNumber')}}></input>
+				{errorInput ? <p className="errorInput">전화번호는 010부터 입력해주세요</p> : null}
 				<label htmlFor="userPhoneNumber">user phone number</label>
 				<input name="userId" id="userId" className='formCreate' onChange={(e) => {createChatHandler(e, 'userId')}}></input>
 				<label htmlFor="userId">user id</label>

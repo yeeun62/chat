@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 
-function ChatHeader() {
+function ChatHeader({header}) {
 	const [view, setView] = useState(true);
 	const [keyword, setKeyword] = useState('');
 
@@ -17,6 +17,8 @@ function ChatHeader() {
 		//axios.get('',)
 	}
 
+	
+
 	return (
 		<div className="ChatHeader">
 			<h1>title</h1>
@@ -29,6 +31,8 @@ function ChatHeader() {
 				<div className="headerSearch">
 			</div>
 			}
+
+			<button className="inviteNewMember" ><img alt="새로운 멤버 초대" src="../../public/img/add-friend.png"></img></button>
 			
 		</div>
 	);
