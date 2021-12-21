@@ -1,39 +1,29 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
+import "./chatHeader.css";
 
-function ChatHeader({header}) {
-	const [view, setView] = useState(true);
-	const [keyword, setKeyword] = useState('');
-
-	const viewHandler = () => {
-		view ? setView(false) : setView(true);
+function ChatHeader({ chatInfo }) {
+	const [keyword, setKeyword] = useState("");
+	const keywordHandler = e => {
+		setKeyword(e.target.value);
 	};
-
-	const keywordHandler = (e) => {
-		setKeyword(e.target.value)
-	}
-
-	const searcher = (e) => {
+	const searcher = e => {
 		//axios.get('',)
-	}
-
-	console.log(header,'헤더')
+	};
 
 	return (
 		<div className="ChatHeader">
 			<h1>title</h1>
-			<div>날씨??</div>
-			<button className="searchViewButton" onClick={viewHandler}></button>
-			{view ? (<div className="headerSearch">
-				<input className="searchInput" type="text" name="searchKeyword" onChange={keywordHandler}></input>
-				<button className="searchButton" onClick={() => searcher(keyword)}></button>
-			</div>) : 
-				<div className="headerSearch">
-			</div>
-			}
-
-			<button className="inviteNewMember" ><img alt="새로운 멤버 초대" src="../../public/img/add-friend.png"></img></button>
-			
+			<div className="convinience">🌞</div>
+			<input
+				className="searchInput"
+				type="text"
+				name="searchKeyword"
+				onChange={keywordHandler}
+			></input>
+			<button onClick={() => searcher(keyword)}>
+				<img className="searchButton" src="./img/search.png" alt="검색"></img>
+			</button>
 		</div>
 	);
 }

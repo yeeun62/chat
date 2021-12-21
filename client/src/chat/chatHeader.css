@@ -1,0 +1,33 @@
+.ChatHeader {
+	width: 100%;
+	height: 80px;
+	border-bottom: 1px solid #ccc;
+	display: flex;
+	justify-content: flex-start;
+	padding: auto 0;
+}
+
+.ChatHeader h1,
+.convinience {
+	font-size: 30px;
+	height: 80px;
+	line-height: 80px;
+	text-align: center;
+	margin: auto 10px;
+}
+
+.ChatHeader h1 {
+	font-size: 25px;
+}
+
+.searchInput {
+	width: calc(100%-100px);
+	height: 30px;
+	margin: 25px 10px 25px 60px;
+}
+
+.searchButton {
+	width: 30px;
+	height: 30px;
+	margin: 25px 0;
+}

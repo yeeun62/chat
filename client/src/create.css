@@ -1,0 +1,31 @@
+.createChatRoom {
+	width: 100%;
+	height: 400px;
+	margin: auto;
+}
+
+.container {
+	width: 100%;
+	height: 650px;
+	margin: auto;
+	padding: 20px 10px;
+	background-color: #e0de1b;
+}
+
+.formCreate {
+	margin: auto;
+	width: 200px;
+	margin: 15px 0;
+}
+
+.createInput {
+	margin-right: 10px;
+}
+
+.createButton {
+	background-color: #ddd;
+	font-weight: 600;
+	padding: 5px 10px;
+	border-bottom: 1.5px solid #333;
+	border-right: 1.5px solid #333;
+}
