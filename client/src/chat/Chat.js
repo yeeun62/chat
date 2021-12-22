@@ -1,40 +1,50 @@
-import axios from 'axios';
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import ChatHeader from "./ChatHeader";
 import TaskInfo from "./TaskInfo";
 import Conversation from "./Conversation";
 import Input from "./Input";
 
+function Chat({ code }) {
+	const [chatData, setChatData] = useState({
+		code: "",
+		title: "",
+		createDate: "",
+		member: "",
+	});
 
-function Chat ({chatInfo}) {
-	console.log(chatInfo)
-	let logDate = (time) => {
-        var date = new Date(time * 1000);
-        var year = date.getFullYear().toString().slice(-4);
-        var month = ("0" + (date.getMonth() + 1)).slice(-2);
-        var day = ("0" + date.getDate()).slice(-2);
-        var hour = ("0" + date.getHours()).slice(-2);
-        var minute = ("0" + date.getMinutes()).slice(-2);
+	useEffect(() => {
+		axios.get(`${process.env.REACT_APP_CHAT_READ}/${code}`).then((el) =>
+			setChatData({
+				...chatData,
+				code: el.data.chatData.room.siteCode,
+				title: el.data.chatData.room.title,
+				createDate: el.data.chatData.room.regDate,
+				member: [el.data.chatData.member],
+			})
+		);
+	}, []);
 
-        var returnDate = `${hour}시${minute}분 ()`;
-        return returnDate;
-    };
+	const logDate = (time) => {
+		let date = new Date(time * 1000);
+		let year = date.getFullYear().toString().slice(-4);
+		let month = ("0" + (date.getMonth() + 1)).slice(-2);
+		let day = ("0" + date.getDate()).slice(-2);
+		let hour = ("0" + date.getHours()).slice(-2);
+		let minute = ("0" + date.getMinutes()).slice(-2);
 
-	const [header, setHeader] = useState({
-		code: chatInfo.code,
-		title: chatInfo.room.title,
-		createDate: logDate(chatInfo.room.time),
-		member: chatInfo.member
-	})
+		let returnDate = `${hour}시 ${minute}분 ()`;
+		return returnDate;
+	};
 
-	//const chatCode = 
-
-    return (<div>
-		<ChatHeader header={header}></ChatHeader>
-		<TaskInfo ></TaskInfo>
-		<Conversation ></Conversation>
-		<Input></Input>
-	</div>)
+	return (
+		<div>
+			<ChatHeader chatData={chatData}></ChatHeader>
+			<TaskInfo chatData={chatData}></TaskInfo>
+			<Conversation chatData={chatData} code={code}></Conversation>
+			<Input></Input>
+		</div>
+	);
 }
 
 export default Chat;

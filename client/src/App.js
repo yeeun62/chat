@@ -3,92 +3,46 @@ import React, { useState } from "react";
 import Chat from "./chat/Chat";
 import Create from "./Create";
 import Invited from "./Invited";
-import { BrowserRouter, Routes, Route, useHref } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 function App() {
-	const redirect = useHref;
-	const [chatInfo, setChatInfo] = useState({
-		code: '',
-		member: '',
-		room: ''
-	});
-	const [createChat, setCreateChat] = useState({
-		siteName: "",
-		roomTitle: "",
-		userName: "",
-		userPhoneNumber: "",
-		userId: "",
-	});
-
-	const [errorInput, setErrorInptut] = useState(false);
-	const createChatHandler = (e, name) => {
-		setCreateChat({ ...createChat, [name]: e.target.value });
-		let num = createChat.userPhoneNumber.toString().split('');
-		const numCheck = (num) => num.filter( s => typeof(s) === "Number");
-		setCreateChat({...createChat, 'userPhoneNumber': numCheck(num)});
-		if(createChat.userPhoneNumber.toString().length !== 11) setErrorInptut(true);
-	};
-
-	const createChatRoom = () => {
-		axios.post(process.env.REACT_APP_HANDLE_CHAT, createChat).then((res) => {
-			console.log(res);
-			if (res.status === 200) {
-				setChatInfo({
-					code: res.data.code,
-					member: res.data.member,
-					room: res.data.room,
-				});
-				let ROOM_CODE = res.data.code;
-				window.location.href='http://localhost:3000/chat'
-				//window.location.href=`https://chat.handle.market/${ROOM_CODE}`
-			} else {
-				alert('이런, 요청이 실패했어요 🥲 다시 입력해주세요!')
-			}
-		});
-	};
+	const [code, setCode] = useState("");
 
 	const [invited, setInvited] = useState({
 		userName: "",
 		userPhoneNumber: "",
 		userId: "",
-		code: ""
+		code: "",
 	});
-	const invitedHandler = (e, name) => {
-		setInvited({ ...invited, [name]: e.target.value });
-		let num = invited.userPhoneNumber.toString().split('');
-		const numCheck = (num) => num.filter( s => typeof(s) === "Number");
-		setInvited({...invited, 'userPhoneNumber': numCheck(num)});
-		if(invited.userPhoneNumber.toString().length !== 11) setErrorInptut(true);
-	};
-	const invitedRoom = () => {
-		let ROOM_CODE = invited.code
-		axios.post(`${process.env.REACT_APP_HANDLE_INVITE}/${ROOM_CODE}`, invited)
-		.then(res => {
-			if(res.status === 200) {
-				redirect(`/${ROOM_CODE}`);
-			} else {
-				// 요청 조건에 맞게 잘 입력했는지 바로바로 피드백해주기.
-				alert('이런, 요청이 실패했어요 🥲 다시 입력해주세요!')
-			}
-		})
-	};
+
+	// const invitedHandler = (e, name) => {
+	// 	setInvited({ ...invited, [name]: e.target.value });
+	// 	let num = invited.userPhoneNumber.toString().split("");
+	// 	const numCheck = (num) => num.filter((s) => typeof s === "Number");
+	// 	setInvited({ ...invited, userPhoneNumber: numCheck(num) });
+	// 	if (invited.userPhoneNumber.toString().length !== 11) setErrorInptut(true);
+	// };
+	// const invitedRoom = () => {
+	// 	let ROOM_CODE = invited.code;
+	// 	axios
+	// 		.post(`${process.env.REACT_APP_CHAT_INVITE}/${ROOM_CODE}`, invited)
+	// 		.then((res) => {
+	// 			if (res.status === 200) {
+	// 				redirect(`/${ROOM_CODE}`);
+	// 			} else {
+	// 				// 요청 조건에 맞게 잘 입력했는지 바로바로 피드백해주기.
+	// 				alert("이런, 요청이 실패했어요 🥲 다시 입력해주세요!");
+	// 			}
+	// 		});
+	// };
 
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route
-					path="/"
-					element={
-						<Create
-							createChatHandler={createChatHandler}
-							createChatRoom={createChatRoom}
-							errorInput={errorInput}
-						/>
-					}
-				></Route>
-				<Route path="/chat" element={<Chat chatInfo={chatInfo} />}></Route>
-				<Route
+				<Route path="/" element={<Create setCode={setCode} />}></Route>
+				<Route path="/chat" element={<Chat code={code} />}></Route>
+				{/* <Route
 					path="/invited"
 					element={
 						<Invited
@@ -97,7 +51,7 @@ function App() {
 							errorInput={errorInput}
 						/>
 					}
-				></Route>
+				></Route> */}
 			</Routes>
 		</BrowserRouter>
 	);
