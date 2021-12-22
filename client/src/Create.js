@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-import "./create.css";
 //import { Tooltip } from "bootstrap";
 
 function Create({ setCode }) {

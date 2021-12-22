@@ -40,7 +40,7 @@ function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<Create setCode={setCode} />}></Route>
+				{/* <Route path="/" element={<Create setCode={setCode} />}></Route> */}
 				<Route path="/chat" element={<Chat code={code} />}></Route>
 				{/* <Route
 					path="/invited"
