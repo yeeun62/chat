@@ -1,5 +1,3 @@
-// progress bar 에 대한 정보 appjs에서 받아와야 함.
-import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
 import "./taskInfo.css";
 

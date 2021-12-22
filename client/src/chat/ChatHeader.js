@@ -4,16 +4,16 @@ import "./chatHeader.css";
 
 function ChatHeader({ chatInfo }) {
 	const [keyword, setKeyword] = useState("");
-	const keywordHandler = e => {
+	const keywordHandler = (e) => {
 		setKeyword(e.target.value);
 	};
-	const searcher = e => {
+	const searcher = (e) => {
 		//axios.get('',)
 	};
 
 	return (
 		<div className="ChatHeader">
-			<h1>title</h1>
+			<h1>{chatData.title}</h1>
 			<div className="convinience">🌞</div>
 			<input
 				className="searchInput"
