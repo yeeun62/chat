@@ -4,10 +4,20 @@ import styled from "styled-components";
 import addMemberButton from "../img/add-friend.png";
 
 const Chatting = styled.div`
-	position: fixed;
+	/* position: fixed; */
 	height: calc(100% - 190px);
 	width: 100%;
 	background: #fff;
+
+	&::-webkit-scrollbar-thumb {
+		width: 5px;
+		background-color: #ccc;
+	}
+
+	&::-webkit-scrollbar-track {
+		width: 7px;
+		background-color: #ccc;
+	}
 `;
 
 const Member = styled.div`
@@ -16,30 +26,42 @@ const Member = styled.div`
 	background-color: #f9faf5;
 	height: 60px;
 	box-shadow: inset -5px -5px 5px #ddd;
+	padding-right: 10px;
 
 	> ul {
 		display: flex;
 		flex-direction: row;
 		width: 100%;
 		overflow-x: scroll;
+		align-items: center;
 
 		> li div {
 			width: 30px;
 			height: 30px;
 			border-radius: 50%;
 			background-color: #9de955;
-			margin-top: 7px;
-			margin: 7px 10px 0;
+			margin: 0 10px;
 			color: #fff;
 			text-align: center;
 			line-height: 30px;
 		}
+
+		> p {
+			margin-left: 10px;
+		}
 	}
 
-	> CopyToClipboard img {
-		height: 30px;
-		width: 30px;
-		margin-right: 20px;
+	> img {
+		margin: auto;
+		@media screen and (max-width: 500px) {
+			width: 30px;
+			height: 30px;
+		};
+
+		@media screen and (min-width: 500px) {
+			width: 50px;
+			height: 50px;
+		}
 	}
 `;
 
@@ -51,33 +73,77 @@ const Content = styled.div`
 	background-color: #f9faf5;
 
 	> ul {
-		position: relative;
 		text-align: left;
 		overflow-y: scroll;
 		padding: 10px;
 		> li {
+			position: relative;
+			margin: 10px 0;
+			overflow: visible;
+			
+
+			> h5 {
+				@media screen and (min-width: 500px) {
+					font-size: 22px;
+				}
+				@media screen and (max-width: 500px) {
+					font-size: 4vw;
+				}
+			}
 			> p {
 				font-size: 10px;
-				color: #666;
+				color: #333;
+				position: absolute;
+			}
+		}
+		.receivedMessage {
+			height: 140px;
+			> div {
+				position: absolute;
+				padding: 10px;
+				background-color: #00adc7;
+				border-radius: 10px 30px;
+				left: 7px;
+				width: 200px;
+				color: #fff;
+				box-shadow:5px 5px 2px 2px #ccc;
+			}
+			> p {
+				@media screen and (max-width: 500px){
+					bottom: -5vw;
+				}
+				@media screen and (min-width: 500px){
+					bottom: -25px;
+				}
+				
 			}
 		}
 
-		.receivedMessage div {
-			padding: 10px;
-			background-color: #00adc7;
-			border-radius: 10px 30px;
-			left: 7px;
-			width: 200px;
-			color: #fff;
-		}
+		.myMessage {
+			overflow: visible;
+			height: 120px;
+			margin-bottom: 10px;
+			> div {
+				text-align: left;
+				padding: 10px;
+				background-color: #e0de1b;
+				border-radius: 30px 10px;
+				position: absolute;
+				right: 7px;
+				width: 200px;
+				box-shadow:5px 5px 2px 2px #ccc;
+			}
+			> p {
+				right: 10px;
+				@media screen and (max-width: 500px){
+					bottom: -10px;
+					margin-bottom: 5px;
+				}
+				@media screen and (min-width: 500px){
+					bottom: -15px;
 
-		.myMessage div {
-			text-align: left;
-			padding: 10px;
-			background-color: #e0de1b;
-			border-radius: 30px 10px;
-			right: 7px;
-			width: 200px;
+				}
+			}
 		}
 	}
 `;
@@ -116,7 +182,7 @@ function Conversation({ chatData, code }) {
 								return (
 									<li>
 										<div key={Object.keys(el)[i]} className="userNameTaskInfo">
-											{user.userName}
+											{user.userName.slice(0,1)}
 										</div>
 									</li>
 								);

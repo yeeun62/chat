@@ -41,6 +41,7 @@ const TaskName = styled.h1`
 `;
 
 const ProgressValue = styled.div`
+
 	font-size: 16px;
 	font-weight: bold;
 	color: #9fa3a6;
@@ -49,7 +50,7 @@ const ProgressValue = styled.div`
 	bottom: -60px;
 	right: 0;
 	padding: 5px 7px;
-	background: #ccd0d3;
+	background: #000;
 	border: 5px solid #b7bcbf;
 	text-shadow: 0px 1px #edefee;
 
@@ -78,11 +79,10 @@ function TaskInfo() {
 	return (
 		<Progress>
 			<TaskName>현재 진행 중인 업무 표시</TaskName>
-			{/* <ProgressBar now={20}></ProgressBar> */}
 			<div className="progress">
-				<div className="progress-bar">
-					<div className="progress-value">80%</div>
-				</div>
+				<Progressbar>
+					<ProgressValue></ProgressValue>
+				</Progressbar>
 			</div>
 		</Progress>
 	);

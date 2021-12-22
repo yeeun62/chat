@@ -13,32 +13,47 @@ const Header = styled.div`
 
 	> h1 {
 		font-size: 30px;
-		font-weight: 500;
-		width: 100px;
+		font-weight: 600;
+		width: calc(100%/3);
 		height: 60px;
 		line-height: 60px;
-		text-align: center;
+		text-align: left;
 		margin: auto 10px;
 		text-overflow: ellipsis;
+		@media screen and (min-width: 500px) {
+			font-size: 30px;
+			font-weight: 600;
+		}
+		@media screen and (max-width: 500px) {
+			font-size: 30px;
+			font-weight: 500;
+		}
 	}
 
 	> form {
-		width: calc(100%-130px);
+		width: calc(100%/3);
 		display: flex;
 		flex-direction: row;
+		justify-content: flex-end;
 		overflow: hidden;
-
+		align-items: center;
+		
 		.searchInput {
 			width: 20vw;
 			height: 30px;
 			border-bottom: 2px solid #666;
 			margin: 15px 5px
+
+			@media screen and (max-width: 500px) {
+				width: 10vw;
+			}
 		}
 
 		> button {
 			background-color: transparent;
 			border: none;
 			margin: 15px 0;
+
 			> img {
 				width: 30px;
 				height: 30px;
@@ -53,8 +68,9 @@ const Convinience = styled.div`
 	line-height: 60px;
 	text-align: center;
 	margin: auto 10px;
-	width: 30px;
+	width: calc(100%/3);
 `;
+
 function ChatHeader({ chatData }) {
 	const [keyword, setKeyword] = useState("");
 	const keywordHandler = (e) => {
