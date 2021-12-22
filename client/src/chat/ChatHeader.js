@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./chatHeader.css";
 
-function ChatHeader({ chatInfo }) {
+function ChatHeader({ chatData }) {
 	const [keyword, setKeyword] = useState("");
 	const keywordHandler = (e) => {
 		setKeyword(e.target.value);
