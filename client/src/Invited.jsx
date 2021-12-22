@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
 function Invited() {
+	const navigate = useNavigate();
+
 	const [createChat, setCreateChat] = useState({
 		userName: "아바타",
 		userPhoneNumber: "01011000000",
@@ -24,7 +27,9 @@ function Invited() {
 				userId: "avata",
 			}
 		);
-		console.log("!!", invite);
+		if (invite.status === 200) {
+			navigate(`/chat/${window.location.pathname.slice(14)}`);
+		}
 	};
 
 	return (

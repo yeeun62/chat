@@ -6,7 +6,7 @@ import Conversation from "./Conversation";
 import Input from "./Input";
 import "./chat.css";
 
-function Chat({ code }) {
+function Chat() {
 	const [chatData, setChatData] = useState({
 		code: "",
 		title: "",
@@ -15,34 +15,31 @@ function Chat({ code }) {
 	});
 
 	useEffect(() => {
-		axios.get(`${process.env.REACT_APP_CHAT_READ}/${code}`).then((el) =>
-			setChatData({
-				...chatData,
-				code: el.data.chatData.room.siteCode,
-				title: el.data.chatData.room.title,
-				createDate: el.data.chatData.room.regDate,
-				member: [el.data.chatData.member],
-			})
-		);
+		axios
+			.get(
+				`${process.env.REACT_APP_CHAT_READ}/${window.location.pathname.slice(
+					6
+				)}`
+			)
+			.then((el) =>
+				setChatData({
+					...chatData,
+					code: el.data.chatData.room.siteCode,
+					title: el.data.chatData.room.title,
+					createDate: el.data.chatData.room.regDate,
+					member: [el.data.chatData.member],
+				})
+			);
 	}, []);
-
-	const logDate = (time) => {
-		let date = new Date(time * 1000);
-		let year = date.getFullYear().toString().slice(-4);
-		let month = ("0" + (date.getMonth() + 1)).slice(-2);
-		let day = ("0" + date.getDate()).slice(-2);
-		let hour = ("0" + date.getHours()).slice(-2);
-		let minute = ("0" + date.getMinutes()).slice(-2);
-
-		let returnDate = `${hour}시 ${minute}분 ()`;
-		return returnDate;
-	};
 
 	return (
 		<div>
 			<ChatHeader chatData={chatData}></ChatHeader>
 			<TaskInfo chatData={chatData}></TaskInfo>
-			<Conversation chatData={chatData} code={code}></Conversation>
+			<Conversation
+				chatData={chatData}
+				code={window.location.pathname.slice(6)}
+			></Conversation>
 			<Input></Input>
 		</div>
 	);

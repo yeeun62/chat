@@ -25,7 +25,7 @@ function Create({ setCode }) {
 		);
 		if (createRoom.status === 200) {
 			setCode(createRoom.data.code);
-			navigate("/chat");
+			navigate(`/chat/${createRoom.data.code}`);
 		} else {
 			alert("이런, 요청이 실패했어요 🥲 다시 입력해주세요!");
 		}

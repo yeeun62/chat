@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 function Conversation({ chatData, code }) {
@@ -21,11 +19,13 @@ function Conversation({ chatData, code }) {
 					<li>
 						{chatData.member.length ? (
 							chatData.member.map((el) => {
-								return (
-									<div key={Object.keys(el)[0]} className="userNameTaskInfo">
-										{Object.values(el)[0].userName}
-									</div>
-								);
+								return Object.values(el).map((user, i) => {
+									return (
+										<div key={Object.keys(el)[i]} className="userNameTaskInfo">
+											{user.userName}
+										</div>
+									);
+								});
 							})
 						) : (
 							<p>로딩중~</p>

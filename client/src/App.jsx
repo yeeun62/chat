@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import Chat from "./chat/Chat";
 import Create from "./Create.jsx";
@@ -91,7 +90,7 @@ function App() {
 			<GlobalStyles />
 			<Routes>
 				<Route path="/" element={<Create setCode={setCode} />}></Route>
-				<Route path="/chat" element={<Chat code={code} />}></Route>
+				<Route path="/chat/:code" element={<Chat code={code} />}></Route>
 				<Route
 					path="chat/invited/:code"
 					element={<Invited code={code} />}
