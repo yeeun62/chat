@@ -1,20 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 function Conversation({ chatData, code }) {
-	const invite = async () => {
-		let a = await axios.post(
-			`${process.env.REACT_APP_CHAT_INVITE}/${code}`,
-			{
-				userName: "아바타",
-				userPhoneNumber: "01023232323",
-				userId: "avata",
-			},
-			{ withCredentials: true }
-		);
-		console.log("!!", a);
-	};
-
 	let logDate = (time) => {
 		let date = new Date(time * 1000);
 		let year = date.getFullYear().toString().slice(-4);
@@ -44,10 +32,9 @@ function Conversation({ chatData, code }) {
 						)}
 					</li>
 				</ul>
-				<button className="inviteNewMember" onClick={invite}>
-					초대하기
-					{/* <img alt="새로운 멤버 초대" src="../../public/img/add-friend.png"></img> */}
-				</button>
+				<CopyToClipboard text={`http://localhost:3000/chat/invited/${code}`}>
+					<button>초대링크 복사</button>
+				</CopyToClipboard>
 			</div>
 			<div className="Conversation">
 				<div className="chatWrapper">

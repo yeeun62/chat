@@ -1,34 +1,30 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-function Create({ setCode }) {
-	const navigate = useNavigate();
-
+function Invited() {
 	const [createChat, setCreateChat] = useState({
-		siteName: "handle",
-		roomTitle: "채팅방",
-		userName: "방예은",
-		userPhoneNumber: "01099720602",
-		userId: "byebye62",
+		userName: "아바타",
+		userPhoneNumber: "01011000000",
+		userId: "avata",
 	});
 
 	const createChatHandler = (e) => {
 		setCreateChat({ ...createChat, [e.target.name]: e.target.value });
 	};
 
-	const createChatRoom = async () => {
-		let createRoom = await axios.post(
-			process.env.REACT_APP_CHAT_CREATE,
-			createChat
+	const invite = async () => {
+		let invite = await axios.post(
+			`${process.env.REACT_APP_CHAT_INVITE}/${window.location.pathname.slice(
+				14
+			)}`,
+			{
+				userName: "아바타",
+				userPhoneNumber: "01023232323",
+				userId: "avata",
+			}
 		);
-		if (createRoom.status === 200) {
-			setCode(createRoom.data.code);
-			navigate("/chat");
-		} else {
-			alert("이런, 요청이 실패했어요 🥲 다시 입력해주세요!");
-		}
+		console.log("!!", invite);
 	};
 
 	return (
@@ -65,31 +61,7 @@ function Create({ setCode }) {
 						}}
 					></input>
 				</div>
-				<div className="inviteSection">
-					<span className="inviteTitle">사이트 명</span>
-					<input
-						name="siteName"
-						className="inviteInput"
-						onChange={(e) => {
-							createChatHandler(e);
-						}}
-					/>
-				</div>
-				<div className="inviteSection">
-					<span className="inviteTitle">채팅방 이름</span>
-					<input
-						name="roomTitle"
-						className="inviteInput"
-						onChange={(e) => {
-							createChatHandler(e);
-						}}
-					></input>
-				</div>
-				<button
-					type="button"
-					className="handle-button"
-					onClick={createChatRoom}
-				>
+				<button type="button" className="inviteButton" onClick={invite}>
 					채팅방 입장
 				</button>
 			</form>
@@ -97,4 +69,4 @@ function Create({ setCode }) {
 	);
 }
 
-export default Create;
+export default Invited;
