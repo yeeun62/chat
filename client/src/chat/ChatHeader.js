@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import searchButton from '../img/search.png'
 
 const Header = styled.div`
 	width: 100%;
@@ -23,18 +24,25 @@ const Header = styled.div`
 
 	> form {
 		width: calc(100%-130px);
-		height: 30px;
-		margin: 15px 0;
+		display: flex;
+		flex-direction: row;
+		overflow: hidden;
 
-		> input {
+		.searchInput {
 			width: 20vw;
 			height: 30px;
-			margin: 15px 10px 15px 0;
+			border-bottom: 2px solid #666;
+			margin: 15px 5px
 		}
 
-		> button img {
-			width: 30px;
-			height: 30px;
+		> button {
+			background-color: transparent;
+			border: none;
+			margin: 15px 0;
+			> img {
+				width: 30px;
+				height: 30px;
+			}
 		}
 	}
 `;
@@ -58,7 +66,7 @@ function ChatHeader({ chatData }) {
 
 	return (
 		<Header>
-			<h1>{chatData.title}title</h1>
+			<h1>{chatData.title}</h1>
 			<Convinience>🌞</Convinience>
 			<form>
 				<input
@@ -68,7 +76,7 @@ function ChatHeader({ chatData }) {
 					onChange={keywordHandler}
 				></input>
 				<button type="button" onClick={() => searcher(keyword)}>
-					<img className="searchButton" src="./img/search.png" alt="검색"></img>
+					<img className="searchButton" src={searchButton} alt="검색"></img>
 				</button>
 			</form>
 		</Header>
