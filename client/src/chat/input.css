@@ -1,0 +1,24 @@
+.Input {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	position: static;
+}
+.addFunctionButton {
+	width: 30px;
+}
+
+form {
+	width: calc(100%-30px);
+	flex-grow: 1;
+	display: flex;
+}
+
+.sendMsg {
+	width: 30px;
+}
+
+#chatInput {
+	flex-grow: 1;
+	/* width: calc(100%-60px); */
+}
