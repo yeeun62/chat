@@ -4,7 +4,6 @@ import ChatHeader from "./ChatHeader";
 import TaskInfo from "./TaskInfo";
 import Conversation from "./Conversation";
 import Input from "./Input";
-import "./chat.css";
 
 function Chat() {
 	const [chatData, setChatData] = useState({
