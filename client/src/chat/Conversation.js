@@ -1,5 +1,5 @@
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import axios from "axios";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 
 const Chatting = styled.div`
@@ -81,6 +81,18 @@ const Content = styled.div`
 `;
 
 function Conversation({ chatData, code }) {
+	const scroll = useRef(null);
+
+	const scrollDown = () => {
+		const { scrollHeight, clientHeight } = scroll.current;
+		scroll.current.scrollTop = scrollHeight - clientHeight;
+	};
+
+	useEffect(() => {
+		console.log(chatData);
+		scrollDown();
+	}, []);
+
 	let logDate = (time) => {
 		let date = new Date(time * 1000);
 		let year = date.getFullYear().toString().slice(-4);
@@ -116,7 +128,7 @@ function Conversation({ chatData, code }) {
 					<button>초대링크 복사</button>
 				</CopyToClipboard>
 			</Member>
-			<Content>
+			<Content ref={scroll}>
 				<ul>
 					{/* 여기서 div 클래스이름은 사용자가 누구냐에 따라서 컬러 받아오고 왼쪽인지 오른쪽인지 정할 수 있도록 프롭스로 . */}
 					<li className="receivedMessage">

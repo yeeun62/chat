@@ -34,6 +34,7 @@ function Input() {
 
 	const viewFunctionHandler = () =>
 		viewFunction ? setVeiwFunction(false) : setVeiwFunction(true);
+
 	const contentHandeler = (e) => {
 		setContent(e.target.value);
 		console.log(content);
@@ -59,9 +60,7 @@ function Input() {
 						contentHandeler(e);
 					}}
 				></input>
-				<button className="sendChat">
-					<img className="sendMsg" alt="메시지 전송버튼" src="./img/send.png" />
-				</button>
+				<button className="handle-button">전송</button>
 			</form>
 		</InputWrapper>
 	);

@@ -18,14 +18,10 @@ function Invited() {
 
 	const invite = async () => {
 		let invite = await axios.post(
-			`${process.env.REACT_APP_CHAT_INVITE}/${window.location.pathname.slice(
+			`${process.env.REACT_APP_CHAT}/invite/${window.location.pathname.slice(
 				14
 			)}`,
-			{
-				userName: "아바타",
-				userPhoneNumber: "01023232323",
-				userId: "avata",
-			}
+			createChat
 		);
 		if (invite.status === 200) {
 			navigate(`/chat/${window.location.pathname.slice(14)}`);

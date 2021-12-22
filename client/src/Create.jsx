@@ -20,7 +20,7 @@ function Create({ setCode }) {
 
 	const createChatRoom = async () => {
 		let createRoom = await axios.post(
-			process.env.REACT_APP_CHAT_CREATE,
+			`${process.env.REACT_APP_CHAT}/create`,
 			createChat
 		);
 		if (createRoom.status === 200) {

@@ -58,7 +58,7 @@ function ChatHeader({ chatData }) {
 
 	return (
 		<Header>
-			<h1>{chatData.title}title</h1>
+			<h1>{chatData.title}</h1>
 			<Convinience>🌞</Convinience>
 			<form>
 				<input

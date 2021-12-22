@@ -15,11 +15,7 @@ function Chat() {
 
 	useEffect(() => {
 		axios
-			.get(
-				`${process.env.REACT_APP_CHAT_READ}/${window.location.pathname.slice(
-					6
-				)}`
-			)
+			.get(`${process.env.REACT_APP_CHAT}/${window.location.pathname.slice(6)}`)
 			.then((el) =>
 				setChatData({
 					...chatData,
