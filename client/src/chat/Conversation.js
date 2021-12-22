@@ -1,5 +1,6 @@
+import { getDatabase, set, ref, push, onValue } from "firebase/database";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import addMemberButton from "../img/add-friend.png";
 
@@ -84,6 +85,7 @@ const Content = styled.div`
 
 function Conversation({ chatData, code }) {
 	const scroll = useRef(null);
+	const [data, setData] = useState();
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -93,6 +95,34 @@ function Conversation({ chatData, code }) {
 	useEffect(() => {
 		console.log(chatData);
 		scrollDown();
+	}, []);
+
+	useEffect(() => {
+		console.log(window.location.pathname.slice(6));
+		const db = getDatabase();
+		const dbRef = ref(db, "chat");
+		onValue(
+			dbRef,
+			(snapshot) => {
+				const data = snapshot.val();
+				Object.values(data).map((el) => {
+					if (el.site.code === window.location.pathname.slice(6)) {
+						console.log(el);
+						setData(el);
+					}
+				});
+
+				// for (let el in data) {
+				// 	if (data[el].site.code === window.location.pathname.slice(6)) {
+				// 		setData(data[el]);
+				// 		break;
+				// 	}
+				// }
+			},
+			{
+				onlyOnce: true,
+			}
+		);
 	}, []);
 
 	let logDate = (time) => {
@@ -132,66 +162,17 @@ function Conversation({ chatData, code }) {
 			</Member>
 			<Content ref={scroll}>
 				<ul>
-					{/* 여기서 div 클래스이름은 사용자가 누구냐에 따라서 컬러 받아오고 왼쪽인지 오른쪽인지 정할 수 있도록 프롭스로 . */}
-					<li className="receivedMessage">
-						<h5>user name</h5>
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>{logDate(chatData.createDate)}</p>
-					</li>
-					<li className="myMessage">
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>시간</p>
-					</li>
-					<li className="myMessage">
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>시간</p>
-					</li>
-					<li className="myMessage">
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>시간</p>
-					</li>
-					<li className="myMessage">
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>시간</p>
-					</li>
-					<li className="myMessage">
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>시간</p>
-					</li>
-					<li className="myMessage">
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>시간</p>
-					</li>
-					<li className="myMessage">
-						<div>
-							채팅 내용 내용 내용 채팅 내용 내용 내용채팅 내용 내용 내용채팅
-							내용 내용 내용
-						</div>
-						<p>시간</p>
-					</li>
-
-					{/* <div>{logDate(chatData.createDate)}</div> */}
+					{data
+						? Object.values(data.send).map((el) => {
+								return (
+									<li className="receivedMessage">
+										<h5>{el.sender}</h5>
+										<div>{el.message}</div>
+										{/* <p>{logDate(chatData.createDate)}</p> */}
+									</li>
+								);
+						  })
+						: null}
 				</ul>
 			</Content>
 		</Chatting>

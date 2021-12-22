@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Chat from "./chat/Chat";
 import Create from "./Create.jsx";
 import Invited from "./Invited";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import config from "./config";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`

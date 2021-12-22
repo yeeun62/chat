@@ -1,3 +1,4 @@
+import { getDatabase, set, ref, onValue, push } from "firebase/database";
 import { useState } from "react";
 import styled from "styled-components";
 import addOnButton from "../img/plus-sign.png";
@@ -34,42 +35,53 @@ const InputWrapper = styled.div`
 `;
 
 function Input() {
-	const [content, setContent] = useState("");
-	const [viewFunction, setVeiwFunction] = useState(false);
+	const [msg, setMsg] = useState({
+		message: "안녕하세요",
+		sender: "방예은",
+		read: true,
+		time: "",
+	});
 
-	const viewFunctionHandler = () =>
-		viewFunction ? setVeiwFunction(false) : setVeiwFunction(true);
+	const message = (e) => {
+		setMsg({ ...msg, message: e.target.value });
+	};
 
-	const contentHandeler = (e) => {
-		setContent(e.target.value);
-		console.log(content);
+	const msgSend = async () => {
+		console.log(window.location.pathname.slice(6));
+		const db = getDatabase();
+		const dbRef = ref(db, "chat");
+
+		const time = Math.floor(Date.now() / 1000);
+
+		onValue(
+			dbRef,
+			async (snapshot) => {
+				let data = snapshot.val();
+				for (let el in data) {
+					if (data[el].site.code === window.location.pathname.slice(6)) {
+						const send = ref(db, `chat/${el}/send/${time}`);
+						set(send, msg);
+					}
+				}
+			},
+			{
+				onlyOnce: true,
+			}
+		);
 	};
 
 	return (
 		<InputWrapper>
-			<button className="addFunctionButton" onClick={viewFunctionHandler}>
+			<button className="addFunctionButton">
 				<img
 					src={addOnButton}
 					className="addFunctionButton"
 					alt="부가 기능 버튼"
 				></img>
 			</button>
-			{viewFunction ? (
-				<div className="addFunction">
-					<ul>
-						<li></li>
-					</ul>
-				</div>
-			) : null}
-
-			<form>
-				<input
-					id="chatInput"
-					onChange={(e) => {
-						contentHandeler(e);
-					}}
-				></input>
-				<button className="sendChat">
+			<form onSubmit={(e) => e.preventDefault()}>
+				<input type="text" onChange={message} />
+				<button className="sendChat" onClick={msgSend}>
 					<img className="sendMsg" alt="메시지 전송버튼" src={sendButton} />
 				</button>
 			</form>

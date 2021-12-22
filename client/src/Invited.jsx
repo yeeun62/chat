@@ -1,3 +1,11 @@
+import {
+	getDatabase,
+	set,
+	ref,
+	onValue,
+	push,
+	update,
+} from "firebase/database";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -17,15 +25,26 @@ function Invited() {
 	};
 
 	const invite = async () => {
-		let invite = await axios.post(
-			`${process.env.REACT_APP_CHAT}/invite/${window.location.pathname.slice(
-				14
-			)}`,
-			createChat
+		const db = getDatabase();
+		const dbRef = ref(db, "chat");
+		onValue(
+			dbRef,
+			async (snapshot) => {
+				let data = snapshot.val();
+				for (let el in data) {
+					if (data[el].site.code === window.location.pathname.slice(14)) {
+						const member = ref(db, `chat/${el}/member`);
+						const memberRef = push(member);
+						update(memberRef, createChat);
+						navigate(`/chat/${window.location.pathname.slice(14)}`);
+						break;
+					}
+				}
+			},
+			{
+				onlyOnce: true,
+			}
 		);
-		if (invite.status === 200) {
-			navigate(`/chat/${window.location.pathname.slice(14)}`);
-		}
 	};
 
 	return (

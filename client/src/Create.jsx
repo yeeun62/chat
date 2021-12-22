@@ -1,3 +1,4 @@
+import { getDatabase, set, ref, push } from "firebase/database";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -7,8 +8,8 @@ function Create({ setCode }) {
 	const navigate = useNavigate();
 
 	const [createChat, setCreateChat] = useState({
-		siteName: "handle",
-		roomTitle: "채팅방",
+		name: "handle",
+		title: "채팅방",
 		userName: "방예은",
 		userPhoneNumber: "01099720602",
 		userId: "byebye62",
@@ -19,15 +20,33 @@ function Create({ setCode }) {
 	};
 
 	const createChatRoom = async () => {
-		let createRoom = await axios.post(
-			`${process.env.REACT_APP_CHAT}/create`,
-			createChat
-		);
-		if (createRoom.status === 200) {
-			setCode(createRoom.data.code);
-			navigate(`/chat/${createRoom.data.code}`);
-		} else {
-			alert("이런, 요청이 실패했어요 🥲 다시 입력해주세요!");
+		try {
+			const db = getDatabase();
+			const dbRef = ref(db, "chat");
+
+			const newdbRef = push(dbRef);
+			const chatId = newdbRef._path;
+
+			const member = ref(db, `${chatId}/member`);
+			const memberRef = push(member);
+
+			const uuid = await axios.get(process.env.REACT_APP_UUID);
+			console.log(uuid);
+			const time = Math.floor(Date.now() / 1000);
+
+			const { userName, userPhoneNumber, userId, title, name } = createChat;
+
+			let chat = {
+				room: { title, siteCode: uuid.data.code, regDate: time },
+				site: { name, color: "#E0DE1B", code: uuid.data.code },
+			};
+
+			set(newdbRef, chat);
+			set(memberRef, { userName, userPhoneNumber, userId });
+			setCode(uuid.data.code);
+			navigate(`/chat/${uuid.data.code}`);
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
@@ -68,7 +87,7 @@ function Create({ setCode }) {
 				<div className="inviteSection">
 					<span className="inviteTitle">사이트 명</span>
 					<input
-						name="siteName"
+						name="name"
 						className="inviteInput"
 						onChange={(e) => {
 							createChatHandler(e);
@@ -78,7 +97,7 @@ function Create({ setCode }) {
 				<div className="inviteSection">
 					<span className="inviteTitle">채팅방 이름</span>
 					<input
-						name="roomTitle"
+						name="title"
 						className="inviteInput"
 						onChange={(e) => {
 							createChatHandler(e);
