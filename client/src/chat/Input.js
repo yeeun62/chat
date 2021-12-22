@@ -1,5 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
+import addOnButton from "../img/plus-sign.png";
+import sendButton from "../img/send.png";
+import "./input.css";
 
 const InputWrapper = styled.div`
 	display: flex;
@@ -20,6 +23,8 @@ const InputWrapper = styled.div`
 
 		> input {
 			flex-grow: 1;
+			border-bottom: 2px solid #666;
+			margin-bottom: 10px;
 		}
 
 		> button img {
@@ -43,7 +48,11 @@ function Input() {
 	return (
 		<InputWrapper>
 			<button className="addFunctionButton" onClick={viewFunctionHandler}>
-				<img src="./img/plus-sign.png" className="addFunctionButton"></img>
+				<img
+					src={addOnButton}
+					className="addFunctionButton"
+					alt="부가 기능 버튼"
+				></img>
 			</button>
 			{viewFunction ? (
 				<div className="addFunction">
@@ -60,7 +69,9 @@ function Input() {
 						contentHandeler(e);
 					}}
 				></input>
-				<button className="handle-button">전송</button>
+				<button className="sendChat">
+					<img className="sendMsg" alt="메시지 전송버튼" src={sendButton} />
+				</button>
 			</form>
 		</InputWrapper>
 	);

@@ -1,6 +1,7 @@
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
+import addMemberButton from "../img/add-friend.png";
 
 const Chatting = styled.div`
 	position: fixed;
@@ -13,8 +14,8 @@ const Member = styled.div`
 	display: flex;
 	justify-content: space-between;
 	background-color: #f9faf5;
-	height: 40px;
-	border-bottom: 1px solid #ddd;
+	height: 60px;
+	box-shadow: inset -5px -5px 5px #ddd;
 
 	> ul {
 		display: flex;
@@ -35,9 +36,10 @@ const Member = styled.div`
 		}
 	}
 
-	> button img {
+	> CopyToClipboard img {
+		height: 30px;
 		width: 30px;
-		margin-right: 10px;
+		margin-right: 20px;
 	}
 `;
 
@@ -125,7 +127,7 @@ function Conversation({ chatData, code }) {
 					)}
 				</ul>
 				<CopyToClipboard text={`http://localhost:3000/chat/invited/${code}`}>
-					<button>초대링크 복사</button>
+					<img src={addMemberButton} alt="초대링크 복사 버튼"></img>
 				</CopyToClipboard>
 			</Member>
 			<Content ref={scroll}>
