@@ -1,4 +1,5 @@
 import { getDatabase, set, ref, onValue } from "firebase/database";
+import { useCookies } from "react-cookie";
 import { useState } from "react";
 import styled from "styled-components";
 import sendButton from "../img/send.png";
@@ -40,9 +41,11 @@ const InputWrapper = styled.div`
 `;
 
 function Input() {
+	const [cookie, setCookie] = useCookies(["auth"]);
+
 	const [msg, setMsg] = useState({
 		message: "",
-		sender: "방예은",
+		sender: "",
 		read: true,
 		time: 1,
 	});
@@ -50,30 +53,32 @@ function Input() {
 	const msgSend = async () => {
 		setMsg({ ...msg, message: "" });
 
-		const db = getDatabase();
-		const dbRef = ref(db, "chat");
+		if (msg.message.length) {
+			const db = getDatabase();
+			const dbRef = ref(db, "chat");
 
-		const time = Math.floor(Date.now() / 1000);
-		onValue(
-			dbRef,
-			async (snapshot) => {
-				let data = snapshot.val();
-				for (let el in data) {
-					if (data[el].site.code === window.location.pathname.slice(6)) {
-						const send = ref(db, `chat/${el}/send/${time}`);
-						set(send, {
-							message: msg.message,
-							sender: msg.sender,
-							read: msg.read,
-							time: time,
-						});
+			const time = Math.floor(Date.now() / 1000);
+			onValue(
+				dbRef,
+				async (snapshot) => {
+					let data = snapshot.val();
+					for (let el in data) {
+						if (data[el].site.code === window.location.pathname.slice(6)) {
+							const send = ref(db, `chat/${el}/send/${time}`);
+							set(send, {
+								message: msg.message,
+								sender: cookie.auth.split("|")[0],
+								read: msg.read,
+								time: time,
+							});
+						}
 					}
+				},
+				{
+					onlyOnce: true,
 				}
-			},
-			{
-				onlyOnce: true,
-			}
-		);
+			);
+		}
 	};
 
 	return (

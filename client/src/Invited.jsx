@@ -1,4 +1,5 @@
 import { getDatabase, ref, onValue, push, update } from "firebase/database";
+import { useCookies } from "react-cookie";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +7,7 @@ axios.defaults.withCredentials = true;
 
 function Invited() {
 	const navigate = useNavigate();
+	const [cookie, setCookie] = useCookies(["auth"]);
 
 	const [createChat, setCreateChat] = useState({
 		userName: "아바타",
@@ -37,6 +39,10 @@ function Invited() {
 			{
 				onlyOnce: true,
 			}
+		);
+		setCookie(
+			"auth",
+			`${createChat.userName}|${window.location.pathname.slice(14)}`
 		);
 	};
 
