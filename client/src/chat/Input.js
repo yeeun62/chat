@@ -15,15 +15,13 @@ const InputWrapper = styled.div`
 
 	.button {
 		background-color: transparent;
-		@media screen and (max-width:500px) {
+		@media screen and (max-width: 500px) {
 			width: 30px;
 		}
-		@media screen and (min-width:500px) {
+		@media screen and (min-width: 500px) {
 			width: 40px;
 		}
-
 	}
-
 
 	> form {
 		width: calc(100%-30px);
@@ -80,7 +78,7 @@ function Input() {
 
 	return (
 		<InputWrapper>
-			<button className="addFunctionButton button" onClick={viewFunctionHandler}>
+			<button className="addFunctionButton button">
 				{/* <img
 					src={addOnButton}
 					className="addFunctionButton button"
@@ -99,7 +97,11 @@ function Input() {
 					}
 				/>
 				<button className="sendChat button" onClick={msgSend}>
-					<img className="sendMsg button" alt="메시지 전송버튼" src={sendButton} />
+					<img
+						className="sendMsg button"
+						alt="메시지 전송버튼"
+						src={sendButton}
+					/>
 				</button>
 			</form>
 		</InputWrapper>

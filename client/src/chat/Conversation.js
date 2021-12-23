@@ -1,13 +1,13 @@
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { useCookies } from "react-cookie";
 import styled from "styled-components";
-import {useEffect, useRef} from 'react'
-import * as React from 'react'
-import addMemberButton from '../img/link.png';
-import '../App.css';
-
+import { useEffect, useRef, useState } from "react";
+import * as React from "react";
+import addMemberButton from "../img/link.png";
+import "../App.css";
 
 const Chatting = styled.div`
-	@media screen and (min-width: 500px){
+	@media screen and (min-width: 500px) {
 		font-weight: 600;
 	}
 	height: calc(100% - 160px);
@@ -57,31 +57,31 @@ const Member = styled.div`
 	}
 
 	> button {
-		font-size: 10px!important;
-		font-weight: 800!important;
+		font-size: 10px !important;
+		font-weight: 800 !important;
 		margin: auto 0 !important;
 		width: 130px !important;
 		height: 30px !important;
 		line-height: 30px !important;
-		word-break: keep-all!important;
-		&:hover{
-			cursor: pointer!important;
+		word-break: keep-all !important;
+		&:hover {
+			cursor: pointer !important;
 		}
-		background-color: #b8b513!important;
-		padding: 10px auto!important;
-		display: flex!important;
-		flex-direction: row!important;
-		text-align: center!important;
-		overflow: hidden!important;
+		background-color: #b8b513 !important;
+		padding: 10px auto !important;
+		display: flex !important;
+		flex-direction: row !important;
+		text-align: center !important;
+		overflow: hidden !important;
 		.inviteButton {
 			color: #fff !important;
-			margin: 0!important;
-			background-color: transparent!important;
+			margin: 0 !important;
+			background-color: transparent !important;
 		}
 
 		> img {
-			width: 20px!important;
-			margin: 5px 0 5px 5px!important;
+			width: 20px !important;
+			margin: 5px 0 5px 5px !important;
 		}
 	}
 `;
@@ -122,14 +122,13 @@ const Content = styled.div`
 				@media screen and (min-width: 500px) {
 					width: 500px;
 				}
-				
 			}
 		}
 		.receivedMessage {
-			@media screen and (max-width: 500px){
+			@media screen and (max-width: 500px) {
 				height: 120px;
-				}
-			@media screen and (min-width: 500px){
+			}
+			@media screen and (min-width: 500px) {
 				height: 100px;
 			}
 			> div {
@@ -138,17 +137,17 @@ const Content = styled.div`
 				background-color: #eff5c6;
 				border-radius: 10px 30px;
 				left: 7px;
-				box-shadow:5px 5px 2px 2px #ccc;
+				box-shadow: 5px 5px 2px 2px #ccc;
 				margin: 5px 0;
 				@media screen and (max-width: 500px) {
 					font-size: 14px;
 				}
 			}
 			> p {
-				@media screen and (max-width: 500px){
+				@media screen and (max-width: 500px) {
 					bottom: -5vw;
 				}
-				@media screen and (min-width: 500px){
+				@media screen and (min-width: 500px) {
 					bottom: -25px;
 				}
 			}
@@ -157,10 +156,10 @@ const Content = styled.div`
 		.myMessage {
 			overflow: visible;
 			margin-bottom: 10px;
-			@media screen and (max-width: 500px){
+			@media screen and (max-width: 500px) {
 				height: 110px;
-				}
-			@media screen and (min-width: 500px){
+			}
+			@media screen and (min-width: 500px) {
 				height: 75px;
 			}
 			> div {
@@ -171,20 +170,19 @@ const Content = styled.div`
 				border-radius: 30px 10px;
 				position: absolute;
 				right: 7px;
-				box-shadow:5px 5px 2px 2px #ccc;
+				box-shadow: 5px 5px 2px 2px #ccc;
 				@media screen and (max-width: 500px) {
 					font-size: 14px;
 				}
 			}
 			> p {
 				right: 10px;
-				@media screen and (max-width: 500px){
+				@media screen and (max-width: 500px) {
 					bottom: -10px;
 					margin-bottom: 5px;
 				}
-				@media screen and (min-width: 500px){
+				@media screen and (min-width: 500px) {
 					bottom: -15px;
-
 				}
 			}
 		}
@@ -193,6 +191,8 @@ const Content = styled.div`
 
 function Conversation({ chat }) {
 	const scroll = useRef(null);
+	const [user, setUser] = useState("");
+	const [cookies, setCookie] = useCookies(["auth"]);
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -204,6 +204,10 @@ function Conversation({ chat }) {
 			scrollDown();
 		}
 	}, [chat]);
+
+	useEffect(() => {
+		setUser(cookies.auth.split("|")[0]);
+	}, []);
 
 	let logDate = (time) => {
 		let date = new Date(time * 1000);
@@ -226,7 +230,7 @@ function Conversation({ chat }) {
 								return (
 									<li>
 										<div key={Object.keys(el)[i]} className="userNameTaskInfo">
-											{el.userName}
+											{el.userName.slice(0, 1)}
 										</div>
 									</li>
 								);
@@ -235,7 +239,10 @@ function Conversation({ chat }) {
 						<CopyToClipboard
 							text={`http://localhost:3000/chat/invited/${chat.site.code}`}
 						>
-							<img src={addMemberButton} alt="초대링크 복사 버튼"></img>
+							<button>
+								<img src={addMemberButton} alt="초대링크 복사 버튼" />
+								초대링크 복사
+							</button>
 						</CopyToClipboard>
 					</Member>
 					<Content ref={scroll}>
@@ -243,7 +250,12 @@ function Conversation({ chat }) {
 							{chat.send
 								? Object.values(chat.send).map((el) => {
 										return (
-											<li key={el.time} className="receivedMessage">
+											<li
+												key={el.time}
+												className={
+													el.sender === user ? "myMessage" : "receivedMessage"
+												}
+											>
 												<h5>{el.sender}</h5>
 												<div>{el.message}</div>
 												<p>{logDate(el.time)}</p>
