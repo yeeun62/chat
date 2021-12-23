@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-function Create({ setCode }) {
+function Create() {
 	const navigate = useNavigate();
 
 	const [createChat, setCreateChat] = useState({
@@ -20,34 +20,29 @@ function Create({ setCode }) {
 	};
 
 	const createChatRoom = async () => {
-		try {
-			const db = getDatabase();
-			const dbRef = ref(db, "chat");
+		const db = getDatabase();
+		const dbRef = ref(db, "chat");
 
-			const newdbRef = push(dbRef);
-			const chatId = newdbRef._path;
+		const newdbRef = push(dbRef);
+		const chatId = newdbRef._path;
 
-			const member = ref(db, `${chatId}/member`);
-			const memberRef = push(member);
+		const member = ref(db, `${chatId}/member`);
+		const memberRef = push(member);
 
-			const uuid = await axios.get(process.env.REACT_APP_UUID);
-			console.log(uuid);
-			const time = Math.floor(Date.now() / 1000);
+		const uuid = await axios.get(process.env.REACT_APP_UUID);
+		console.log(uuid);
+		const time = Math.floor(Date.now() / 1000);
 
-			const { userName, userPhoneNumber, userId, title, name } = createChat;
+		const { userName, userPhoneNumber, userId, title, name } = createChat;
 
-			let chat = {
-				room: { title, siteCode: uuid.data.code, regDate: time },
-				site: { name, color: "#E0DE1B", code: uuid.data.code },
-			};
+		let chat = {
+			room: { title, siteCode: uuid.data.code, regDate: time },
+			site: { name, color: "#E0DE1B", code: uuid.data.code },
+		};
 
-			set(newdbRef, chat);
-			set(memberRef, { userName, userPhoneNumber, userId });
-			setCode(uuid.data.code);
-			navigate(`/chat/${uuid.data.code}`);
-		} catch (err) {
-			console.log(err);
-		}
+		set(newdbRef, chat);
+		set(memberRef, { userName, userPhoneNumber, userId });
+		navigate(`/chat/${uuid.data.code}`);
 	};
 
 	return (

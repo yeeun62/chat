@@ -1,6 +1,5 @@
-import { getDatabase, set, ref, push, onValue } from "firebase/database";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import addMemberButton from "../img/add-friend.png";
 
@@ -83,9 +82,8 @@ const Content = styled.div`
 	}
 `;
 
-function Conversation({ chatData, code }) {
+function Conversation({ chat }) {
 	const scroll = useRef(null);
-	const [data, setData] = useState();
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -93,37 +91,10 @@ function Conversation({ chatData, code }) {
 	};
 
 	useEffect(() => {
-		console.log(chatData);
-		scrollDown();
-	}, []);
-
-	useEffect(() => {
-		console.log(window.location.pathname.slice(6));
-		const db = getDatabase();
-		const dbRef = ref(db, "chat");
-		onValue(
-			dbRef,
-			(snapshot) => {
-				const data = snapshot.val();
-				Object.values(data).map((el) => {
-					if (el.site.code === window.location.pathname.slice(6)) {
-						console.log(el);
-						setData(el);
-					}
-				});
-
-				// for (let el in data) {
-				// 	if (data[el].site.code === window.location.pathname.slice(6)) {
-				// 		setData(data[el]);
-				// 		break;
-				// 	}
-				// }
-			},
-			{
-				onlyOnce: true,
-			}
-		);
-	}, []);
+		if (chat) {
+			scrollDown();
+		}
+	}, [chat]);
 
 	let logDate = (time) => {
 		let date = new Date(time * 1000);
@@ -138,43 +109,45 @@ function Conversation({ chatData, code }) {
 
 	return (
 		<Chatting>
-			<Member>
-				<ul>
-					{chatData.member.length ? (
-						chatData.member.map((el) => {
-							return Object.values(el).map((user, i) => {
+			{chat ? (
+				<>
+					<Member>
+						<ul>
+							{Object.values(chat.member).map((el, i) => {
 								return (
 									<li>
 										<div key={Object.keys(el)[i]} className="userNameTaskInfo">
-											{user.userName}
+											{el.userName}
 										</div>
 									</li>
 								);
-							});
-						})
-					) : (
-						<p>로딩중~</p>
-					)}
-				</ul>
-				<CopyToClipboard text={`http://localhost:3000/chat/invited/${code}`}>
-					<img src={addMemberButton} alt="초대링크 복사 버튼"></img>
-				</CopyToClipboard>
-			</Member>
-			<Content ref={scroll}>
-				<ul>
-					{data
-						? Object.values(data.send).map((el) => {
-								return (
-									<li className="receivedMessage">
-										<h5>{el.sender}</h5>
-										<div>{el.message}</div>
-										{/* <p>{logDate(chatData.createDate)}</p> */}
-									</li>
-								);
-						  })
-						: null}
-				</ul>
-			</Content>
+							})}
+						</ul>
+						<CopyToClipboard
+							text={`http://localhost:3000/chat/invited/${chat.site.code}`}
+						>
+							<img src={addMemberButton} alt="초대링크 복사 버튼"></img>
+						</CopyToClipboard>
+					</Member>
+					<Content ref={scroll}>
+						<ul>
+							{chat.send
+								? Object.values(chat.send).map((el) => {
+										return (
+											<li key={el.time} className="receivedMessage">
+												<h5>{el.sender}</h5>
+												<div>{el.message}</div>
+												<p>{logDate(el.time)}</p>
+											</li>
+										);
+								  })
+								: null}
+						</ul>
+					</Content>
+				</>
+			) : (
+				<p>로딩중~</p>
+			)}
 		</Chatting>
 	);
 }

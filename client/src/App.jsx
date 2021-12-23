@@ -84,18 +84,13 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 function App() {
-	const [code, setCode] = useState("");
-
 	return (
 		<BrowserRouter>
 			<GlobalStyles />
 			<Routes>
-				<Route path="/" element={<Create setCode={setCode} />}></Route>
-				<Route path="/chat/:code" element={<Chat code={code} />}></Route>
-				<Route
-					path="chat/invited/:code"
-					element={<Invited code={code} />}
-				></Route>
+				<Route path="/" element={<Create />}></Route>
+				<Route path="/chat/:code" element={<Chat />}></Route>
+				<Route path="chat/invited/:code" element={<Invited />}></Route>
 			</Routes>
 		</BrowserRouter>
 	);

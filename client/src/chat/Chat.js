@@ -1,4 +1,4 @@
-import axios from "axios";
+import { getDatabase, ref, onValue } from "firebase/database";
 import React, { useState, useEffect } from "react";
 import ChatHeader from "./ChatHeader";
 import TaskInfo from "./TaskInfo";
@@ -6,36 +6,29 @@ import Conversation from "./Conversation";
 import Input from "./Input";
 
 function Chat() {
-	const [chatData, setChatData] = useState({
-		code: "",
-		title: "",
-		createDate: "",
-		member: "",
-	});
+	const [chat, setChat] = useState();
 
 	useEffect(() => {
-		axios
-			.get(`${process.env.REACT_APP_CHAT}/${window.location.pathname.slice(6)}`)
-			.then((el) =>
-				setChatData({
-					...chatData,
-					code: el.data.chatData.room.siteCode,
-					title: el.data.chatData.room.title,
-					createDate: el.data.chatData.room.regDate,
-					member: [el.data.chatData.member],
-				})
-			);
+		const db = getDatabase();
+		const dbRef = ref(db, "chat");
+		onValue(dbRef, (snapshot) => {
+			const data = snapshot.val();
+			let boolean = true;
+			Object.values(data).map((el) => {
+				if (el.site.code === window.location.pathname.slice(6) && true) {
+					setChat(el);
+					boolean = false;
+				}
+			});
+		});
 	}, []);
 
 	return (
 		<div>
-			<ChatHeader chatData={chatData}></ChatHeader>
-			<TaskInfo chatData={chatData}></TaskInfo>
-			<Conversation
-				chatData={chatData}
-				code={window.location.pathname.slice(6)}
-			></Conversation>
-			<Input></Input>
+			<ChatHeader chat={chat}></ChatHeader>
+			<TaskInfo></TaskInfo>
+			<Conversation chat={chat}></Conversation>
+			<Input chat={chat}></Input>
 		</div>
 	);
 }

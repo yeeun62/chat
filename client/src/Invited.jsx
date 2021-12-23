@@ -1,11 +1,4 @@
-import {
-	getDatabase,
-	set,
-	ref,
-	onValue,
-	push,
-	update,
-} from "firebase/database";
+import { getDatabase, ref, onValue, push, update } from "firebase/database";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

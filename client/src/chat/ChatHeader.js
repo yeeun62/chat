@@ -1,6 +1,5 @@
-import React, { useState } from "react";
 import styled from "styled-components";
-import searchButton from '../img/search.png'
+import searchButton from "../img/search.png";
 
 const Header = styled.div`
 	width: 100%;
@@ -32,7 +31,7 @@ const Header = styled.div`
 			width: 20vw;
 			height: 30px;
 			border-bottom: 2px solid #666;
-			margin: 15px 5px
+			margin: 15px 5px;
 		}
 
 		> button {
@@ -55,30 +54,27 @@ const Convinience = styled.div`
 	margin: auto 10px;
 	width: 30px;
 `;
-function ChatHeader({ chatData }) {
-	const [keyword, setKeyword] = useState("");
-	const keywordHandler = (e) => {
-		setKeyword(e.target.value);
-	};
-	const searcher = (e) => {
-		//axios.get('',)
-	};
-
+function ChatHeader({ chat }) {
 	return (
 		<Header>
-			<h1>{chatData.title}</h1>
-			<Convinience>🌞</Convinience>
-			<form>
-				<input
-					className="searchInput"
-					type="text"
-					name="searchKeyword"
-					onChange={keywordHandler}
-				></input>
-				<button type="button" onClick={() => searcher(keyword)}>
-					<img className="searchButton" src={searchButton} alt="검색"></img>
-				</button>
-			</form>
+			{chat ? (
+				<>
+					<h1>{chat.room.title}</h1>
+					<Convinience>🌞</Convinience>
+					<form>
+						<input
+							className="searchInput"
+							type="text"
+							name="searchKeyword"
+						></input>
+						<button type="button">
+							<img className="searchButton" src={searchButton} alt="검색"></img>
+						</button>
+					</form>
+				</>
+			) : (
+				<p>로딩중~</p>
+			)}
 		</Header>
 	);
 }

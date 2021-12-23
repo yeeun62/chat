@@ -1,4 +1,4 @@
-import { getDatabase, set, ref, onValue, push } from "firebase/database";
+import { getDatabase, set, ref, onValue } from "firebase/database";
 import { useState } from "react";
 import styled from "styled-components";
 import addOnButton from "../img/plus-sign.png";
@@ -36,23 +36,19 @@ const InputWrapper = styled.div`
 
 function Input() {
 	const [msg, setMsg] = useState({
-		message: "안녕하세요",
+		message: "",
 		sender: "방예은",
 		read: true,
-		time: "",
+		time: 1,
 	});
 
-	const message = (e) => {
-		setMsg({ ...msg, message: e.target.value });
-	};
-
 	const msgSend = async () => {
-		console.log(window.location.pathname.slice(6));
+		setMsg({ ...msg, message: "" });
+
 		const db = getDatabase();
 		const dbRef = ref(db, "chat");
 
 		const time = Math.floor(Date.now() / 1000);
-
 		onValue(
 			dbRef,
 			async (snapshot) => {
@@ -60,7 +56,12 @@ function Input() {
 				for (let el in data) {
 					if (data[el].site.code === window.location.pathname.slice(6)) {
 						const send = ref(db, `chat/${el}/send/${time}`);
-						set(send, msg);
+						set(send, {
+							message: msg.message,
+							sender: msg.sender,
+							read: msg.read,
+							time: time,
+						});
 					}
 				}
 			},
@@ -80,7 +81,16 @@ function Input() {
 				></img>
 			</button>
 			<form onSubmit={(e) => e.preventDefault()}>
-				<input type="text" onChange={message} />
+				<input
+					value={msg.message}
+					type="text"
+					onChange={(e) =>
+						setMsg({
+							...msg,
+							message: e.target.value,
+						})
+					}
+				/>
 				<button className="sendChat" onClick={msgSend}>
 					<img className="sendMsg" alt="메시지 전송버튼" src={sendButton} />
 				</button>
