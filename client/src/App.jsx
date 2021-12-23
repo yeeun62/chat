@@ -20,10 +20,10 @@ const GlobalStyles = createGlobalStyle`
 	
 	.inviteWrap {
 		margin: 3rem auto;
-	width: 30rem;
-	height: 80vh;
-	background: #e0de1b;
-	border-radius: 1rem;
+		width: 30rem;
+		height: 80vh;
+		background: #e0de1b;
+		border-radius: 1rem;
 	}
 
 	.title{
@@ -87,11 +87,14 @@ function App() {
 	return (
 		<BrowserRouter>
 			<GlobalStyles />
+			<div id="appWrapper">
 			<Routes>
 				<Route path="/" element={<Create />}></Route>
 				<Route path="/chat/:code" element={<Chat />}></Route>
 				<Route path="chat/invited/:code" element={<Invited />}></Route>
 			</Routes>
+			</div>
+			
 		</BrowserRouter>
 	);
 }

@@ -2,13 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 const TaskInformation = styled.div `
+	height: 85px;
 	text-align: center;
 	font-weight: 700;
-	line-height: calc(100%-40px);
+	line-height: 20px;
 	.nowStep {
 		@media screen and (max-width: 500px) {
 			font-size: 14px;
 		}
+		margin-top: 5px;
 	}
 	border-bottom: 1px slid #999 !important;
 `

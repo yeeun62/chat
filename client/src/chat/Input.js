@@ -13,7 +13,10 @@ const InputWrapper = styled.div`
 	position: fixed;
 	bottom: 0;
 	background-color: #fff;
-
+	overflow: hidden;
+	@media screen and (min-width: 700px) {
+		width: 700px;
+	}
 	.button {
 		background-color: transparent;
 		@media screen and (max-width: 500px) {
@@ -56,7 +59,6 @@ function Input() {
 		if (msg.message.length) {
 			const db = getDatabase();
 			const dbRef = ref(db, "chat");
-
 			const time = Math.floor(Date.now() / 1000);
 			onValue(
 				dbRef,
@@ -84,11 +86,6 @@ function Input() {
 	return (
 		<InputWrapper>
 			<button className="addFunctionButton button">
-				{/* <img
-					src={addOnButton}
-					className="addFunctionButton button"
-					alt="부가 기능 버튼"
-				></img> */}
 			</button>
 			<form onSubmit={(e) => e.preventDefault()}>
 				<input
