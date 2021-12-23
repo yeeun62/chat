@@ -30,7 +30,6 @@ function Create() {
 		const memberRef = push(member);
 
 		const uuid = await axios.get(process.env.REACT_APP_UUID);
-		console.log(uuid);
 		const time = Math.floor(Date.now() / 1000);
 
 		const { userName, userPhoneNumber, userId, title, name } = createChat;
