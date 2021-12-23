@@ -8,7 +8,7 @@ import Input from "./Input";
 function Chat() {
 	const [chatData, setChatData] = useState({
 		code: "",
-		title: "",
+		title: "채팅방 제목",
 		createDate: "",
 		member: "",
 	});

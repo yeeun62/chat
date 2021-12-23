@@ -1,0 +1,31 @@
+.inviteButton {
+    font-size: 10px;
+    font-weight: 800;
+    /* box-shadow: inset -2px -2px 5px 5px #c9c85b; */
+    margin: auto 0; 
+    width: 130px;
+    height: 30px;
+    line-height: 30px;
+    word-break: keep-all;
+    background-color: #b8b513;
+    padding: 10px auto;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    overflow: hidden;
+}
+
+.inviteButton:hover{
+    cursor: pointer;
+}
+
+.inviteButton p{
+    color: #fff;
+    margin: 0;
+    background-color: transparent;
+}
+
+.inviteButton img {
+    width: 20px;
+    margin: 5px 0 5px 5px;
+}

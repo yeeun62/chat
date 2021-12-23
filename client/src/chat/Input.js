@@ -6,22 +6,23 @@ import sendButton from "../img/send.png";
 const InputWrapper = styled.div`
 	display: flex;
 	width: 100%;
-	height: 60px;
+	height: 50px;
 	justify-content: space-between;
+	align-items: center;
 	position: fixed;
 	bottom: 0;
-	box-shadow: inset -5px -5px 5px #ddd;
-	background-color: #f1f1f1;
+	/* box-shadow: inset -5px -5px 5px #ddd; */
+	background-color: #fff;
 
 	.button {
 		background-color: transparent;
-		@media screen and (min-width:500px) {
-			width: 50px;
-		}
-
 		@media screen and (max-width:500px) {
 			width: 30px;
 		}
+		@media screen and (min-width:500px) {
+			width: 40px;
+		}
+
 	}
 
 
@@ -31,8 +32,9 @@ const InputWrapper = styled.div`
 		display: flex;
 
 		> input {
+			height: 50px;
 			flex-grow: 1;
-			border: 1px solid #999;
+			border-bottom: 2px solid #666;
 			margin-bottom: 10px;
 			word-break: keep-all;
 			white-space: pre-line;
@@ -55,11 +57,11 @@ function Input() {
 	return (
 		<InputWrapper>
 			<button className="addFunctionButton button" onClick={viewFunctionHandler}>
-				<img
+				{/* <img
 					src={addOnButton}
 					className="addFunctionButton button"
 					alt="부가 기능 버튼"
-				></img>
+				></img> */}
 			</button>
 			{viewFunction ? (
 				<div className="addFunction">

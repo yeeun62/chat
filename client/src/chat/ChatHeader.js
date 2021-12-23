@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import searchButton from '../img/search.png'
 
+
 const Header = styled.div`
 	width: 100%;
 	height: 60px;
@@ -9,10 +10,10 @@ const Header = styled.div`
 	display: flex;
 	justify-content: space-between;
 	padding: auto 0;
-	box-shadow: inset -3px -3px 5px #ddd;
+	overflow: hidden;
+	/* box-shadow: inset -3px -3px 5px #ddd; */
 
 	> h1 {
-		font-size: 30px;
 		font-weight: 600;
 		width: calc(100%/3);
 		height: 60px;
@@ -20,13 +21,13 @@ const Header = styled.div`
 		text-align: left;
 		margin: auto 10px;
 		text-overflow: ellipsis;
+		@media screen and (max-width: 500px) {
+			font-size: 20px;
+			font-weight: 600;
+		}
 		@media screen and (min-width: 500px) {
 			font-size: 30px;
 			font-weight: 600;
-		}
-		@media screen and (max-width: 500px) {
-			font-size: 30px;
-			font-weight: 500;
 		}
 	}
 
@@ -42,10 +43,10 @@ const Header = styled.div`
 			width: 20vw;
 			height: 30px;
 			border-bottom: 2px solid #666;
-			margin: 15px 5px
+			margin: 15px 5px;
 
 			@media screen and (max-width: 500px) {
-				width: 10vw;
+				width: 20vw;
 			}
 		}
 
@@ -53,6 +54,7 @@ const Header = styled.div`
 			background-color: transparent;
 			border: none;
 			margin: 15px 0;
+			width: 50px;
 
 			> img {
 				width: 30px;

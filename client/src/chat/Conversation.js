@@ -1,11 +1,20 @@
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
-import addMemberButton from "../img/add-friend.png";
+import {useEffect, useRef} from 'react'
+import * as React from 'react'
+import {render} from 'react-dom'
+import Downshift from 'downshift'
+import addMemberButton from '../img/link.png';
+import '../App.css';
+
 
 const Chatting = styled.div`
 	/* position: fixed; */
-	height: calc(100% - 190px);
+	
+	@media screen and (min-width: 500px){
+		font-weight: 600;
+	}
+	height: calc(100% - 160px);
 	width: 100%;
 	background: #fff;
 
@@ -23,10 +32,11 @@ const Chatting = styled.div`
 const Member = styled.div`
 	display: flex;
 	justify-content: space-between;
-	background-color: #f9faf5;
-	height: 60px;
-	box-shadow: inset -5px -5px 5px #ddd;
-	padding-right: 10px;
+	background-color: #fff;
+	height: 50px;
+	/* box-shadow: inset -5px -5px 5px #ddd; */
+	padding-right: 15px;
+	overflow-y: hidden;
 
 	> ul {
 		display: flex;
@@ -51,23 +61,43 @@ const Member = styled.div`
 		}
 	}
 
-	> img {
-		margin: auto;
-		@media screen and (max-width: 500px) {
-			width: 30px;
-			height: 30px;
-		};
+	> button {
+		font-size: 10px!important;
+		font-weight: 800!important;
+		/* box-shadow: inset -2px -2px 5px 5px #c9c85b; */
+		margin: auto 0 !important;
+		width: 130px !important;
+		height: 30px !important;
+		line-height: 30px !important;
+		word-break: keep-all!important;
+		&:hover{
+			cursor: pointer!important;
+		}
+		background-color: #b8b513!important;
+		padding: 10px auto!important;
+		display: flex!important;
+		flex-direction: row!important;
+		text-align: center!important;
+		overflow: hidden!important;
+		.inviteButton {
+			color: #fff !important;
+			margin: 0!important;
+			background-color: transparent!important;
+		}
 
-		@media screen and (min-width: 500px) {
-			width: 50px;
-			height: 50px;
+		> img {
+			width: 20px!important;
+			margin: 5px 0 5px 5px!important;
 		}
 	}
 `;
 
+// color: #282828;
+// 	background-color: #e0de1b;
+
 const Content = styled.div`
 	width: 100%;
-	height: calc(100% - 190px);
+	height: calc(100% - 230px);
 	overflow: scroll;
 	position: fixed;
 	background-color: #f9faf5;
@@ -78,10 +108,8 @@ const Content = styled.div`
 		padding: 10px;
 		> li {
 			position: relative;
-			margin: 10px 0;
+			margin: 20px 0;
 			overflow: visible;
-			
-
 			> h5 {
 				@media screen and (min-width: 500px) {
 					font-size: 22px;
@@ -95,18 +123,35 @@ const Content = styled.div`
 				color: #333;
 				position: absolute;
 			}
+
+			> div {
+				@media screen and (max-width: 500px) {
+					width: 200px;
+				}
+				@media screen and (min-width: 500px) {
+					width: 500px;
+				}
+				
+			}
 		}
 		.receivedMessage {
-			height: 140px;
+			@media screen and (max-width: 500px){
+				height: 120px;
+				}
+			@media screen and (min-width: 500px){
+				height: 100px;
+			}
 			> div {
 				position: absolute;
 				padding: 10px;
-				background-color: #00adc7;
+				background-color: #eff5c6;
 				border-radius: 10px 30px;
 				left: 7px;
-				width: 200px;
-				color: #fff;
 				box-shadow:5px 5px 2px 2px #ccc;
+				margin: 5px 0;
+				@media screen and (max-width: 500px) {
+					font-size: 14px;
+				}
 			}
 			> p {
 				@media screen and (max-width: 500px){
@@ -115,23 +160,30 @@ const Content = styled.div`
 				@media screen and (min-width: 500px){
 					bottom: -25px;
 				}
-				
 			}
 		}
 
 		.myMessage {
 			overflow: visible;
-			height: 120px;
 			margin-bottom: 10px;
+			@media screen and (max-width: 500px){
+				height: 110px;
+				}
+			@media screen and (min-width: 500px){
+				height: 75px;
+			}
 			> div {
+				margin: 5px 0;
 				text-align: left;
 				padding: 10px;
-				background-color: #e0de1b;
+				background-color: #a9c5c9;
 				border-radius: 30px 10px;
 				position: absolute;
 				right: 7px;
-				width: 200px;
 				box-shadow:5px 5px 2px 2px #ccc;
+				@media screen and (max-width: 500px) {
+					font-size: 14px;
+				}
 			}
 			> p {
 				right: 10px;
@@ -172,6 +224,7 @@ function Conversation({ chatData, code }) {
 		return returnDate;
 	};
 
+
 	return (
 		<Chatting>
 			<Member>
@@ -193,7 +246,10 @@ function Conversation({ chatData, code }) {
 					)}
 				</ul>
 				<CopyToClipboard text={`http://localhost:3000/chat/invited/${code}`}>
-					<img src={addMemberButton} alt="초대링크 복사 버튼"></img>
+					<button type="button" className="inviteButton">
+						<img src={addMemberButton} alt="초대링크복사버튼"></img>
+						<p className="inviteButton">초대링크복사</p>
+					</button>
 				</CopyToClipboard>
 			</Member>
 			<Content ref={scroll}>
