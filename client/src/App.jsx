@@ -87,14 +87,13 @@ function App() {
 	return (
 		<BrowserRouter>
 			<GlobalStyles />
-			<div id="appWrapper">
+			{/* <div id="appWrapper"> */}
 			<Routes>
 				<Route path="/" element={<Create />}></Route>
 				<Route path="/chat/:code" element={<Chat />}></Route>
 				<Route path="chat/invited/:code" element={<Invited />}></Route>
 			</Routes>
-			</div>
-			
+			{/* </div> */}
 		</BrowserRouter>
 	);
 }
