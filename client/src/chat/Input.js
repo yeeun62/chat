@@ -12,7 +12,10 @@ const InputWrapper = styled.div`
 	position: fixed;
 	bottom: 0;
 	background-color: #fff;
-
+	overflow: hidden;
+	@media screen and (min-width: 700px) {
+		width: 700px;
+	}
 	.button {
 		background-color: transparent;
 		@media screen and (max-width:500px) {
@@ -51,36 +54,38 @@ function Input() {
 
 	const msgSend = async () => {
 		setMsg({ ...msg, message: "" });
+		if(msg.message.length > 0) {
+			const db = getDatabase();
+			const dbRef = ref(db, "chat");
 
-		const db = getDatabase();
-		const dbRef = ref(db, "chat");
-
-		const time = Math.floor(Date.now() / 1000);
-		onValue(
-			dbRef,
-			async (snapshot) => {
-				let data = snapshot.val();
-				for (let el in data) {
-					if (data[el].site.code === window.location.pathname.slice(6)) {
-						const send = ref(db, `chat/${el}/send/${time}`);
-						set(send, {
-							message: msg.message,
-							sender: msg.sender,
-							read: msg.read,
-							time: time,
-						});
+			const time = Math.floor(Date.now() / 1000);
+			onValue(
+				dbRef,
+				async (snapshot) => {
+					let data = snapshot.val();
+					for (let el in data) {
+						if (data[el].site.code === window.location.pathname.slice(6)) {
+							const send = ref(db, `chat/${el}/send/${time}`);
+							set(send, {
+								message: msg.message,
+								sender: msg.sender,
+								read: msg.read,
+								time: time,
+							});
+						}
 					}
+				},
+				{
+					onlyOnce: true,
 				}
-			},
-			{
-				onlyOnce: true,
-			}
-		);
+			);
+		}
+		
 	};
 
 	return (
 		<InputWrapper>
-			<button className="addFunctionButton button" onClick={viewFunctionHandler}>
+			<button className="addFunctionButton button">
 				{/* <img
 					src={addOnButton}
 					className="addFunctionButton button"

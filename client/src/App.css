@@ -60,5 +60,16 @@ button[type="submit"],
     text-align: center;
     font-weight: 700;
     line-height: calc(100%-40px);
-    border-bottom: 1px slid #999 !important;
+    border-bottom: 1px solid #999 !important;
 }
+
+@media screen and (min-width: 700px) {
+	#appWrapper {
+		margin: auto;
+		width: 700px;
+		overflow-x: hidden;
+	}
+	
+}
+
+

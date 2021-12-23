@@ -7,12 +7,14 @@ import '../App.css';
 
 
 const Chatting = styled.div`
-	@media screen and (min-width: 500px){
-		font-weight: 600;
-	}
 	height: calc(100% - 160px);
 	width: 100%;
 	background: #fff;
+
+	@media screen and (min-width: 700px){
+		font-weight: 600;
+		max-width: 700px;
+	}
 
 	&::-webkit-scrollbar-thumb {
 		width: 5px;
@@ -73,6 +75,10 @@ const Member = styled.div`
 		flex-direction: row!important;
 		text-align: center!important;
 		overflow: hidden!important;
+		background: linear-gradient(145deg, #c5c214, #a6a311);
+		box-shadow:  5px 5px 5px #88860e, -5px -5px 5px #e8e418;
+		
+
 		.inviteButton {
 			color: #fff !important;
 			margin: 0!important;
@@ -88,14 +94,20 @@ const Member = styled.div`
 
 const Content = styled.div`
 	width: 100%;
-	height: calc(100% - 230px);
-	overflow: scroll;
+	height: calc(100% - 245px);
+	overflow-y: scroll;
+	overflow-x: hidden;
 	position: fixed;
 	background-color: #f9faf5;
-
+	@media screen and (min-width: 700px) {
+		width: 700px;
+		overflow-x: hidden;
+	}
+	
 	> ul {
 		text-align: left;
 		overflow-y: scroll;
+		overflow-x: hidden;
 		padding: 10px;
 		> li {
 			position: relative;
@@ -226,7 +238,7 @@ function Conversation({ chat }) {
 								return (
 									<li>
 										<div key={Object.keys(el)[i]} className="userNameTaskInfo">
-											{el.userName}
+											{el.userName.slice(0,1)}
 										</div>
 									</li>
 								);
@@ -235,7 +247,11 @@ function Conversation({ chat }) {
 						<CopyToClipboard
 							text={`http://localhost:3000/chat/invited/${chat.site.code}`}
 						>
-							<img src={addMemberButton} alt="초대링크 복사 버튼"></img>
+							<button type="button" id="inviteMember">
+								<img src={addMemberButton} alt="초대링크 복사 버튼"></img>
+								<p className="inviteButton">초대링크복사</p>
+							</button>
+							
 						</CopyToClipboard>
 					</Member>
 					<Content ref={scroll}>

@@ -19,6 +19,7 @@ const Header = styled.div`
 		text-align: left;
 		margin: auto 10px;
 		text-overflow: ellipsis;
+		overflow: hidden;
 		@media screen and (max-width: 500px) {
 			font-size: 20px;
 			font-weight: 600;
