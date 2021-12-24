@@ -1,6 +1,6 @@
 import { getDatabase, ref, onValue, push, update } from "firebase/database";
 import { useCookies } from "react-cookie";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -13,7 +13,12 @@ function Invited() {
 		userName: "아바타",
 		userPhoneNumber: "01011000000",
 		userId: "avata",
+		userColor: getRandomColor(),
 	});
+
+	function getRandomColor() {
+		return "#" + Math.floor(Math.random() * 16777215).toString(16);
+	}
 
 	const createChatHandler = (e) => {
 		setCreateChat({ ...createChat, [e.target.name]: e.target.value });

@@ -6,23 +6,33 @@ import styled from "styled-components";
 const InputWrapper = styled.div`
 	width: 100%;
 	height: 50px;
+	height: 7%;
 	background-color: #2d2d2d;
 	position: relative;
 
+	> form {
+		display: flex;
+		justify-content: space-between;
+	}
+
 	.sendInput {
-		position: absolute;
+		padding-left: 0.3rem;
+		margin: 0.5rem 0 0 0.4rem;
 		top: 12%;
 		left: 1%;
 		width: 90%;
-		height: 35px;
+		height: 38px;
+		border-radius: 0.3rem;
 		background-color: #dadada;
+		font-size: 1.2rem;
+		font-weight: bold;
 	}
 
 	.send {
-		position: absolute;
-		right: 1%;
-		top: 12%;
-		margin: 0.3rem;
+		text-align: center;
+		display: block;
+		width: 10%;
+		margin: 1rem 0 0 0;
 		color: #fff;
 		font-size: 1.2rem;
 		font-weight: bold;

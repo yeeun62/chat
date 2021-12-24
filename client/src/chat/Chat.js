@@ -9,8 +9,11 @@ import Input from "./Input";
 const ChatWrap = styled.div`
 	margin: 4rem auto;
 	width: 80vw;
-	height: 759px;
+	/* height: 759px; */
+	/* height: 100%; */
+	height: 86vh;
 	border: 2px solid #2d2d2d;
+	border-radius: 1rem;
 `;
 
 function Chat() {

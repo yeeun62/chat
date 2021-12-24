@@ -3,7 +3,7 @@ import searchButton from "../img/search.png";
 
 const Header = styled.div`
 	width: 100%;
-	height: 60px;
+	height: 7%;
 	background-color: #2d2d2d;
 	display: flex;
 	justify-content: space-between;

@@ -42,24 +42,3 @@ textarea {
 .handle-logo-font {
 	font-family: "Lobster", cursive;
 }
-
-/* button[type="button"],
-button[type="submit"],
-.handle-button,
-.handle-primary-button {
-	display: inline-block;
-	font-family: "GmarketSansLight", "Noto Sans TC", sans-serif;
-	color: #282828;
-	background-color: #e0de1b;
-	border: 1px solid #e0de1b;
-	border-bottom-left-radius: 7px;
-	padding: 5px 7px;
-} */
-
-/* @media screen and (min-width: 700px) {
-	#appWrapper {
-		margin: auto;
-		width: 700px;
-		overflow-x: hidden;
-	}
-} */

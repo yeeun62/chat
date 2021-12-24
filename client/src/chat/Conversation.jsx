@@ -5,13 +5,16 @@ import { useEffect, useRef, useState } from "react";
 import * as React from "react";
 import "../App.css";
 
+const ChatWrap = styled.div`
+	height: 80%;
+`;
+
 const Member = styled.div`
 	padding: 0rem 2rem;
-	height: 20px;
+	height: 9%;
 	display: flex;
 	justify-content: space-between;
 	background-color: #2d2d2d;
-	height: 50px;
 
 	> ul {
 		display: flex;
@@ -44,7 +47,7 @@ const Member = styled.div`
 
 const Content = styled.div`
 	width: 100%;
-	height: 540px;
+	height: 91%;
 	background-color: #686868;
 	color: #fff;
 
@@ -71,6 +74,7 @@ const Content = styled.div`
 			padding: 0.5rem;
 			margin: 0.2rem 0;
 			background-color: #dadada;
+			font-weight: bold;
 		}
 
 		.time {
@@ -140,14 +144,20 @@ function Conversation({ chat }) {
 	};
 
 	return (
-		<div>
+		<ChatWrap>
 			{chat ? (
 				<>
 					<Member>
 						<ul>
 							{Object.values(chat.member).map((el, i) => {
+								console.log(el);
 								return (
-									<li key={Object.keys(el)[i]}>{el.userName.slice(0, 1)}</li>
+									<li
+										style={{ background: el.userColor }}
+										key={Object.keys(el)[i]}
+									>
+										{el.userName.slice(0, 1)}
+									</li>
 								);
 							})}
 						</ul>
@@ -183,7 +193,7 @@ function Conversation({ chat }) {
 			) : (
 				<p>로딩중~</p>
 			)}
-		</div>
+		</ChatWrap>
 	);
 }
 

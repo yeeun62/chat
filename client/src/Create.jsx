@@ -15,6 +15,9 @@ function Create() {
 		userName: "방예은",
 		userPhoneNumber: "01099720602",
 		userId: "byebye62",
+		userColor: "#00adc7",
+		addon1: "-",
+		addon2: "-",
 	});
 
 	const createChatHandler = (e) => {
@@ -34,15 +37,29 @@ function Create() {
 		const uuid = await axios.get(process.env.REACT_APP_UUID);
 		const time = Math.floor(Date.now() / 1000);
 
-		const { userName, userPhoneNumber, userId, title, name } = createChat;
+		const {
+			userName,
+			userPhoneNumber,
+			userId,
+			title,
+			name,
+			userColor,
+			addon1,
+			addon2,
+		} = createChat;
 
 		let chat = {
-			room: { title, siteCode: uuid.data.code, regDate: time },
+			room: {
+				title,
+				siteCode: uuid.data.code,
+				regDate: time,
+				addon: { addon1, addon2 },
+			},
 			site: { name, color: "#E0DE1B", code: uuid.data.code },
 		};
 
 		set(newdbRef, chat);
-		set(memberRef, { userName, userPhoneNumber, userId });
+		set(memberRef, { userName, userPhoneNumber, userId, userColor });
 		setCookie("auth", `${userName}|${uuid.data.code}`);
 		navigate(`/chat/${uuid.data.code}`);
 	};
@@ -101,10 +118,42 @@ function Create() {
 						}}
 					></input>
 				</div>
+				<div className="inviteSection">
+					<span className="inviteTitle">부가정보 1</span>
+					<input
+						name="addon1"
+						className="inviteInput"
+						onChange={(e) => {
+							createChatHandler(e);
+						}}
+					></input>
+				</div>
+				<div className="inviteSection">
+					<span className="inviteTitle">부가정보 2</span>
+					<input
+						name="addon2"
+						className="inviteInput"
+						onChange={(e) => {
+							createChatHandler(e);
+						}}
+					></input>
+				</div>
+				<p
+					style={{
+						textAlign: "center",
+						fontSize: "0.7rem",
+						marginTop: "0.2rem",
+						fontWeight: "bold",
+					}}
+					className="addon"
+				>
+					*부가정보는 선택사항입니다.
+				</p>
 				<button
 					type="button"
 					className="handle-button"
 					onClick={createChatRoom}
+					style={{ fontWeight: "bold" }}
 				>
 					채팅방 입장
 				</button>
