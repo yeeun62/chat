@@ -4,22 +4,18 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import * as React from "react";
 import "../App.css";
-
 const ChatWrap = styled.div`
 	height: 80%;
 `;
-
 const Member = styled.div`
 	padding: 0rem 2rem;
 	height: 9%;
 	display: flex;
 	justify-content: space-between;
 	background-color: #2d2d2d;
-
 	> ul {
 		display: flex;
 		align-items: center;
-
 		> li {
 			width: 30px;
 			height: 30px;
@@ -32,42 +28,35 @@ const Member = styled.div`
 			margin-right: 0.4rem;
 		}
 	}
-
 	.inviteLink {
 		font-size: 0.8rem;
 		font-weight: bold;
 		line-height: 50px;
 		cursor: pointer;
-
 		> p {
 			color: #3e9ece;
 		}
 	}
 `;
-
 const Content = styled.div`
 	width: 100%;
 	height: 91%;
 	background-color: #686868;
 	color: #fff;
-
 	> ul {
 		width: 100%;
 		height: 100%;
 		position: relative;
 	}
-
 	.chatMsg {
 		position: relative;
 		width: 40%;
 		margin-top: 1rem;
-
 		.sender {
 			font-weight: bold;
 			color: #2d2d2d;
 			text-align: right;
 		}
-
 		.msg {
 			width: 100%;
 			height: 5rem;
@@ -76,7 +65,6 @@ const Content = styled.div`
 			background-color: #dadada;
 			font-weight: bold;
 		}
-
 		.time {
 			font-size: 0.6rem;
 			color: #2d2d2d;
@@ -84,7 +72,6 @@ const Content = styled.div`
 			margin-bottom: 1rem;
 		}
 	}
-
 	.me {
 		right: -58%;
 		.msg {
@@ -97,7 +84,6 @@ const Content = styled.div`
 			text-align: right;
 		}
 	}
-
 	.you {
 		left: 2%;
 		.msg {
@@ -227,5 +213,4 @@ function Conversation({ chat }) {
 		</ChatWrap>
 	);
 }
-
 export default Conversation;
