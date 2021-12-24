@@ -2,44 +2,41 @@ import { getDatabase, set, ref, onValue } from "firebase/database";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import styled from "styled-components";
-import sendButton from "../img/send.png";
 
 const InputWrapper = styled.div`
-	display: flex;
 	width: 100%;
 	height: 50px;
-	justify-content: space-between;
-	align-items: center;
-	position: fixed;
-	bottom: 0;
-	background-color: #fff;
-	overflow: hidden;
-	@media screen and (min-width: 700px) {
-		width: 700px;
-	}
-	.button {
-		background-color: transparent;
-		@media screen and (max-width: 500px) {
-			width: 30px;
-		}
-		@media screen and (min-width: 500px) {
-			width: 40px;
-		}
-	}
+	height: 7%;
+	background-color: #2d2d2d;
+	position: relative;
 
 	> form {
-		width: calc(100%-30px);
-		flex-grow: 1;
 		display: flex;
+		justify-content: space-between;
+	}
 
-		> input {
-			height: 50px;
-			flex-grow: 1;
-			border-bottom: 2px solid #666;
-			margin-bottom: 10px;
-			word-break: keep-all;
-			white-space: pre-line;
-		}
+	.sendInput {
+		padding-left: 0.3rem;
+		margin: 0.5rem 0 0 0.4rem;
+		top: 12%;
+		left: 1%;
+		width: 90%;
+		height: 38px;
+		border-radius: 0.3rem;
+		background-color: #dadada;
+		font-size: 1.2rem;
+		font-weight: bold;
+	}
+
+	.send {
+		text-align: center;
+		display: block;
+		width: 10%;
+		margin: 1rem 0 0 0;
+		color: #fff;
+		font-size: 1.2rem;
+		font-weight: bold;
+		cursor: pointer;
 	}
 `;
 
@@ -85,10 +82,9 @@ function Input() {
 
 	return (
 		<InputWrapper>
-			<button className="addFunctionButton button">
-			</button>
 			<form onSubmit={(e) => e.preventDefault()}>
 				<input
+					className="sendInput"
 					value={msg.message}
 					type="text"
 					onChange={(e) =>
@@ -98,13 +94,9 @@ function Input() {
 						})
 					}
 				/>
-				<button className="sendChat button" onClick={msgSend}>
-					<img
-						className="sendMsg button"
-						alt="메시지 전송버튼"
-						src={sendButton}
-					/>
-				</button>
+				<span className="send" onClick={msgSend}>
+					전송
+				</span>
 			</form>
 		</InputWrapper>
 	);

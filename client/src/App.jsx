@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import Chat from "./chat/Chat";
 import Create from "./Create.jsx";
 import Invited from "./Invited";
@@ -56,6 +55,8 @@ const GlobalStyles = createGlobalStyle`
 		border: none;
 		background-color: #b8b513;
 		border-radius: 0.2rem;
+		padding-left: 0.4rem;
+		font-weight: bold;
 	}
 
 	.inviteButton {
@@ -71,7 +72,7 @@ const GlobalStyles = createGlobalStyle`
 	button[type="submit"],
 	.handle-button,
 	.handle-primary-button {
-		margin: 2rem auto;
+		margin: 1rem auto;
 		width: 7rem;
 		height: 2.4rem;
 		display: inline-block;
@@ -80,6 +81,7 @@ const GlobalStyles = createGlobalStyle`
 		background-color: #b8b513;
 		border: 1px solid #b8b513;
 		border-bottom-left-radius: 7px;
+		cursor: pointer;
 	}
 `;
 
@@ -87,14 +89,11 @@ function App() {
 	return (
 		<BrowserRouter>
 			<GlobalStyles />
-			<div id="appWrapper">
 			<Routes>
 				<Route path="/" element={<Create />}></Route>
 				<Route path="/chat/:code" element={<Chat />}></Route>
-				<Route path="chat/invited/:code" element={<Invited />}></Route>
+				<Route path="/chat/invited/:code" element={<Invited />}></Route>
 			</Routes>
-			</div>
-			
 		</BrowserRouter>
 	);
 }
