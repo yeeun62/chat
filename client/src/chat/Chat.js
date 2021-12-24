@@ -5,15 +5,12 @@ import ChatHeader from "./ChatHeader";
 import TaskInfo from "./TaskInfo";
 import Conversation from "./Conversation";
 import Input from "./Input";
+import Loding from "./Loding";
 
 const ChatWrap = styled.div`
-	margin: 4rem auto;
-	width: 80vw;
-	/* height: 759px; */
-	/* height: 100%; */
-	height: 86vh;
-	border: 2px solid #2d2d2d;
-	border-radius: 1rem;
+	width: 100%;
+	height: 100vh;
+	border: 3px solid #2d2d2d;
 `;
 
 function Chat() {
@@ -36,10 +33,16 @@ function Chat() {
 
 	return (
 		<ChatWrap>
-			<ChatHeader chat={chat}></ChatHeader>
-			<TaskInfo></TaskInfo>
-			<Conversation chat={chat}></Conversation>
-			<Input chat={chat}></Input>
+			{chat ? (
+				<>
+					<ChatHeader chat={chat}></ChatHeader>
+					<TaskInfo></TaskInfo>
+					<Conversation chat={chat}></Conversation>
+					<Input chat={chat}></Input>
+				</>
+			) : (
+				<Loding></Loding>
+			)}
 		</ChatWrap>
 	);
 }

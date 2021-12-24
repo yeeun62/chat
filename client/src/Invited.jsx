@@ -53,7 +53,7 @@ function Invited() {
 
 	return (
 		<div className="inviteWrap">
-			<p className="title">핸들 채팅방에 오신걸 환영합니다🥳</p>
+			<p className="title">handle 채팅방에 오신걸 환영합니다🥳</p>
 			<form className="form" onSubmit={(e) => e.preventDefault()}>
 				<div className="inviteSection">
 					<span className="inviteTitle">사용자 이름</span>
