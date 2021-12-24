@@ -193,7 +193,8 @@ function Conversation({ chat }) {
 						</ul>
 						<div className="inviteLink">
 							<CopyToClipboard
-								text={`http://localhost:3000/chat/invited/${chat.site.code}`}
+								// text={`http://localhost:3000/chat/invited/${chat.site.code}`}
+								text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
 							>
 								<p>초대링크복사📎</p>
 							</CopyToClipboard>
