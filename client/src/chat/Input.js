@@ -80,6 +80,10 @@ function Input() {
 		}
 	};
 
+	const enter = (e) => {
+		if(e.key == "Enter") msgSend()
+	}
+
 	return (
 		<InputWrapper>
 			<form onSubmit={(e) => e.preventDefault()}>
@@ -93,6 +97,7 @@ function Input() {
 							message: e.target.value,
 						})
 					}
+					onKeyPress={(e) => enter(e)}
 				/>
 				<span className="send" onClick={msgSend}>
 					전송
