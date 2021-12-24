@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import * as React from "react";
 import "../App.css";
 const ChatWrap = styled.div`
-	height: 80%;
+	width: 100%;
+	height: 100vh;
+	border: 3px solid #2d2d2d;
 `;
 const Member = styled.div`
 	padding: 0rem 2rem;
@@ -52,6 +54,7 @@ const Content = styled.div`
 		position: relative;
 		width: 40%;
 		margin-top: 1rem;
+		height: auto;
 		.sender {
 			font-weight: bold;
 			color: #2d2d2d;
@@ -59,7 +62,7 @@ const Content = styled.div`
 		}
 		.msg {
 			width: 100%;
-			height: 5rem;
+			height: auto;
 			padding: 0.5rem;
 			margin: 0.2rem 0;
 			background-color: #dadada;
