@@ -133,15 +133,46 @@ function Conversation({ chat }) {
 	}, []);
 
 	let logDate = (time) => {
+		let returnDate;
 		let date = new Date(time * 1000);
-		let year = date.getFullYear().toString().slice(-4);
 		let month = ("0" + (date.getMonth() + 1)).slice(-2);
 		let day = ("0" + date.getDate()).slice(-2);
 		let hour = ("0" + date.getHours()).slice(-2);
 		let minute = ("0" + date.getMinutes()).slice(-2);
-		let returnDate = `${month}월 ${day}일 ${hour}시${minute}분`;
+
+		if (hour.slice(0, 1) !== "0") {
+			returnDate = `${hour}시${minute}분 (${calculateTime(time)})`;
+		} else {
+			returnDate = `${month}월 ${day}일 ${hour}시${minute}분`;
+		}
+
 		return returnDate;
 	};
+
+	function calculateTime(time) {
+		const today = new Date();
+		const timeValue = new Date(time * 1000);
+
+		const betweenTime = Math.floor(
+			(today.getTime() - timeValue.getTime()) / 1000 / 60
+		);
+		if (betweenTime < 1) return "방금전";
+		if (betweenTime < 60) {
+			return `${betweenTime}분전`;
+		}
+
+		const betweenTimeHour = Math.floor(betweenTime / 60);
+		if (betweenTimeHour < 24) {
+			return `${betweenTimeHour}시간전`;
+		}
+
+		const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+		if (betweenTimeDay < 365) {
+			return `${betweenTimeDay}일전`;
+		}
+
+		return `${Math.floor(betweenTimeDay / 365)}년전`;
+	}
 
 	return (
 		<ChatWrap>
@@ -150,7 +181,6 @@ function Conversation({ chat }) {
 					<Member>
 						<ul>
 							{Object.values(chat.member).map((el, i) => {
-								console.log(el);
 								return (
 									<li
 										style={{ background: el.userColor }}
