@@ -81,8 +81,8 @@ function Input() {
 	};
 
 	const enter = (e) => {
-		if(e.key == "Enter") msgSend()
-	}
+		if (e.key == "Enter") msgSend();
+	};
 
 	return (
 		<InputWrapper>

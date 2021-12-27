@@ -4,11 +4,13 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import * as React from "react";
 import "../App.css";
+
 const ChatWrap = styled.div`
 	width: 100%;
-	height: 100vh;
+	height: 79%;
 	border: 3px solid #2d2d2d;
 `;
+
 const Member = styled.div`
 	padding: 0rem 2rem;
 	height: 9%;
@@ -182,8 +184,8 @@ function Conversation({ chat }) {
 						</ul>
 						<div className="inviteLink">
 							<CopyToClipboard
-								// text={`http://localhost:3000/chat/invited/${chat.site.code}`}
-								text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
+								text={`http://localhost:3000/chat/invited/${chat.site.code}`}
+								// text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
 							>
 								<p>초대링크복사📎</p>
 							</CopyToClipboard>

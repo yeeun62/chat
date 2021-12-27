@@ -18,6 +18,14 @@ function Create() {
 		userColor: "#00adc7",
 		addon1: "-",
 		addon2: "-",
+		// name: "",
+		// title: "",
+		// userName: "",
+		// userPhoneNumber: "",
+		// userId: "",
+		// userColor: "#00adc7",
+		// addon1: "-",
+		// addon2: "-",
 	});
 
 	const createChatHandler = (e) => {

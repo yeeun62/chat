@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const TaskInformation = styled.div `
-	border-left: 1px solid #ddd;
-	border-right: 1px solid #ddd;
-	height: 85px;
+const TaskInformation = styled.div`
+	height: 7%;
 	text-align: center;
 	font-weight: 700;
 	line-height: 20px;
+	background-color: #2d2d2d;
+	padding: 0rem 2rem;
+
 	.nowStep {
 		@media screen and (max-width: 500px) {
 			font-size: 14px;
@@ -15,20 +16,20 @@ const TaskInformation = styled.div `
 		margin-top: 5px;
 	}
 	border-bottom: 1px slid #999 !important;
-	
+
 	.false {
 		display: none;
 	}
-`
+`;
 
-const Progress = styled.div `
+const Progress = styled.div`
 	width: 90%;
 	height: 40px;
-	background-color: #eee;
+	background-color: #fffeb3;
 	margin: 10px auto;
 	border-radius: 2rem;
 	position: relative;
-`
+`;
 const Bar = styled.div`
 	width: 50%;
 	height: 30px;
@@ -41,9 +42,9 @@ const Bar = styled.div`
 	line-height: 30px;
 	color: #fff;
 	font-weight: 900;
-` 
+`;
 
-const MoreInfo = styled.div `
+const MoreInfo = styled.div`
 	width: 100%;
 	height: auto;
 	> p {
@@ -53,9 +54,7 @@ const MoreInfo = styled.div `
 		background-color: #01010194;
 		color: #fff;
 	}
-
-`
-
+`;
 
 function TaskInfo() {
 	const [more, setMore] = useState(false);
@@ -64,26 +63,19 @@ function TaskInfo() {
 	//const taskStep = 20;
 	return (
 		<TaskInformation>
-			<p className="nowStep">현재 진행 중인 업무의 단계 표시</p>
 			<Progress>
-				<Bar>{'task'}</Bar>
+				<Bar>{"task"}</Bar>
 			</Progress>
-			<button onClick={moreButton}>추가 정보 표시</button>
+			{/* <button onClick={moreButton}>추가 정보 표시</button>
 			<MoreInfo className={more}>
 				<h5>업무 관련 자세한 정보</h5>
 				<p onClick={closeButton}>닫기</p>
 				<ul>
-					<li>
-						업무 정보 1
-					</li>
-					<li>
-						업무 정보 2
-					</li>
-					<li>
-						업무 정보 3
-					</li>
+					<li>업무 정보 1</li>
+					<li>업무 정보 2</li>
+					<li>업무 정보 3</li>
 				</ul>
-			</MoreInfo>
+			</MoreInfo> */}
 		</TaskInformation>
 	);
 }
