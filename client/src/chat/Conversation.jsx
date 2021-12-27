@@ -57,6 +57,7 @@ const Content = styled.div`
 		width: 40%;
 		margin-top: 1rem;
 		height: auto;
+		overflow: hidden;
 		.sender {
 			font-weight: bold;
 			color: #2d2d2d;
@@ -65,6 +66,7 @@ const Content = styled.div`
 		.msg {
 			width: 100%;
 			height: auto;
+			overflow: hidden;
 			padding: 0.5rem;
 			margin: 0.2rem 0;
 			background-color: #dadada;
@@ -73,7 +75,6 @@ const Content = styled.div`
 		.time {
 			font-size: 0.6rem;
 			color: #2d2d2d;
-			font-weight: bold;
 			margin-bottom: 1rem;
 		}
 	}

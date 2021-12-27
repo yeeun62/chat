@@ -40,8 +40,7 @@ const Bar = styled.div`
 	top: 5px;
 	text-align: center;
 	line-height: 30px;
-	color: #fff;
-	font-weight: 900;
+	color: #2d2d2d;
 `;
 
 const MoreInfo = styled.div`
