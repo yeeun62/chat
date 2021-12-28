@@ -1,9 +1,11 @@
+import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useCookies } from "react-cookie";
+import CustonColor from "../modal/CustomColor";
 import styled from "styled-components";
-import { useEffect, useRef, useState } from "react";
-import * as React from "react";
+import Modal from "react-modal";
 import "../App.css";
+import "../modal/customColor.css";
 
 const ChatWrap = styled.div`
 	width: 100%;
@@ -17,9 +19,11 @@ const Member = styled.div`
 	display: flex;
 	justify-content: space-between;
 	background-color: #2d2d2d;
+
 	> ul {
 		display: flex;
 		align-items: center;
+
 		> li {
 			width: 30px;
 			height: 30px;
@@ -30,8 +34,10 @@ const Member = styled.div`
 			font-weight: bold;
 			line-height: 30px;
 			margin-right: 0.4rem;
+			cursor: pointer;
 		}
 	}
+
 	.inviteLink {
 		font-size: 0.8rem;
 		font-weight: bold;
@@ -42,11 +48,13 @@ const Member = styled.div`
 		}
 	}
 `;
+
 const Content = styled.div`
 	width: 100%;
 	height: 91%;
 	background-color: #686868;
 	color: #fff;
+
 	> ul {
 		width: 100%;
 		height: 100%;
@@ -105,7 +113,10 @@ const Content = styled.div`
 
 function Conversation({ chat }) {
 	const scroll = useRef(null);
-	const [user, setUser] = useState("");
+	const [myName, setMyName] = useState("");
+	const [open, setOpen] = useState(false);
+	const [name, setName] = useState("");
+	const [customUser, setCustomUser] = useState(null);
 	const [cookies, setCookie] = useCookies(["auth"]);
 
 	const scrollDown = () => {
@@ -120,8 +131,20 @@ function Conversation({ chat }) {
 	}, [chat]);
 
 	useEffect(() => {
-		setUser(cookies.auth.split("|")[0]);
+		setMyName(cookies.auth.split("|")[0]);
 	}, []);
+
+	useEffect(() => {
+		Object.values(chat.member).map((el) => {
+			if (myName === el.userName) {
+				setCustomUser(el.customColor);
+			}
+		});
+	}, [myName]);
+
+	const modalHandler = () => {
+		setOpen(!open);
+	};
 
 	let logDate = (time) => {
 		let returnDate;
@@ -165,21 +188,70 @@ function Conversation({ chat }) {
 		return `${Math.floor(betweenTimeDay / 365)}년전`;
 	}
 
+	//! 정보를 받아올시 쿠키값으로 내가 누구인지 구분후, customColor가 존재하는지 확인
+	//! 존재한다면 해당정보안의 유저와 색으로 표현
+	//! 커스텀 컬러 지정시 db업데이트
+
 	return (
 		<ChatWrap>
+			<Modal
+				isOpen={open}
+				onRequestClose={modalHandler}
+				className="content"
+				overlayClassName="overlay"
+				ariaHideApp={false}
+			>
+				<CustonColor modalHandler={modalHandler} name={name} chat={chat} />
+			</Modal>
 			{chat ? (
 				<>
 					<Member>
 						<ul>
 							{Object.values(chat.member).map((el, i) => {
-								return (
-									<li
-										style={{ background: el.userColor }}
-										key={Object.keys(el)[i]}
-									>
-										{el.userName.slice(0, 1)}
-									</li>
-								);
+								if (customUser) {
+									for (let user in customUser) {
+										if (el.userName === user) {
+											return (
+												<li
+													style={{ background: customUser[user].color }}
+													key={Object.keys(el)[i]}
+													onClick={() => {
+														modalHandler();
+														setName(el.userName);
+													}}
+												>
+													{el.userName.slice(0, 1)}
+												</li>
+											);
+										} else {
+											return (
+												<li
+													style={{ background: el.userColor }}
+													key={Object.keys(el)[i]}
+													onClick={() => {
+														modalHandler();
+														setName(el.userName);
+													}}
+												>
+													{el.userName.slice(0, 1)}
+												</li>
+											);
+										}
+									}
+								} else {
+									return (
+										<li
+											style={{ background: el.userColor }}
+											key={Object.keys(el)[i]}
+											onClick={() => {
+												modalHandler();
+												setName(el.userName);
+											}}
+										>
+											{el.userName.slice(0, 1)}
+										</li>
+									);
+								}
 							})}
 						</ul>
 						<div className="inviteLink">
@@ -199,7 +271,7 @@ function Conversation({ chat }) {
 											<li
 												key={el.time}
 												className={
-													el.sender === user ? "chatMsg me" : "chatMsg you"
+													el.sender === myName ? "chatMsg me" : "chatMsg you"
 												}
 											>
 												<p className="sender">{el.sender}</p>

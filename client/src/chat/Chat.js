@@ -10,6 +10,7 @@ import Loding from "./Loding";
 const ChatWrap = styled.div`
 	width: 100%;
 	height: 100vh;
+	min-height: 500px;
 	border: 3px solid #2d2d2d;
 `;
 

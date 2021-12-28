@@ -24,15 +24,16 @@ const TaskInformation = styled.div`
 
 const Progress = styled.div`
 	width: 90%;
-	height: 40px;
+	height: 70%;
 	background-color: #fffeb3;
-	margin: 10px auto;
+	margin: 0 auto;
 	border-radius: 2rem;
 	position: relative;
 `;
+
 const Bar = styled.div`
 	width: 50%;
-	height: 30px;
+	height: 80%;
 	border-radius: 2rem;
 	background-color: #e0de1b;
 	position: absolute;
@@ -40,7 +41,7 @@ const Bar = styled.div`
 	top: 5px;
 	text-align: center;
 	line-height: 30px;
-	color: #fff;
+	color: #2d2d2d;
 	font-weight: 900;
 `;
 
