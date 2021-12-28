@@ -33,6 +33,7 @@ const Member = styled.div`
 		}
 	}
 	.inviteLink {
+		overflow: hidden;
 		font-size: 0.8rem;
 		font-weight: bold;
 		line-height: 50px;
@@ -104,10 +105,11 @@ const Content = styled.div`
 	}
 `;
 
-function Conversation({ chat }) {
+function Conversation({ chat, search }) {
 	const scroll = useRef(null);
 	const [user, setUser] = useState("");
 	const [cookies, setCookie] = useCookies(["auth"]);
+	
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -137,7 +139,6 @@ function Conversation({ chat }) {
 		} else {
 			returnDate = `${month}월 ${day}일 ${hour}시${minute}분`;
 		}
-
 		return returnDate;
 	};
 
@@ -194,7 +195,24 @@ function Conversation({ chat }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
-							{chat.send
+							{search.length ? 
+							Object.values(chat.send).filter(el => {
+								if(el.message.includes(search) || el.sender.includes(search)) {
+									return (
+										<li
+											key={el.time}
+											className={
+												el.sender === user ? "chatMsg me" : "chatMsg you"
+											}
+										>
+											<p className="sender">{el.sender}</p>
+											<div className="msg">{el.message}</div>
+											<p className="time">{logDate(el.time)}</p>
+										</li>
+									)
+								}
+							})
+							: chat.send
 								? Object.values(chat.send).map((el) => {
 										return (
 											<li
@@ -208,8 +226,24 @@ function Conversation({ chat }) {
 												<p className="time">{logDate(el.time)}</p>
 											</li>
 										);
-								  })
+								})
 								: null}
+							{/* {chat.send
+								? Object.values(chat.send).map((el) => {
+										return (
+											<li
+												key={el.time}
+												className={
+													el.sender === user ? "chatMsg me" : "chatMsg you"
+												}
+											>
+												<p className="sender">{el.sender}</p>
+												<div className="msg">{el.message}</div>
+												<p className="time">{logDate(el.time)}</p>
+											</li>
+										);
+								})
+								: null} */}
 						</ul>
 					</Content>
 				</>

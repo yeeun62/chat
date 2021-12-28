@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import searchButton from "../img/search.png";
 
@@ -23,7 +24,7 @@ const Header = styled.div`
 		overflow: hidden;
 		align-items: center;
 
-		.serchInput {
+		.searchInput {
 			position: relative;
 			height: 1.9rem;
 			background-color: #686868;
@@ -40,21 +41,22 @@ const Header = styled.div`
 	}
 `;
 
-const Convinience = styled.div`
+const Convenience = styled.div`
 	font-size: 30px;
 	text-align: center;
 `;
 
-function ChatHeader({ chat }) {
+function ChatHeader({ chat, searchHandler }) {
+
 	return (
 		<Header>
 			{chat ? (
 				<>
 					<p>{chat.room.title}</p>
-					<Convinience>🌤</Convinience>
+					<Convenience>🌤</Convenience>
 					<div>
-						<input className="serchInput" type="text"></input>
-						<img className="searchImg" src={searchButton} alt="검색"></img>
+						<input className="searchInput" type="text" onChange={e => searchHandler(e)}/>
+						<img className="searchImg" src={searchButton} alt="검색"/>
 					</div>
 				</>
 			) : (
