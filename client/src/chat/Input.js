@@ -60,7 +60,7 @@ function Input() {
 	const msgSend = async () => {
 		setMsg({ ...msg, message: "" });
 
-		if (msg.message.length) {
+		if (msg.message.length >= 2) {
 			const db = getDatabase();
 			const dbRef = ref(db, "chat");
 			const time = Math.floor(Date.now() / 1000);
@@ -97,6 +97,7 @@ function Input() {
 				<textarea
 					className="sendInput"
 					value={msg.message}
+					cols="50" rows="10"
 					onChange={(e) =>
 						setMsg({
 							...msg,

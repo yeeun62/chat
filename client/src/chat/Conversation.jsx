@@ -192,14 +192,20 @@ function Conversation({ chat, search }) {
 	}
 
 	let searchResult = (sea) => {
-		return Object.values(chat.send).filter(el => {
-			if(el.message.includes(sea) || el.sender.includes(sea)){
-				return el
-			} 
-		})
+		if(sea.length > 0) {
+
+
+			return Object.values(chat.send).map(el => {
+				if(el.message.includes(sea) || el.sender.includes(sea)){
+					return el
+				} 
+			})
+		} else return Object.values(chat.send)
+		
 	}
-  
+
 	let result = searchResult(search);
+
 	return (
 		<ChatWrap>
 			<Modal
@@ -273,6 +279,7 @@ function Conversation({ chat, search }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
+							{console.log(chat.send)}
 							{
 								chat.send ? 
 								result.map(el => {
