@@ -1,5 +1,4 @@
 import { getDatabase, set, ref, push } from "firebase/database";
-import { useCookies } from "react-cookie";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -7,7 +6,6 @@ axios.defaults.withCredentials = true;
 
 function Create() {
 	const navigate = useNavigate();
-	const [cookie, setCookie] = useCookies(["auth"]);
 
 	const [createChat, setCreateChat] = useState({
 		name: "handle",
@@ -74,9 +72,15 @@ function Create() {
 			userId,
 			userColor,
 		});
-		setCookie(
-			"auth",
-			`${userName}|${chatId.pieces_[1]}|${memberId.pieces_[3]}`
+
+		localStorage.setItem(
+			uuid.data.code,
+			JSON.stringify({
+				userName: userName,
+				useId: userId,
+				userNum: memberId.pieces_[3],
+				roomNum: chatId.pieces_[1],
+			})
 		);
 		navigate(`/chat/${uuid.data.code}`);
 	};

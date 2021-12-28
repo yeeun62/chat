@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { useCookies } from "react-cookie";
 import CustonColor from "../modal/CustomColor";
 import styled from "styled-components";
 import Modal from "react-modal";
@@ -20,11 +19,11 @@ const Member = styled.div`
 	justify-content: space-between;
 	background-color: #2d2d2d;
 
-	> ul {
+	ul {
 		display: flex;
 		align-items: center;
 
-		> li {
+		li {
 			width: 30px;
 			height: 30px;
 			border-radius: 50%;
@@ -44,7 +43,8 @@ const Member = styled.div`
 		font-weight: bold;
 		line-height: 50px;
 		cursor: pointer;
-		> p {
+
+		p {
 			color: #3e9ece;
 		}
 	}
@@ -56,22 +56,25 @@ const Content = styled.div`
 	background-color: #686868;
 	color: #fff;
 
-	> ul {
+	ul {
 		width: 100%;
 		height: 100%;
 		position: relative;
 	}
+
 	.chatMsg {
 		position: relative;
 		width: 40%;
 		margin-top: 1rem;
 		height: auto;
 		overflow: hidden;
+
 		.sender {
 			font-weight: bold;
 			color: #2d2d2d;
 			text-align: right;
 		}
+
 		.msg {
 			width: 100%;
 			height: auto;
@@ -81,32 +84,41 @@ const Content = styled.div`
 			background-color: #dadada;
 			font-weight: bold;
 		}
+
 		.time {
 			font-size: 0.6rem;
 			color: #2d2d2d;
 			margin-bottom: 1rem;
 		}
 	}
+
 	.me {
 		right: -58%;
+
 		.msg {
 			border-radius: 1rem 1rem 0rem 1rem;
 		}
+
 		.time {
 			text-align: right;
 		}
+
 		.sender {
 			text-align: right;
 		}
 	}
+
 	.you {
 		left: 2%;
+
 		.msg {
 			border-radius: 1rem 1rem 1rem 0rem;
 		}
+
 		.time {
 			text-align: left;
 		}
+
 		.sender {
 			text-align: left;
 		}
@@ -119,7 +131,6 @@ function Conversation({ chat, search }) {
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [customUser, setCustomUser] = useState(null);
-	const [cookies, setCookie] = useCookies(["auth"]);
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -133,7 +144,10 @@ function Conversation({ chat, search }) {
 	}, [chat]);
 
 	useEffect(() => {
-		setMyName(cookies.auth.split("|")[0]);
+		setMyName(
+			JSON.parse(localStorage.getItem(window.location.pathname.slice(6)))
+				.userName
+		);
 	}, []);
 
 	useEffect(() => {
@@ -214,90 +228,96 @@ function Conversation({ chat, search }) {
 			>
 				<CustonColor modalHandler={modalHandler} name={name} chat={chat} />
 			</Modal>
-			{chat ? (
-				<>
-					<Member>
-						<ul>
-							{Object.values(chat.member).map((el, i) => {
-								if (customUser) {
-									for (let user in customUser) {
-										if (el.userName === user) {
-											return (
-												<li
-													style={{ background: customUser[user].color }}
-													key={Object.keys(el)[i]}
-													onClick={() => {
-														modalHandler();
-														setName(el.userName);
-													}}
-												>
-													{el.userName.slice(0, 1)}
-												</li>
-											);
-										} else {
-											return (
-												<li
-													style={{ background: el.userColor }}
-													key={Object.keys(el)[i]}
-													onClick={() => {
-														modalHandler();
-														setName(el.userName);
-													}}
-												>
-													{el.userName.slice(0, 1)}
-												</li>
-											);
-										}
-									}
-								} else {
-									return (
-										<li
-											style={{ background: el.userColor }}
-											key={Object.keys(el)[i]}
-											onClick={() => {
-												modalHandler();
-												setName(el.userName);
-											}}
-										>
-											{el.userName.slice(0, 1)}
-										</li>
-									);
-								}
-							})}
-						</ul>
-						<div className="inviteLink">
-							<CopyToClipboard
-								// text={`http://localhost:3000/chat/invited/${chat.site.code}`}
-								text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
+			<Member>
+				<ul>
+					{Object.values(chat.member).map((el, i) => {
+						return (
+							<li
+								style={{ background: el.userColor }}
+								key={Object.keys(el)[i]}
+								onClick={() => {
+									modalHandler();
+									setName(el.userName);
+								}}
 							>
-								<p>초대링크복사📎</p>
-							</CopyToClipboard>
-						</div>
-					</Member>
-					<Content>
-						<ul ref={scroll}>
-							{chat.send
-								? result.map((el) => {
-										return (
-											<li
-												key={el.time}
-												className={
-													el.sender === myName ? "chatMsg me" : "chatMsg you"
-												}
-											>
-												<p className="sender">{el.sender}</p>
-												<div className="msg">{el.message}</div>
-												<p className="time">{logDate(el.time)}</p>
-											</li>
-										);
-								  })
-								: null}
-						</ul>
-					</Content>
-				</>
-			) : (
-				<p>로딩중~</p>
-			)}
+								{el.userName.slice(0, 1)}
+							</li>
+						);
+						// if (customUser) {
+						// 	for (let user in customUser) {
+						// 		if (el.userName === user) {
+						// 			return (
+						// 				<li
+						// 					style={{ background: customUser[user].color }}
+						// 					key={Object.keys(el)[i]}
+						// 					onClick={() => {
+						// 						modalHandler();
+						// 						setName(el.userName);
+						// 					}}
+						// 				>
+						// 					{el.userName.slice(0, 1)}
+						// 				</li>
+						// 			);
+						// 		} else {
+						// 			return (
+						// 				<li
+						// 					style={{ background: el.userColor }}
+						// 					key={Object.keys(el)[i]}
+						// 					onClick={() => {
+						// 						modalHandler();
+						// 						setName(el.userName);
+						// 					}}
+						// 				>
+						// 					{el.userName.slice(0, 1)}
+						// 				</li>
+						// 			);
+						// 		}
+						// 	}
+						// } else {
+						// 	return (
+						// 		<li
+						// 			style={{ background: el.userColor }}
+						// 			key={Object.keys(el)[i]}
+						// 			onClick={() => {
+						// 				modalHandler();
+						// 				setName(el.userName);
+						// 			}}
+						// 		>
+						// 			{el.userName.slice(0, 1)}
+						// 		</li>
+						// 	);
+						// }
+					})}
+				</ul>
+				<div className="inviteLink">
+					<CopyToClipboard
+						text={`http://localhost:3000/chat/invited/${chat.site.code}`}
+						// text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
+					>
+						<p>초대링크복사📎</p>
+					</CopyToClipboard>
+				</div>
+			</Member>
+			<Content>
+				<ul ref={scroll}>
+					{chat.send
+						? result.map((el) => {
+								return (
+									<li
+										key={el.time}
+										className={
+											el.sender === myName ? "chatMsg me" : "chatMsg you"
+										}
+									>
+										<p className="sender">{el.sender}</p>
+										<div className="msg">{el.message}</div>
+										<p className="time">{logDate(el.time)}</p>
+									</li>
+								);
+						  })
+						: null}
+				</ul>
+			</Content>
 		</ChatWrap>
 	);
 }

@@ -1,6 +1,6 @@
 import { getDatabase, ref, onValue } from "firebase/database";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
 import ChatHeader from "./ChatHeader";
 import TaskInfo from "./TaskInfo";
 import Conversation from "./Conversation";
