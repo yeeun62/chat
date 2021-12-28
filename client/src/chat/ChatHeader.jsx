@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import searchButton from "../img/search.png";
 
@@ -47,7 +46,6 @@ const Convenience = styled.div`
 `;
 
 function ChatHeader({ chat, searchHandler }) {
-
 	return (
 		<Header>
 			{chat ? (
@@ -55,8 +53,12 @@ function ChatHeader({ chat, searchHandler }) {
 					<p>{chat.room.title}</p>
 					<Convenience>🌤</Convenience>
 					<div>
-						<input className="searchInput" type="text" onChange={e => searchHandler(e)}/>
-						<img className="searchImg" src={searchButton} alt="검색"/>
+						<input
+							className="searchInput"
+							type="text"
+							onChange={(e) => searchHandler(e)}
+						/>
+						<img className="searchImg" src={searchButton} alt="검색" />
 					</div>
 				</>
 			) : (
