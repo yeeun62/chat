@@ -274,25 +274,22 @@ function Conversation({ chat, search }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
-							{chat.send
-								? console.log(result)
-								: // result.map((el) => {
-								  // 		// console.log("~~", el);
-								  // 		return (
-								  // 			<li
-								  // 				key={el.time}
-								  // 				className={
-								  // 					el.sender === myName ? "chatMsg me" : "chatMsg you"
-								  // 				}
-								  // 				// style={{backgroud: }}
-								  // 			>
-								  // 				<p className="sender">{el.sender}</p>
-								  // 				<div className="msg">{el.message}</div>
-								  // 				<p className="time">{logDate(el.time)}</p>
-								  // 			</li>
-								  // 		);
-								  //   })
-								  null}
+							{
+								chat.send ? 
+								result.map(el => {
+									return (
+										<li
+											key={el.time}
+											className={
+												el.sender === myName ? "chatMsg me" : "chatMsg you"
+											}
+										>
+											<p className="sender">{el.sender}</p>
+											<div className="msg">{el.message}</div>
+											<p className="time">{logDate(el.time)}</p>
+										</li>
+									);
+								}) : null }
 						</ul>
 					</Content>
 				</>

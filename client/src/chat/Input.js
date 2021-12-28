@@ -99,6 +99,7 @@ function Input() {
 				<textarea
 					className="sendInput"
 					value={msg.message}
+					cols="50" rows="10"
 					onChange={(e) =>
 						setMsg({
 							...msg,

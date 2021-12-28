@@ -24,7 +24,7 @@ const Progress = styled.div`
   width: 90%;
   height: 70%;
   background-color: #FFFEB3;
-  margin: 0 auto;
+  margin: auto;
   border-radius: 2rem;
   position: relative;
 `;
