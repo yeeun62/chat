@@ -54,9 +54,10 @@ function Invited() {
 	const invite = async () => {
 		const db = getDatabase();
 		const dbRef = ref(db, "chat");
-
+		
 		const newdbRef = push(dbRef);
 		const chatId = newdbRef._path;
+		setCookie("auth", `${createChat.userName}|${chatId.pieces_[1]}`, {path:'/'});
 
 		onValue(
 			dbRef,
@@ -76,7 +77,6 @@ function Invited() {
 				onlyOnce: true,
 			}
 		);
-		setCookie("auth", `${createChat.userName}|${chatId.pieces_[1]}`);
 	};
 
 	return (

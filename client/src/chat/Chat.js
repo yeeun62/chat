@@ -25,6 +25,7 @@ function Chat() {
 			const data = snapshot.val();
 			let boolean = true;
 			Object.values(data).map((el) => {
+				console.log(el.site)
 				if (el.site.code === window.location.pathname.slice(6) && true) {
 					setChat(el);
 					boolean = false;
@@ -34,7 +35,8 @@ function Chat() {
 	}, []);
 
 	const searchHandler = (e) => {
-		setSearch(e)
+		setSearch(e.target.value);
+		console.log(search);
 	}
 
 	// const getSearchResult = (keyword) => {
