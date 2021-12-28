@@ -1,6 +1,5 @@
 import { getDatabase, set, ref, onValue } from "firebase/database";
-import { useCookies } from "react-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const InputWrapper = styled.div`
@@ -50,7 +49,13 @@ const InputWrapper = styled.div`
 `;
 
 function Input() {
-	const [cookie, setCookie] = useCookies(["auth"]);
+	const [user, setUser] = useState(null);
+
+	useEffect(() => {
+		setUser(
+			JSON.parse(localStorage.getItem(window.location.pathname.slice(6)))
+		);
+	}, []);
 
 	const [msg, setMsg] = useState({
 		message: "",
@@ -75,7 +80,7 @@ function Input() {
 							const send = ref(db, `chat/${el}/send/${time}`);
 							set(send, {
 								message: msg.message,
-								sender: cookie.auth.split("|")[0],
+								sender: user.userName,
 								read: msg.read,
 								time: time,
 							});
@@ -99,7 +104,8 @@ function Input() {
 				<textarea
 					className="sendInput"
 					value={msg.message}
-					cols="50" rows="10"
+					cols="50"
+					rows="10"
 					onChange={(e) =>
 						setMsg({
 							...msg,

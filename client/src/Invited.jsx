@@ -1,13 +1,11 @@
 import { getDatabase, ref, onValue, push, update } from "firebase/database";
-import { useCookies } from "react-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
 function Invited() {
 	const navigate = useNavigate();
-	const [cookie, setCookie] = useCookies(["auth"]);
 
 	const [createChat, setCreateChat] = useState({
 		userName: "아바타",
@@ -24,33 +22,6 @@ function Invited() {
 		setCreateChat({ ...createChat, [e.target.name]: e.target.value });
 	};
 
-	// const invite = async () => {
-	// 	const db = getDatabase();
-	// 	const dbRef = ref(db, "chat");
-	// 	onValue(
-	// 		dbRef,
-	// 		async (snapshot) => {
-	// 			let data = snapshot.val();
-	// 			for (let el in data) {
-	// 				if (data[el].site.code === window.location.pathname.slice(14)) {
-	// 					const member = ref(db, `chat/${el}/member`);
-	// 					const memberRef = push(member);
-	// 					update(memberRef, createChat);
-	// 					navigate(`/chat/${window.location.pathname.slice(14)}`);
-	// 					break;
-	// 				}
-	// 			}
-	// 		},
-	// 		{
-	// 			onlyOnce: true,
-	// 		}
-	// 	);
-	// 	setCookie(
-	// 		"auth",
-	// 		`${createChat.userName}|${window.location.pathname.slice(14)}`
-	// 	);
-	// };
-
 	const invite = async () => {
 		const db = getDatabase();
 		const dbRef = ref(db, "chat");
@@ -64,12 +35,14 @@ function Invited() {
 						const member = ref(db, `chat/${el}/member`);
 						const memberRef = push(member);
 						const memberId = memberRef._path;
-						setCookie(
-							"auth",
-							`${createChat.userName}|${el}|${memberId.pieces_[3]}`,
-							{
-								path: "/",
-							}
+						localStorage.setItem(
+							data[el].site.code,
+							JSON.stringify({
+								userName: createChat.userName,
+								userId: createChat.userId,
+								userNum: el,
+								roomNum: memberId.pieces_[3],
+							})
 						);
 						update(memberRef, createChat);
 						navigate(`/chat/${window.location.pathname.slice(14)}`);
