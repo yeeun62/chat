@@ -189,14 +189,16 @@ function Conversation({ chat, search }) {
 		return `${Math.floor(betweenTimeDay / 365)}년전`;
 	}
 
-	let searchResult = (sea) => {
-		if (sea.length > 0) {
+	const searchResult = (sea) => {
+		if (sea.length) {
 			return Object.values(chat.send).filter((el) => {
 				if (el.message.includes(sea) || el.sender.includes(sea)) {
 					return el;
 				}
 			});
-		} else return Object.values(chat.send);
+		} else if(chat.send) {
+			return Object.values(chat.send);
+		}
 	};
 
 	let result = searchResult(search);
@@ -273,9 +275,11 @@ function Conversation({ chat, search }) {
 						</div>
 					</Member>
 					<Content>
-						<ul ref={scroll}>
-							{
-								chat.send ? 
+					<ul ref={scroll}>
+					<li>welcome to handle chat 🤩</li>
+						{
+							chat.send ? 
+							(result.length ? 
 								result.map(el => {
 									return (
 										<li
@@ -289,7 +293,8 @@ function Conversation({ chat, search }) {
 											<p className="time">{logDate(el.time)}</p>
 										</li>
 									);
-								}) : null }
+								}): <div className="noSearch">no result</div>) : null
+						}
 						</ul>
 					</Content>
 				</>

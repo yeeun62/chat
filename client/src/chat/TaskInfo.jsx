@@ -7,7 +7,7 @@ const TaskInformation = styled.div`
   font-weight: 700;
   line-height: 20px;
   background-color: #2d2d2d;
-  padding: 0rem 2rem;
+  padding: auto 2rem;
   .nowStep {
     @media screen and (max-width: 500px) {
       font-size: 14px;
@@ -36,7 +36,7 @@ const Bar = styled.div`
   background-color: #E0DE1B;
   position: absolute;
   left: 7px;
-  top: 5px;
+  top: 10%;
   text-align: center;
   line-height: 30px;
   color: #2D2D2D;
