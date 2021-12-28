@@ -15,7 +15,8 @@ const ChatWrap = styled.div`
 `;
 
 function Chat() {
-	const [chat, setChat] = useState();
+	const [chat, setChat] = useState(null);
+	const [user, setUser] = useState(null);
 	const [search, setSearch] = useState("");
 
 	useEffect(() => {
@@ -33,6 +34,12 @@ function Chat() {
 		});
 	}, []);
 
+	useEffect(() => {
+		setUser(
+			JSON.parse(localStorage.getItem(window.location.pathname.slice(6)))
+		);
+	}, []);
+
 	const searchHandler = (e) => {
 		setSearch(e.target.value);
 	};
@@ -43,7 +50,7 @@ function Chat() {
 				<>
 					<ChatHeader chat={chat} searchHandler={searchHandler}></ChatHeader>
 					<TaskInfo></TaskInfo>
-					<Conversation chat={chat} search={search}></Conversation>
+					<Conversation chat={chat} search={search} user={user}></Conversation>
 					<Input chat={chat}></Input>
 				</>
 			) : (

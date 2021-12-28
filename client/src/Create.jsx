@@ -77,7 +77,7 @@ function Create() {
 			uuid.data.code,
 			JSON.stringify({
 				userName: userName,
-				useId: userId,
+				userId: userId,
 				userNum: memberId.pieces_[3],
 				roomNum: chatId.pieces_[1],
 			})

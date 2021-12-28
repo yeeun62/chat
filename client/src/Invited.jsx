@@ -40,8 +40,8 @@ function Invited() {
 							JSON.stringify({
 								userName: createChat.userName,
 								userId: createChat.userId,
-								userNum: el,
-								roomNum: memberId.pieces_[3],
+								userNum: memberId.pieces_[3],
+								roomNum: el,
 							})
 						);
 						update(memberRef, createChat);

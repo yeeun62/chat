@@ -1,7 +1,5 @@
-import { getDatabase, ref, update, push } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const ColorModal = styled.div`
@@ -35,41 +33,22 @@ const ColorModal = styled.div`
 	}
 `;
 
-const CustomColor = ({ modalHandler, name }) => {
-	const navigate = useNavigate();
-
+const CustomColor = ({ modalHandler, id, name, user }) => {
 	const colorList = ["#b2f299", "#FCE29F", "#E69089", "#C29DFC", "#94E8F2"];
 
 	const [color, setColor] = useState("");
-	const [myName, setMyName] = useState("");
-	const [userNum, setUserNum] = useState("");
-	const [roomNum, setRoomNum] = useState("");
-
-	const [cookies, setCookie] = useCookies(["auth"]);
-
-	useEffect(() => {
-		setMyName(cookies.auth.split("|")[0]);
-		setRoomNum(cookies.auth.split("|")[1]);
-		setUserNum(cookies.auth.split("|")[2]);
-	}, []);
 
 	const colorChange = () => {
 		const db = getDatabase();
-		let addColor;
-		if (myName === name) {
-			addColor = ref(db, `chat/${roomNum}/member/${userNum}`);
-			update(addColor, { userColor: color });
+
+		if (user.userId === id) {
+			let colorRef = ref(db, `chat/${user.roomNum}/member/${user.userNum}`);
+			update(colorRef, { userColor: color });
 		} else {
-			console.log("다름");
-			addColor = ref(
-				db,
-				`chat/${roomNum}/member/${userNum}/customColor/${name}`
-			);
-			update(addColor, { color });
+			let colorRef = ref(db, `chat/${user.roomNum}/color/${user.userId}`);
+			update(colorRef, { [id]: color });
 		}
 
-		//window.location.replace("/chat/2b6f1b6b-5086-429c-a514-f9df16ff7c87");
-		//navigate(`/chat/2b6f1b6b-5086-429c-a514-f9df16ff7c87`);
 		modalHandler();
 	};
 
