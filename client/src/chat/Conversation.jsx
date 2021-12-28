@@ -196,13 +196,12 @@ function Conversation({ chat, search }) {
 					return el;
 				}
 			});
-		} else return Object.values(chat.send);
+		} else if (chat.send) {
+			return Object.values(chat.send);
+		}
 	};
 
-	let result;
-	if (search) {
-		result = searchResult(search);
-	}
+	let result = searchResult(search);
 
 	return (
 		<ChatWrap>
