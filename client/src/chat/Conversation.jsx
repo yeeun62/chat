@@ -126,8 +126,6 @@ function Conversation({ chat, search }) {
 		scroll.current.scrollTop = scrollHeight - clientHeight;
 	};
 
-	useEffect(() => {}, []);
-
 	useEffect(() => {
 		if (chat) {
 			scrollDown();
@@ -192,17 +190,14 @@ function Conversation({ chat, search }) {
 	}
 
 	let searchResult = (sea) => {
-		if(sea.length > 0) {
-
-
-			return Object.values(chat.send).map(el => {
-				if(el.message.includes(sea) || el.sender.includes(sea)){
-					return el
-				} 
-			})
-		} else return Object.values(chat.send)
-		
-	}
+		if (sea.length > 0) {
+			return Object.values(chat.send).filter((el) => {
+				if (el.message.includes(sea) || el.sender.includes(sea)) {
+					return el;
+				}
+			});
+		} else return Object.values(chat.send);
+	};
 
 	let result = searchResult(search);
 
@@ -279,7 +274,6 @@ function Conversation({ chat, search }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
-							{console.log(chat.send)}
 							{
 								chat.send ? 
 								result.map(el => {
