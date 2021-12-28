@@ -37,24 +37,6 @@ function Chat() {
 		setSearch(e.target.value);
 	};
 
-	// const getSearchResult = (keyword) => {
-	// 	let searchData = [];
-
-	// 	if(keyword.length){
-	// 		Object.values(chat.send).map(msg => {
-	// 			if(msg.message.includes(keyword) || msg.sender.includes(keyword)) {
-	// 				searchData.push(msg);
-	// 				console.log(searchData);
-	// 			}
-	// 		});
-	// 		console.log(chat)
-	// 		if(searchData.length) setChat(searchData);
-	// 		else setChat(originChat);
-	// 	} else {
-	// 		setChat(originChat);
-	// 	}
-	// }
-
 	return (
 		<ChatWrap>
 			{chat ? (
