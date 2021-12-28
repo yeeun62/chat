@@ -195,13 +195,14 @@ function Conversation({ chat, search }) {
 	//! 존재한다면 해당정보안의 유저와 색으로 표현
 	//! 커스텀 컬러 지정시 db업데이트
 	let searchResult = (sea) => {
-		chat.send.filter(el => {
+		return Object.values(chat.send).filter(el => {
 			if(el.message.includes(sea) || el.sender.includes(sea)){
 				return el
 			} 
 		})
 	}
-
+	let result = searchResult(search);
+	
 	return (
 		<ChatWrap>
 			<Modal
@@ -275,64 +276,22 @@ function Conversation({ chat, search }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
-
-              {/*	{search.length
-								? Object.values(chat.send).filter((el) => {
-										if (
-											el.message.includes(search) ||
-											el.sender.includes(search)
-										) {
-											return (
-												<li
-													key={el.time}
-													className={
-														el.sender !== myName ? "chatMsg me" : "chatMsg you"
-													}
-												>
-													<p className="sender">{el.sender}</p>
-													<div className="msg">{el.message}</div>
-													<p className="time">{logDate(el.time)}</p>
-												</li>
-											);
-										}
-								  })
-								: chat.send
-								? Object.values(chat.send).map((el) => {
-										return (
-											<li
-												key={el.time}
-												className={
-													el.sender === myName ? "chatMsg me" : "chatMsg you"
-												}
-											>
-												<p className="sender">{el.sender}</p>
-												<div className="msg">{el.message}</div>
-												<p className="time">{logDate(el.time)}</p>
-											</li>
-										);
-								  })
-								: null} */}
-
-							{/* {
-								search.length ? 
-
-							} */}
-							{chat.send ?
-							Object.values(chat.send).map(el => {
-								return (
-									<li
-										key={el.time}
-										className={
-											el.sender !== myName ? "chatMsg me" : "chatMsg you"
-										}
-									>
-										<p className="sender">{el.sender}</p>
-										<div className="msg">{el.message}</div>
-										<p className="time">{logDate(el.time)}</p>
-									</li>
-								)
-							}) : null}
-
+							{
+								chat.send ? 
+								result.map(el => {
+									return (
+										<li
+											key={el.time}
+											className={
+												el.sender === myName ? "chatMsg me" : "chatMsg you"
+											}
+										>
+											<p className="sender">{el.sender}</p>
+											<div className="msg">{el.message}</div>
+											<p className="time">{logDate(el.time)}</p>
+										</li>
+									);
+								}) : null }
 						</ul>
 					</Content>
 				</>
