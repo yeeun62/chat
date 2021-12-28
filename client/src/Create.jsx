@@ -41,6 +41,7 @@ function Create() {
 
 		const member = ref(db, `${chatId}/member`);
 		const memberRef = push(member);
+		const memberId = memberRef._path;
 
 		const uuid = await axios.get(process.env.REACT_APP_UUID);
 		const time = Math.floor(Date.now() / 1000);
@@ -67,8 +68,16 @@ function Create() {
 		};
 
 		set(newdbRef, chat);
-		set(memberRef, { userName, userPhoneNumber, userId, userColor });
-		setCookie("auth", `${userName}|${uuid.data.code}`);
+		set(memberRef, {
+			userName,
+			userPhoneNumber,
+			userId,
+			userColor,
+		});
+		setCookie(
+			"auth",
+			`${userName}|${chatId.pieces_[1]}|${memberId.pieces_[3]}`
+		);
 		navigate(`/chat/${uuid.data.code}`);
 	};
 

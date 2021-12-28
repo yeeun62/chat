@@ -24,9 +24,40 @@ function Invited() {
 		setCreateChat({ ...createChat, [e.target.name]: e.target.value });
 	};
 
+	// const invite = async () => {
+	// 	const db = getDatabase();
+	// 	const dbRef = ref(db, "chat");
+	// 	onValue(
+	// 		dbRef,
+	// 		async (snapshot) => {
+	// 			let data = snapshot.val();
+	// 			for (let el in data) {
+	// 				if (data[el].site.code === window.location.pathname.slice(14)) {
+	// 					const member = ref(db, `chat/${el}/member`);
+	// 					const memberRef = push(member);
+	// 					update(memberRef, createChat);
+	// 					navigate(`/chat/${window.location.pathname.slice(14)}`);
+	// 					break;
+	// 				}
+	// 			}
+	// 		},
+	// 		{
+	// 			onlyOnce: true,
+	// 		}
+	// 	);
+	// 	setCookie(
+	// 		"auth",
+	// 		`${createChat.userName}|${window.location.pathname.slice(14)}`
+	// 	);
+	// };
+
 	const invite = async () => {
 		const db = getDatabase();
 		const dbRef = ref(db, "chat");
+
+		const newdbRef = push(dbRef);
+		const chatId = newdbRef._path;
+
 		onValue(
 			dbRef,
 			async (snapshot) => {
@@ -45,10 +76,7 @@ function Invited() {
 				onlyOnce: true,
 			}
 		);
-		setCookie(
-			"auth",
-			`${createChat.userName}|${window.location.pathname.slice(14)}`
-		);
+		setCookie("auth", `${createChat.userName}|${chatId.pieces_[1]}`);
 	};
 
 	return (
