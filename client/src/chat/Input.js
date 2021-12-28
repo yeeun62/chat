@@ -13,8 +13,7 @@ const InputWrapper = styled.div`
 		display: flex;
 		justify-content: space-between;
 		height: 100%;
-		display: flex;
-    	align-items: center;
+    align-items: center;
 		padding: 0 0.4rem;
 		overflow: hidden;
 	}
