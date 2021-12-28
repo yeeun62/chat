@@ -5,7 +5,7 @@ import ChatHeader from "./ChatHeader";
 import TaskInfo from "./TaskInfo";
 import Conversation from "./Conversation";
 import Input from "./Input";
-import Loding from "./Loding";
+import Loading from "./Loading";
 
 const ChatWrap = styled.div`
 	width: 100%;
@@ -16,6 +16,7 @@ const ChatWrap = styled.div`
 
 function Chat() {
 	const [chat, setChat] = useState();
+	const [search, setSearch] = useState('');
 
 	useEffect(() => {
 		const db = getDatabase();
@@ -32,17 +33,41 @@ function Chat() {
 		});
 	}, []);
 
+	const searchHandler = (e) => {
+		setSearch(e)
+	}
+
+	// const getSearchResult = (keyword) => {
+	// 	let searchData = [];
+
+	// 	if(keyword.length){
+	// 		Object.values(chat.send).map(msg => {
+	// 			if(msg.message.includes(keyword) || msg.sender.includes(keyword)) {
+	// 				searchData.push(msg);
+	// 				console.log(searchData);
+	// 			}
+	// 		});
+	// 		console.log(chat)
+	// 		if(searchData.length) setChat(searchData);
+	// 		else setChat(originChat);
+	// 	} else {
+	// 		setChat(originChat);
+	// 	}
+	// }
+
+	
+
 	return (
 		<ChatWrap>
 			{chat ? (
 				<>
-					<ChatHeader chat={chat}></ChatHeader>
+					<ChatHeader chat={chat} searchHandler={searchHandler}></ChatHeader>
 					<TaskInfo></TaskInfo>
-					<Conversation chat={chat}></Conversation>
+					<Conversation chat={chat} search={search}></Conversation>
 					<Input chat={chat}></Input>
 				</>
 			) : (
-				<Loding></Loding>
+				<Loading></Loading>
 			)}
 		</ChatWrap>
 	);

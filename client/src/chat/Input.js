@@ -8,16 +8,17 @@ const InputWrapper = styled.div`
 	height: 7%;
 	background-color: #2d2d2d;
 	position: relative;
-
+	
 	> form {
 		display: flex;
 		justify-content: space-between;
 		height: 100%;
+    align-items: center;
+		padding: 0 0.4rem;
+		overflow: hidden;
 	}
 
 	.sendInput {
-		padding-left: 0.3rem;
-		margin: 0.5rem 0 0 0.4rem;
 		top: 12%;
 		left: 1%;
 		width: 90%;
@@ -32,11 +33,17 @@ const InputWrapper = styled.div`
 		text-align: center;
 		display: block;
 		width: 10%;
-		margin: 1rem 0 0 0;
 		color: #fff;
 		font-size: 1.2rem;
 		font-weight: bold;
 		cursor: pointer;
+		overflow: hidden;
+		line-height: 100%;
+		
+		@media screen and (max-width: 390px){
+			font-size: 4vw;
+			font-weight: bold;
+		}
 	}
 `;
 
@@ -87,10 +94,9 @@ function Input() {
 	return (
 		<InputWrapper>
 			<form onSubmit={(e) => e.preventDefault()}>
-				<input
+				<textarea
 					className="sendInput"
 					value={msg.message}
-					type="text"
 					onChange={(e) =>
 						setMsg({
 							...msg,

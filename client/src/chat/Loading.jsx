@@ -35,7 +35,7 @@ const LoadingWrap = styled.div`
 	}
 `;
 
-const Loding = () => {
+const Loading = () => {
 	return (
 		<LoadingWrap>
 			<div className="waviy">
@@ -59,4 +59,4 @@ const Loding = () => {
 	);
 };
 
-export default Loding;
+export default Loading;
