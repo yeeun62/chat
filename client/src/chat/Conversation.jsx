@@ -120,11 +120,13 @@ function Conversation({ chat, search }) {
 	const [name, setName] = useState("");
 	const [customUser, setCustomUser] = useState(null);
 	const [cookies, setCookie] = useCookies(["auth"]);
-	
+
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
 		scroll.current.scrollTop = scrollHeight - clientHeight;
 	};
+
+	useEffect(() => {}, []);
 
 	useEffect(() => {
 		if (chat) {
@@ -273,6 +275,44 @@ function Conversation({ chat, search }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
+
+              {/*	{search.length
+								? Object.values(chat.send).filter((el) => {
+										if (
+											el.message.includes(search) ||
+											el.sender.includes(search)
+										) {
+											return (
+												<li
+													key={el.time}
+													className={
+														el.sender !== myName ? "chatMsg me" : "chatMsg you"
+													}
+												>
+													<p className="sender">{el.sender}</p>
+													<div className="msg">{el.message}</div>
+													<p className="time">{logDate(el.time)}</p>
+												</li>
+											);
+										}
+								  })
+								: chat.send
+								? Object.values(chat.send).map((el) => {
+										return (
+											<li
+												key={el.time}
+												className={
+													el.sender === myName ? "chatMsg me" : "chatMsg you"
+												}
+											>
+												<p className="sender">{el.sender}</p>
+												<div className="msg">{el.message}</div>
+												<p className="time">{logDate(el.time)}</p>
+											</li>
+										);
+								  })
+								: null} */}
+
 							{/* {
 								search.length ? 
 
@@ -292,6 +332,7 @@ function Conversation({ chat, search }) {
 									</li>
 								)
 							}) : null}
+
 						</ul>
 					</Content>
 				</>

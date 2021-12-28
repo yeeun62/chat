@@ -8,12 +8,12 @@ const InputWrapper = styled.div`
 	height: 7%;
 	background-color: #2d2d2d;
 	position: relative;
-	
+
 	> form {
 		display: flex;
 		justify-content: space-between;
 		height: 100%;
-    align-items: center;
+		align-items: center;
 		padding: 0 0.4rem;
 		overflow: hidden;
 	}
@@ -39,8 +39,8 @@ const InputWrapper = styled.div`
 		cursor: pointer;
 		overflow: hidden;
 		line-height: 100%;
-		
-		@media screen and (max-width: 390px){
+
+		@media screen and (max-width: 390px) {
 			font-size: 4vw;
 			font-weight: bold;
 		}
@@ -79,10 +79,10 @@ function Input() {
 							});
 						}
 					}
-				},
-				{
-					onlyOnce: true,
 				}
+				// {
+				// 	onlyOnce: true,
+				// }
 			);
 		}
 	};

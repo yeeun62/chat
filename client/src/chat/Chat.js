@@ -16,7 +16,7 @@ const ChatWrap = styled.div`
 
 function Chat() {
 	const [chat, setChat] = useState();
-	const [search, setSearch] = useState('');
+	const [search, setSearch] = useState("");
 
 	useEffect(() => {
 		const db = getDatabase();
@@ -36,7 +36,6 @@ function Chat() {
 
 	const searchHandler = (e) => {
 		setSearch(e.target.value);
-		console.log(search);
 	}
 
 	// const getSearchResult = (keyword) => {
@@ -56,8 +55,6 @@ function Chat() {
 	// 		setChat(originChat);
 	// 	}
 	// }
-
-	
 
 	return (
 		<ChatWrap>

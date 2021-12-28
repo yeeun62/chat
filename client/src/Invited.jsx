@@ -54,10 +54,6 @@ function Invited() {
 	const invite = async () => {
 		const db = getDatabase();
 		const dbRef = ref(db, "chat");
-		
-		const newdbRef = push(dbRef);
-		const chatId = newdbRef._path;
-		setCookie("auth", `${createChat.userName}|${chatId.pieces_[1]}`, {path:'/'});
 
 		onValue(
 			dbRef,
@@ -67,6 +63,14 @@ function Invited() {
 					if (data[el].site.code === window.location.pathname.slice(14)) {
 						const member = ref(db, `chat/${el}/member`);
 						const memberRef = push(member);
+						const memberId = memberRef._path;
+						setCookie(
+							"auth",
+							`${createChat.userName}|${el}|${memberId.pieces_[3]}`,
+							{
+								path: "/",
+							}
+						);
 						update(memberRef, createChat);
 						navigate(`/chat/${window.location.pathname.slice(14)}`);
 						break;

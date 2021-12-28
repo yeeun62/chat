@@ -60,6 +60,7 @@ const CustomColor = ({ modalHandler, name }) => {
 			addColor = ref(db, `chat/${roomNum}/member/${userNum}`);
 			update(addColor, { userColor: color });
 		} else {
+			console.log("다름");
 			addColor = ref(
 				db,
 				`chat/${roomNum}/member/${userNum}/customColor/${name}`
