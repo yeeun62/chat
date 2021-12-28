@@ -194,6 +194,13 @@ function Conversation({ chat, search }) {
 	//! 정보를 받아올시 쿠키값으로 내가 누구인지 구분후, customColor가 존재하는지 확인
 	//! 존재한다면 해당정보안의 유저와 색으로 표현
 	//! 커스텀 컬러 지정시 db업데이트
+	let searchResult = (sea) => {
+		chat.send.filter(el => {
+			if(el.message.includes(sea) || el.sender.includes(sea)){
+				return el
+			} 
+		})
+	}
 
 	return (
 		<ChatWrap>
@@ -268,7 +275,8 @@ function Conversation({ chat, search }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
-							{search.length
+
+              {/*	{search.length
 								? Object.values(chat.send).filter((el) => {
 										if (
 											el.message.includes(search) ||
@@ -303,23 +311,28 @@ function Conversation({ chat, search }) {
 											</li>
 										);
 								  })
-								: null}
-							{/* {chat.send
-								? Object.values(chat.send).map((el) => {
-										return (
-											<li
-												key={el.time}
-												className={
-													el.sender === user ? "chatMsg me" : "chatMsg you"
-												}
-											>
-												<p className="sender">{el.sender}</p>
-												<div className="msg">{el.message}</div>
-												<p className="time">{logDate(el.time)}</p>
-											</li>
-										);
-								})
 								: null} */}
+
+							{/* {
+								search.length ? 
+
+							} */}
+							{chat.send ?
+							Object.values(chat.send).map(el => {
+								return (
+									<li
+										key={el.time}
+										className={
+											el.sender !== myName ? "chatMsg me" : "chatMsg you"
+										}
+									>
+										<p className="sender">{el.sender}</p>
+										<div className="msg">{el.message}</div>
+										<p className="time">{logDate(el.time)}</p>
+									</li>
+								)
+							}) : null}
+
 						</ul>
 					</Content>
 				</>
