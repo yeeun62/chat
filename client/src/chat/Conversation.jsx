@@ -199,7 +199,10 @@ function Conversation({ chat, search }) {
 		} else return Object.values(chat.send);
 	};
 
-	let result = searchResult(search);
+	let result;
+	if (search) {
+		result = searchResult(search);
+	}
 
 	return (
 		<ChatWrap>
@@ -265,8 +268,8 @@ function Conversation({ chat, search }) {
 						</ul>
 						<div className="inviteLink">
 							<CopyToClipboard
-								text={`http://localhost:3000/chat/invited/${chat.site.code}`}
-								// text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
+								// text={`http://localhost:3000/chat/invited/${chat.site.code}`}
+								text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
 							>
 								<p>초대링크복사📎</p>
 							</CopyToClipboard>
@@ -274,22 +277,22 @@ function Conversation({ chat, search }) {
 					</Member>
 					<Content>
 						<ul ref={scroll}>
-							{
-								chat.send ? 
-								result.map(el => {
-									return (
-										<li
-											key={el.time}
-											className={
-												el.sender === myName ? "chatMsg me" : "chatMsg you"
-											}
-										>
-											<p className="sender">{el.sender}</p>
-											<div className="msg">{el.message}</div>
-											<p className="time">{logDate(el.time)}</p>
-										</li>
-									);
-								}) : null }
+							{chat.send
+								? result.map((el) => {
+										return (
+											<li
+												key={el.time}
+												className={
+													el.sender === myName ? "chatMsg me" : "chatMsg you"
+												}
+											>
+												<p className="sender">{el.sender}</p>
+												<div className="msg">{el.message}</div>
+												<p className="time">{logDate(el.time)}</p>
+											</li>
+										);
+								  })
+								: null}
 						</ul>
 					</Content>
 				</>
