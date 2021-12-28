@@ -25,8 +25,10 @@ const InputWrapper = styled.div`
 		height: 80%;
 		border-radius: 0.3rem;
 		background-color: #dadada;
+		padding-left: 0.2rem;
 		font-size: 1.2rem;
 		font-weight: bold;
+		resize: none;
 	}
 
 	.send {
@@ -60,7 +62,7 @@ function Input() {
 	const msgSend = async () => {
 		setMsg({ ...msg, message: "" });
 
-		if (msg.message.length) {
+		if (msg.message.length >= 2) {
 			const db = getDatabase();
 			const dbRef = ref(db, "chat");
 			const time = Math.floor(Date.now() / 1000);
@@ -79,10 +81,10 @@ function Input() {
 							});
 						}
 					}
+				},
+				{
+					onlyOnce: true,
 				}
-				// {
-				// 	onlyOnce: true,
-				// }
 			);
 		}
 	};
