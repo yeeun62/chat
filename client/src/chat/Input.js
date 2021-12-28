@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 const InputWrapper = styled.div`
 	width: 100%;
-	height: 50px;
 	height: 7%;
 	background-color: #2d2d2d;
 	position: relative;
@@ -13,6 +12,7 @@ const InputWrapper = styled.div`
 	> form {
 		display: flex;
 		justify-content: space-between;
+		height: 100%;
 	}
 
 	.sendInput {
@@ -21,7 +21,7 @@ const InputWrapper = styled.div`
 		top: 12%;
 		left: 1%;
 		width: 90%;
-		height: 38px;
+		height: 80%;
 		border-radius: 0.3rem;
 		background-color: #dadada;
 		font-size: 1.2rem;
