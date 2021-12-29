@@ -83,6 +83,7 @@ function Input({ code }) {
 								userId: user.userId,
 								read: msg.read,
 								time: time,
+								userColor: user.userColor,
 							});
 						}
 					}
@@ -93,7 +94,6 @@ function Input({ code }) {
 			);
 		}
 	};
-
 
 	return (
 		<InputWrapper>
@@ -109,7 +109,9 @@ function Input({ code }) {
 							message: e.target.value,
 						})
 					}
-					onKeyPress={(e) => {if (e.key == "Enter") msgSend()}}
+					onKeyPress={(e) => {
+						if (e.key == "Enter") msgSend();
+					}}
 				/>
 				<span className="send" onClick={msgSend}>
 					전송

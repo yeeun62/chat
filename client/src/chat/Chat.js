@@ -51,8 +51,13 @@ function Chat() {
 				<>
 					<ChatHeader chat={chat} searchHandler={searchHandler}></ChatHeader>
 					<TaskInfo></TaskInfo>
-					<Conversation chat={chat} search={search} user={user}></Conversation>
-					<Input chat={chat} code={code}></Input>
+					<Conversation
+						chat={chat}
+						search={search}
+						user={user}
+						code={code}
+					></Conversation>
+					<Input chat={chat}></Input>
 				</>
 			) : (
 				<Loading></Loading>
