@@ -57,7 +57,7 @@ function Chat() {
 						user={user}
 						code={code}
 					></Conversation>
-					<Input chat={chat}></Input>
+					<Input code={code}></Input>
 				</>
 			) : (
 				<Loading></Loading>

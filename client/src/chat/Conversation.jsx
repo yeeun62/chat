@@ -150,24 +150,20 @@ function Conversation({ chat, user, search }) {
 		setColorOpen(!colorOpen);
 	};
 
-	const menuModalHandler = (boolean, receiver, message) => {
+	const menuModalHandler = (boolean) => {
 		setMenuOpen(boolean);
+	};
 
-		let tem = `안녕하세요 #{${receiver}}님
+	const remindSetting = (atr) => {
+		let tem = `안녕하세요 #{고객명}님
 
 		handle 서비스에 가입해 주셔서 대단히 감사드립니다.
 		
-		#{${receiver}}님께 부여된 handle 주소는 아래와 같습니다.
+		#{고객명}님께 부여된 handle 주소는 아래와 같습니다.
 		
 		https://handle.im/my/#{고객휴대폰}`;
 
-		setReqBody({
-			...reqBody,
-			template: tem,
-			receiver: receiver,
-			subject: "문자 제목",
-			message: message,
-		});
+		setReqBody({...reqBody, ...atr});
 	};
 
 	const remindRequest = async () => {
@@ -247,7 +243,8 @@ function Conversation({ chat, user, search }) {
 				<MessageMenu 
 					menuModalHandler={menuModalHandler} 
 					member={chat.member} 
-					remindRequest={remindRequest}>
+					remindRequest={remindRequest}
+					remindSetting={remindSetting}>
 				</MessageMenu>
 			</Modal>
 			<Member>
@@ -333,6 +330,10 @@ function Conversation({ chat, user, search }) {
 														style={{
 															border: `2px solid ${customUser[custom]}`,
 														}}
+														onClick={() => {
+															menuModalHandler(true);
+															remindSetting({message: el.message});
+														}}
 													>
 														{el.message}
 													</div>
@@ -350,7 +351,12 @@ function Conversation({ chat, user, search }) {
 													}
 												>
 													<p className="sender">{el.sender}</p>
-													<div className="msg">{el.message}</div>
+													<div 
+														className="msg" 
+														onClick={() => {
+															menuModalHandler(true);
+															remindSetting({message: el.message});
+														}}>{el.message}</div>
 													<p className="time">{logDate(el.time)}</p>
 												</li>
 											);
@@ -367,14 +373,16 @@ function Conversation({ chat, user, search }) {
 															? "chatMsg me"
 															: "chatMsg you"
 													}
-													onClick={() => {
-														menuModalHandler(true, el.message);
-													}}
+													
 												>
 													<p className="sender">{el.sender}</p>
 													<div
 														className="msg"
 														style={{ border: `2px solid ${origin.userColor}` }}
+														onClick={() => {
+															menuModalHandler(true);
+															remindSetting({message: el.message});
+														}}
 													>
 														{el.message}
 													</div>
@@ -384,7 +392,7 @@ function Conversation({ chat, user, search }) {
 										}
 									});
 								}
-						  })
+							})
 						: null}
 				</ul>
 			</Content>
