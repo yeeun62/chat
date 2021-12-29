@@ -5,9 +5,9 @@ const MenuWrap = styled.div `
     
 `
 
-function MessageMenu ({menuModalHandler, member}) {
-    const [receiver, setReceiver] = useState(window.location.pathname.slice(6));
-    console.log(member)
+function MessageMenu ({menuModalHandler, member, remindRequest}) {
+    const [receiver, setReceiver] = useState('');
+
     return <>
         <MenuWrap>
             <ul>
@@ -18,7 +18,10 @@ function MessageMenu ({menuModalHandler, member}) {
                     <ul>
                         {
                             Object.values(member).map(el => {
-                                return <li key={el.userId} onClick={() => setReceiver(el.userName)}>
+                                return <li key={el.userId} className="remindMember" onClick={() => {
+                                        setReceiver(el.userName);
+                                        remindRequest();
+                                    }}>
                                     {el.userName}
                                 </li>
                             })

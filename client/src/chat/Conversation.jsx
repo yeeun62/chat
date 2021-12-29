@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import MessageMenu from "../modal/MessageMenu";
 import "../App.css";
 import "../modal/customColor.css";
+import axios from "axios";
 
 const ChatWrap = styled.div`
 	width: 100%;
@@ -112,6 +113,7 @@ const Content = styled.div`
 `;
 
 function Conversation({ chat, user, search }) {
+	let code = window.location.pathname.slice(6);
 	const scroll = useRef(null);
 	const [colorOpen, setColorOpen] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -119,11 +121,11 @@ function Conversation({ chat, user, search }) {
 	const [name, setName] = useState("");
 	const [customUser, setCustomUser] = useState(null);
 	const [reqBody, setReqBody] = useState({
-		template: "",
-		receiver: "",
-		subject: "",
-		message: "",
-	});
+        template: '',
+        receiver: localStorage.getItem(code).userName,
+        subject: '',
+        message: '',
+    })
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -160,12 +162,19 @@ function Conversation({ chat, user, search }) {
 		https://handle.im/my/#{고객휴대폰}`;
 
 		setReqBody({
+			...reqBody,
 			template: tem,
 			receiver: receiver,
 			subject: "문자 제목",
 			message: message,
 		});
 	};
+
+	const remindRequest = async () => {
+		await axios.post('', reqBody, ).then(res => {
+			if (res.status === 200) alert('요청이 완료되었습니다.');
+		})
+	}
 
 	let logDate = (time) => {
 		let returnDate;
@@ -235,10 +244,11 @@ function Conversation({ chat, user, search }) {
 				/>
 			</Modal>
 			<Modal isOpen={menuOpen}>
-				<MessageMenu
-					menuModalHandler={menuModalHandler}
-					member={chat.member}
-				></MessageMenu>
+				<MessageMenu 
+					menuModalHandler={menuModalHandler} 
+					member={chat.member} 
+					remindRequest={remindRequest}>
+				</MessageMenu>
 			</Modal>
 			<Member>
 				<ul>
