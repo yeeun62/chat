@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const TaskInformation = styled.div`
+  width: 96%;
+  margin: auto;
   height: 7%;
   text-align: center;
   font-weight: 700;
   line-height: 20px;
   background-color: #2d2d2d;
   padding: auto 2rem;
+
   .nowStep {
     @media screen and (max-width: 500px) {
       font-size: 14px;
+      line-height: 14px;
     }
     margin-top: 5px;
   }
@@ -24,7 +28,7 @@ const Progress = styled.div`
   width: 90%;
   height: 70%;
   background-color: #FFFEB3;
-  margin: auto;
+  margin: 1.05% auto;
   border-radius: 2rem;
   position: relative;
 `;

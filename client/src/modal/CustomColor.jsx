@@ -1,5 +1,5 @@
 import { getDatabase, ref, update } from "firebase/database";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 const ColorModal = styled.div`
@@ -33,7 +33,7 @@ const ColorModal = styled.div`
 	}
 `;
 
-const CustomColor = ({ modalHandler, id, name, user }) => {
+const CustomColor = ({ colorModalHandler, id, name, user }) => {
 	const colorList = ["#b2f299", "#FCE29F", "#E69089", "#C29DFC", "#94E8F2"];
 
 	const [color, setColor] = useState("");
@@ -49,7 +49,7 @@ const CustomColor = ({ modalHandler, id, name, user }) => {
 			update(colorRef, { [id]: color });
 		}
 
-		modalHandler();
+		colorModalHandler();
 	};
 
 	return (
@@ -67,7 +67,7 @@ const CustomColor = ({ modalHandler, id, name, user }) => {
 			})}
 			<div>
 				<p onClick={colorChange}>변경</p>
-				<p onClick={modalHandler}>닫기</p>
+				<p onClick={colorModalHandler}>닫기</p>
 			</div>
 		</ColorModal>
 	);

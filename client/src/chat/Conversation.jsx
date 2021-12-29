@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import CustonColor from "../modal/CustomColor";
+import CustomColor from "../modal/CustomColor";
 import styled from "styled-components";
 import Modal from "react-modal";
+import MessageMenu from "../modal/MessageMenu";
 import "../App.css";
 import "../modal/customColor.css";
+
 
 const ChatWrap = styled.div`
 	width: 100%;
@@ -77,9 +79,10 @@ const Content = styled.div`
 			font-weight: bold;
 		}
 		.time {
-			font-size: 0.6rem;
+			font-size: 0.65rem;
 			color: #2d2d2d;
 			margin-bottom: 1rem;
+      font-weight: bold;
 		}
 	}
 	.me {
@@ -110,10 +113,17 @@ const Content = styled.div`
 
 function Conversation({ chat, user, search }) {
 	const scroll = useRef(null);
-	const [open, setOpen] = useState(false);
+	const [colorOpen, setColorOpen] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 	const [id, setId] = useState("");
 	const [name, setName] = useState("");
 	const [customUser, setCustomUser] = useState(null);
+	const [reqBody, setReqBody] = useState({
+        template: '',
+        receiver: '',
+        subject: '',
+        message: '',
+    })
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -134,8 +144,27 @@ function Conversation({ chat, user, search }) {
 		}
 	}, []);
 
-	const modalHandler = () => {
-		setOpen(!open);
+	const colorModalHandler = () => {
+		setColorOpen(!colorOpen);
+	};
+
+	const menuModalHandler = (boolean, receiver, message) => {
+		setMenuOpen(boolean);
+
+		let tem = `안녕하세요 #{${receiver}}님
+
+		handle 서비스에 가입해 주셔서 대단히 감사드립니다.
+		
+		#{${receiver}}님께 부여된 handle 주소는 아래와 같습니다.
+		
+		https://handle.im/my/#{고객휴대폰}`;
+
+		setReqBody({
+			template: tem,
+			receiver: receiver,
+			subject: '문자 제목',
+			message: message,
+		});
 	};
 
 	let logDate = (time) => {
@@ -174,7 +203,7 @@ function Conversation({ chat, user, search }) {
 		return `${Math.floor(betweenTimeDay / 365)}년전`;
 	}
 
-	let searchResult = (sea) => {
+	const searchResult = (sea) => {
 		if (sea.length > 0) {
 			return Object.values(chat.send).filter((el) => {
 				if (el.message.includes(sea) || el.sender.includes(sea)) {
@@ -191,19 +220,23 @@ function Conversation({ chat, user, search }) {
 	return (
 		<ChatWrap>
 			<Modal
-				isOpen={open}
-				onRequestClose={modalHandler}
+				isOpen={colorOpen}
+				onRequestClose={colorModalHandler}
 				className="content"
 				overlayClassName="overlay"
 				ariaHideApp={false}
 			>
-				<CustonColor
-					modalHandler={modalHandler}
+				<CustomColor
+					colorModalHandler={colorModalHandler}
 					id={id}
 					name={name}
 					chat={chat}
 					user={user}
 				/>
+			</Modal>
+			<Modal isOpen={menuOpen}>
+				<MessageMenu menuModalHandler={menuModalHandler} member={chat.member}>
+				</MessageMenu>
 			</Modal>
 			<Member>
 				<ul>
@@ -216,7 +249,7 @@ function Conversation({ chat, user, search }) {
 											style={{ background: customUser[user] }}
 											key={Object.keys(el)[i]}
 											onClick={() => {
-												modalHandler();
+												colorModalHandler();
 												setId(el.userId);
 												setName(el.userName);
 											}}
@@ -230,7 +263,7 @@ function Conversation({ chat, user, search }) {
 											style={{ background: el.userColor }}
 											key={Object.keys(el)[i]}
 											onClick={() => {
-												modalHandler();
+												colorModalHandler();
 												setId(el.userId);
 												setName(el.userName);
 											}}
@@ -246,7 +279,7 @@ function Conversation({ chat, user, search }) {
 									style={{ background: el.userColor }}
 									key={Object.keys(el)[i]}
 									onClick={() => {
-										modalHandler();
+										colorModalHandler();
 										setId(el.userId);
 										setName(el.userName);
 									}}
@@ -276,6 +309,9 @@ function Conversation({ chat, user, search }) {
 										className={
 											el.sender === user.userName ? "chatMsg me" : "chatMsg you"
 										}
+										onClick={() => {
+											menuModalHandler(true, el.message)
+										}}
 									>
 										<p className="sender">{el.sender}</p>
 										<div className="msg">{el.message}</div>
