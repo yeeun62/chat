@@ -121,11 +121,11 @@ function Conversation({ chat, user, search }) {
 	const [name, setName] = useState("");
 	const [customUser, setCustomUser] = useState(null);
 	const [reqBody, setReqBody] = useState({
-        template: '',
-        receiver: localStorage.getItem(code).userName,
-        subject: '',
-        message: '',
-    })
+		template: "",
+		receiver: localStorage.getItem(code).userName,
+		subject: "",
+		message: "",
+	});
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -171,10 +171,10 @@ function Conversation({ chat, user, search }) {
 	};
 
 	const remindRequest = async () => {
-		await axios.post('', reqBody, ).then(res => {
-			if (res.status === 200) alert('요청이 완료되었습니다.');
-		})
-	}
+		await axios.post("", reqBody).then((res) => {
+			if (res.status === 200) alert("요청이 완료되었습니다.");
+		});
+	};
 
 	let logDate = (time) => {
 		let returnDate;
@@ -244,11 +244,11 @@ function Conversation({ chat, user, search }) {
 				/>
 			</Modal>
 			<Modal isOpen={menuOpen}>
-				<MessageMenu 
-					menuModalHandler={menuModalHandler} 
-					member={chat.member} 
-					remindRequest={remindRequest}>
-				</MessageMenu>
+				<MessageMenu
+					menuModalHandler={menuModalHandler}
+					member={chat.member}
+					remindRequest={remindRequest}
+				></MessageMenu>
 			</Modal>
 			<Member>
 				<ul>
@@ -315,75 +315,87 @@ function Conversation({ chat, user, search }) {
 				<ul ref={scroll}>
 					{chat.send && user
 						? result.map((el) => {
-								if (customUser) {
-									for (let custom in customUser) {
-										if (el.userId === custom) {
-											return (
-												<li
-													key={el.time}
-													className={
-														el.sender === user.userName
-															? "chatMsg me"
-															: "chatMsg you"
-													}
-												>
-													<p className="sender">{el.sender}</p>
-													<div
-														className="msg"
-														style={{
-															border: `2px solid ${customUser[custom]}`,
-														}}
-													>
-														{el.message}
-													</div>
-													<p className="time">{logDate(el.time)}</p>
-												</li>
-											);
-										} else {
-											return (
-												<li
-													key={el.time}
-													className={
-														el.sender === user.userName
-															? "chatMsg me"
-															: "chatMsg you"
-													}
-												>
-													<p className="sender">{el.sender}</p>
-													<div className="msg">{el.message}</div>
-													<p className="time">{logDate(el.time)}</p>
-												</li>
-											);
+								return (
+									<li
+										key={el.time}
+										className={
+											el.sender === user.userName ? "chatMsg me" : "chatMsg you"
 										}
-									}
-								} else {
-									return Object.values(chat.member).map((origin) => {
-										if (origin.userId === el.userId) {
-											return (
-												<li
-													key={el.time}
-													className={
-														el.sender === user.userName
-															? "chatMsg me"
-															: "chatMsg you"
-													}
-													onClick={() => {
-														menuModalHandler(true, el.message);
-													}}
-												>
-													<p className="sender">{el.sender}</p>
-													<div
-														className="msg"
-														style={{ border: `2px solid ${origin.userColor}` }}
-													>
-														{el.message}
-													</div>
-													<p className="time">{logDate(el.time)}</p>
-												</li>
-											);
-										}
-									});
-								}
+									>
+										<p className="sender">{el.sender}</p>
+										<div className="msg">{el.message}</div>
+										<p className="time">{logDate(el.time)}</p>
+									</li>
+								);
+								// if (customUser) {
+								// 	for (let custom in customUser) {
+								// 		if (el.userId === custom) {
+								// 			return (
+								// 				<li
+								// 					key={el.time}
+								// 					className={
+								// 						el.sender === user.userName
+								// 							? "chatMsg me"
+								// 							: "chatMsg you"
+								// 					}
+								// 				>
+								// 					<p className="sender">{el.sender}</p>
+								// 					<div
+								// 						className="msg"
+								// 						style={{
+								// 							border: `2px solid ${customUser[custom]}`,
+								// 						}}
+								// 					>
+								// 						{el.message}
+								// 					</div>
+								// 					<p className="time">{logDate(el.time)}</p>
+								// 				</li>
+								// 			);
+								// 		} else {
+								// 			return (
+								// 				<li
+								// 					key={el.time}
+								// 					className={
+								// 						el.sender === user.userName
+								// 							? "chatMsg me"
+								// 							: "chatMsg you"
+								// 					}
+								// 				>
+								// 					<p className="sender">{el.sender}</p>
+								// 					<div className="msg">{el.message}</div>
+								// 					<p className="time">{logDate(el.time)}</p>
+								// 				</li>
+								// 			);
+								// 		}
+								// 	}
+								// } else {
+								// 	return Object.values(chat.member).map((origin) => {
+								// 		if (origin.userId === el.userId) {
+								// 			return (
+								// 				<li
+								// 					key={el.time}
+								// 					className={
+								// 						el.sender === user.userName
+								// 							? "chatMsg me"
+								// 							: "chatMsg you"
+								// 					}
+								// 					onClick={() => {
+								// 						menuModalHandler(true, el.message);
+								// 					}}
+								// 				>
+								// 					<p className="sender">{el.sender}</p>
+								// 					<div
+								// 						className="msg"
+								// 						style={{ border: `2px solid ${origin.userColor}` }}
+								// 					>
+								// 						{el.message}
+								// 					</div>
+								// 					<p className="time">{logDate(el.time)}</p>
+								// 				</li>
+								// 			);
+								// 		}
+								// 	});
+								// }
 						  })
 						: null}
 				</ul>

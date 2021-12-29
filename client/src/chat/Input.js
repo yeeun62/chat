@@ -84,7 +84,7 @@ function Input({ code }) {
 								time: time,
 								userColor: user.userColor,
 							});
-						} 
+						}
 					}
 				},
 				{
