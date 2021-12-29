@@ -80,6 +80,7 @@ function Create() {
 				userId: userId,
 				userNum: memberId.pieces_[3],
 				roomNum: chatId.pieces_[1],
+				userColor,
 			})
 		);
 		navigate(`/chat/${uuid.data.code}`);

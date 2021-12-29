@@ -1,11 +1,16 @@
 import { getDatabase, ref, onValue, push, update } from "firebase/database";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-axios.defaults.withCredentials = true;
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Invited() {
 	const navigate = useNavigate();
+	let { code } = useParams();
+
+	useEffect(() => {
+		if (localStorage.getItem(code)) {
+			navigate(`/chat/${code}`);
+		}
+	}, []);
 
 	const [createChat, setCreateChat] = useState({
 		userName: "아바타",
@@ -31,7 +36,7 @@ function Invited() {
 			async (snapshot) => {
 				let data = snapshot.val();
 				for (let el in data) {
-					if (data[el].site.code === window.location.pathname.slice(14)) {
+					if (data[el].site.code === code) {
 						const member = ref(db, `chat/${el}/member`);
 						const memberRef = push(member);
 						const memberId = memberRef._path;
@@ -40,12 +45,13 @@ function Invited() {
 							JSON.stringify({
 								userName: createChat.userName,
 								userId: createChat.userId,
+								userColor: createChat.userColor,
 								userNum: memberId.pieces_[3],
 								roomNum: el,
 							})
 						);
 						update(memberRef, createChat);
-						navigate(`/chat/${window.location.pathname.slice(14)}`);
+						navigate(`/chat/${code}`);
 						break;
 					}
 				}

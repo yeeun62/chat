@@ -1,5 +1,6 @@
 import { getDatabase, set, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const InputWrapper = styled.div`
@@ -48,13 +49,11 @@ const InputWrapper = styled.div`
 	}
 `;
 
-function Input() {
+function Input({ code }) {
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		setUser(
-			JSON.parse(localStorage.getItem(window.location.pathname.slice(6)))
-		);
+		setUser(JSON.parse(localStorage.getItem(code)));
 	}, []);
 
 	const [msg, setMsg] = useState({
@@ -76,11 +75,12 @@ function Input() {
 				async (snapshot) => {
 					let data = snapshot.val();
 					for (let el in data) {
-						if (data[el].site.code === window.location.pathname.slice(6)) {
+						if (data[el].site.code === code) {
 							const send = ref(db, `chat/${el}/send/${time}`);
 							set(send, {
 								message: msg.message,
 								sender: user.userName,
+								userId: user.userId,
 								read: msg.read,
 								time: time,
 							});
