@@ -8,7 +8,6 @@ import "../App.css";
 import "../modal/customColor.css";
 import axios from "axios";
 
-
 const ChatWrap = styled.div`
 	width: 100%;
 	height: 79%;
@@ -166,7 +165,7 @@ function Conversation({ chat, user, search }) {
 			...reqBody,
 			template: tem,
 			receiver: receiver,
-			subject: '문자 제목',
+			subject: "문자 제목",
 			message: message,
 		});
 	};
@@ -341,7 +340,6 @@ function Conversation({ chat, user, search }) {
 												</li>
 											);
 										} else {
-											console.log(el.userColor);
 											return (
 												<li
 													key={el.time}
@@ -352,9 +350,31 @@ function Conversation({ chat, user, search }) {
 													}
 												>
 													<p className="sender">{el.sender}</p>
+													<div className="msg">{el.message}</div>
+													<p className="time">{logDate(el.time)}</p>
+												</li>
+											);
+										}
+									}
+								} else {
+									return Object.values(chat.member).map((origin) => {
+										if (origin.userId === el.userId) {
+											return (
+												<li
+													key={el.time}
+													className={
+														el.sender === user.userName
+															? "chatMsg me"
+															: "chatMsg you"
+													}
+													onClick={() => {
+														menuModalHandler(true, el.message);
+													}}
+												>
+													<p className="sender">{el.sender}</p>
 													<div
 														className="msg"
-														style={{ border: `2px solid ${user.userColor}` }}
+														style={{ border: `2px solid ${origin.userColor}` }}
 													>
 														{el.message}
 													</div>
@@ -362,31 +382,7 @@ function Conversation({ chat, user, search }) {
 												</li>
 											);
 										}
-									}
-								} else {
-									return (
-										<li
-											key={el.time}
-											className={
-												el.sender === user.userName
-													? "chatMsg me"
-													: "chatMsg you"
-											}
-											
-										>
-											<p className="sender">{el.sender}</p>
-											<div
-												className="msg"
-												style={{ border: `2px solid ${el.userColor}` }}
-												onClick={() => {
-													menuModalHandler(true, el.message)
-												}}
-											>
-												{el.message}
-											</div>
-											<p className="time">{logDate(el.time)}</p>
-										</li>
-									);
+									});
 								}
 						  })
 						: null}

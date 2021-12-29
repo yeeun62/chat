@@ -33,7 +33,7 @@ const ColorModal = styled.div`
 	}
 `;
 
-const CustomColor = ({ colorModalHandler, id, name, user }) => {
+const CustomColor = ({ colorModalHandler, id, name, user, chat }) => {
 	const colorList = ["#b2f299", "#FCE29F", "#E69089", "#C29DFC", "#94E8F2"];
 
 	const [color, setColor] = useState("");
@@ -49,6 +49,7 @@ const CustomColor = ({ colorModalHandler, id, name, user }) => {
 			update(colorRef, { [id]: color });
 		}
 
+		window.location.replace(`/chat/${chat.site.code}`);
 		colorModalHandler();
 	};
 
