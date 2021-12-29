@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import MessageMenu from "../modal/MessageMenu";
 import "../App.css";
 import "../modal/customColor.css";
+import axios from "axios";
 
 
 const ChatWrap = styled.div`
@@ -113,6 +114,7 @@ const Content = styled.div`
 `;
 
 function Conversation({ chat, user, search }) {
+	let code = window.location.pathname.slice(6);
 	const scroll = useRef(null);
 	const [colorOpen, setColorOpen] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -121,7 +123,7 @@ function Conversation({ chat, user, search }) {
 	const [customUser, setCustomUser] = useState(null);
 	const [reqBody, setReqBody] = useState({
         template: '',
-        receiver: '',
+        receiver: localStorage.getItem(code).userName,
         subject: '',
         message: '',
     })
@@ -161,12 +163,19 @@ function Conversation({ chat, user, search }) {
 		https://handle.im/my/#{고객휴대폰}`;
 
 		setReqBody({
+			...reqBody,
 			template: tem,
 			receiver: receiver,
 			subject: '문자 제목',
 			message: message,
 		});
 	};
+
+	const remindRequest = async () => {
+		await axios.post('', reqBody, ).then(res => {
+			if (res.status === 200) alert('요청이 완료되었습니다.');
+		})
+	}
 
 	let logDate = (time) => {
 		let returnDate;
@@ -236,7 +245,10 @@ function Conversation({ chat, user, search }) {
 				/>
 			</Modal>
 			<Modal isOpen={menuOpen}>
-				<MessageMenu menuModalHandler={menuModalHandler} member={chat.member}>
+				<MessageMenu 
+					menuModalHandler={menuModalHandler} 
+					member={chat.member} 
+					remindRequest={remindRequest}>
 				</MessageMenu>
 			</Modal>
 			<Member>
@@ -360,14 +372,15 @@ function Conversation({ chat, user, search }) {
 													? "chatMsg me"
 													: "chatMsg you"
 											}
-											onClick={() => {
-												menuModalHandler(true, el.message)
-											}}
+											
 										>
 											<p className="sender">{el.sender}</p>
 											<div
 												className="msg"
-												style={{ border: `2px solid ${user.userColor}` }}
+												style={{ border: `2px solid ${el.userColor}` }}
+												onClick={() => {
+													menuModalHandler(true, el.message)
+												}}
 											>
 												{el.message}
 											</div>

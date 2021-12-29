@@ -1,6 +1,5 @@
 import { getDatabase, set, ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const InputWrapper = styled.div`
@@ -83,8 +82,9 @@ function Input({ code }) {
 								userId: user.userId,
 								read: msg.read,
 								time: time,
+								userColor: user.userColor
 							});
-						}
+						} 
 					}
 				},
 				{
