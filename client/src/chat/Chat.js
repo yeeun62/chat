@@ -1,5 +1,6 @@
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ChatHeader from "./ChatHeader";
 import TaskInfo from "./TaskInfo";
@@ -16,6 +17,7 @@ const ChatWrap = styled.div`
 `;
 
 function Chat() {
+	let { code } = useParams();
 	const [chat, setChat] = useState(null);
 	const [user, setUser] = useState(null);
 	const [search, setSearch] = useState("");
@@ -27,7 +29,7 @@ function Chat() {
 			const data = snapshot.val();
 			let boolean = true;
 			Object.values(data).map((el) => {
-				if (el.site.code === window.location.pathname.slice(6) && true) {
+				if (el.site.code === code && true) {
 					setChat(el);
 					boolean = false;
 				}
@@ -36,9 +38,7 @@ function Chat() {
 	}, []);
 
 	useEffect(() => {
-		setUser(
-			JSON.parse(localStorage.getItem(window.location.pathname.slice(6)))
-		);
+		setUser(JSON.parse(localStorage.getItem(code)));
 	}, []);
 
 	const searchHandler = (e) => {
@@ -52,7 +52,7 @@ function Chat() {
 					<ChatHeader chat={chat} searchHandler={searchHandler}></ChatHeader>
 					<TaskInfo></TaskInfo>
 					<Conversation chat={chat} search={search} user={user}></Conversation>
-					<Input chat={chat}></Input>
+					<Input chat={chat} code={code}></Input>
 				</>
 			) : (
 				<Loading></Loading>

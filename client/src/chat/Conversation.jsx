@@ -64,6 +64,7 @@ const Content = styled.div`
 		margin-top: 1rem;
 		height: auto;
 		overflow: hidden;
+
 		.sender {
 			font-weight: bold;
 			color: #2d2d2d;
@@ -79,10 +80,10 @@ const Content = styled.div`
 			font-weight: bold;
 		}
 		.time {
-			font-size: 0.65rem;
+			font-size: 0.6em;
 			color: #2d2d2d;
 			margin-bottom: 1rem;
-      font-weight: bold;
+			font-weight: bold;
 		}
 	}
 	.me {
@@ -303,21 +304,77 @@ function Conversation({ chat, user, search }) {
 				<ul ref={scroll}>
 					{chat.send && user
 						? result.map((el) => {
-								return (
-									<li
-										key={el.time}
-										className={
-											el.sender === user.userName ? "chatMsg me" : "chatMsg you"
+								if (customUser) {
+									for (let custom in customUser) {
+										if (el.userId === custom) {
+											return (
+												<li
+													key={el.time}
+													className={
+														el.sender === user.userName
+															? "chatMsg me"
+															: "chatMsg you"
+													}
+												>
+													<p className="sender">{el.sender}</p>
+													<div
+														className="msg"
+														style={{
+															border: `2px solid ${customUser[custom]}`,
+														}}
+													>
+														{el.message}
+													</div>
+													<p className="time">{logDate(el.time)}</p>
+												</li>
+											);
+										} else {
+											console.log(el.userColor);
+											return (
+												<li
+													key={el.time}
+													className={
+														el.sender === user.userName
+															? "chatMsg me"
+															: "chatMsg you"
+													}
+												>
+													<p className="sender">{el.sender}</p>
+													<div
+														className="msg"
+														style={{ border: `2px solid ${user.userColor}` }}
+													>
+														{el.message}
+													</div>
+													<p className="time">{logDate(el.time)}</p>
+												</li>
+											);
 										}
-										onClick={() => {
-											menuModalHandler(true, el.message)
-										}}
-									>
-										<p className="sender">{el.sender}</p>
-										<div className="msg">{el.message}</div>
-										<p className="time">{logDate(el.time)}</p>
-									</li>
-								);
+									}
+								} else {
+									return (
+										<li
+											key={el.time}
+											className={
+												el.sender === user.userName
+													? "chatMsg me"
+													: "chatMsg you"
+											}
+											onClick={() => {
+												menuModalHandler(true, el.message)
+											}}
+										>
+											<p className="sender">{el.sender}</p>
+											<div
+												className="msg"
+												style={{ border: `2px solid ${user.userColor}` }}
+											>
+												{el.message}
+											</div>
+											<p className="time">{logDate(el.time)}</p>
+										</li>
+									);
+								}
 						  })
 						: null}
 				</ul>
