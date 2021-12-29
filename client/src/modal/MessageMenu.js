@@ -5,8 +5,7 @@ const MenuWrap = styled.div `
     
 `
 
-function MessageMenu ({menuModalHandler, member, remindRequest}) {
-    const [receiver, setReceiver] = useState('');
+function MessageMenu ({menuModalHandler, member, remindRequest, remindSetting}) {
 
     return <>
         <MenuWrap>
@@ -19,7 +18,7 @@ function MessageMenu ({menuModalHandler, member, remindRequest}) {
                         {
                             Object.values(member).map(el => {
                                 return <li key={el.userId} className="remindMember" onClick={() => {
-                                        setReceiver(el.userName);
+                                        remindSetting({receiver: el.userName})
                                         remindRequest();
                                     }}>
                                     {el.userName}
@@ -27,11 +26,20 @@ function MessageMenu ({menuModalHandler, member, remindRequest}) {
                             })
                         }
                     </ul>
-                    <button onClick={() => menuModalHandler(false, receiver)}>요청 전송</button>
+                    <button onClick={() => {
+                        menuModalHandler(false);
+                        remindRequest();
+                    }}>요청 전송</button>
                 </li>
                 {/* 메뉴 추가 예정 */}
+                <li>
+                    menu2
+                </li>
+                <li>
+                    menu3
+                </li>
             </ul>
-            <p onClick={() => menuModalHandler(false, "", "", "")}>X</p>
+            <p onClick={() => menuModalHandler(false)}>X</p>
         </MenuWrap>
     </>
 
