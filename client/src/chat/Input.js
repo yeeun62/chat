@@ -94,9 +94,6 @@ function Input({ code }) {
 		}
 	};
 
-	const enter = (e) => {
-		if (e.key == "Enter") msgSend();
-	};
 
 	return (
 		<InputWrapper>
@@ -112,7 +109,7 @@ function Input({ code }) {
 							message: e.target.value,
 						})
 					}
-					onKeyPress={(e) => enter(e)}
+					onKeyPress={(e) => {if (e.key == "Enter") msgSend()}}
 				/>
 				<span className="send" onClick={msgSend}>
 					전송

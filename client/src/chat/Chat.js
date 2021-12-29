@@ -13,6 +13,7 @@ const ChatWrap = styled.div`
 	height: 100vh;
 	min-height: 500px;
 	border: 3px solid #2d2d2d;
+	background-color: #2d2d2d;
 `;
 
 function Chat() {
