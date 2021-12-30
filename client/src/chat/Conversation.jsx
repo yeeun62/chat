@@ -3,9 +3,9 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import CustomColor from "../modal/CustomColor";
 import styled from "styled-components";
 import Modal from "react-modal";
-import MessageMenu from "../modal/MessageMenu";
+import RemindModal from "../modal/RemindModal";
 import "../App.css";
-import "../modal/customColor.css";
+import "../modal/modal.css";
 import axios from "axios";
 
 const ChatWrap = styled.div`
@@ -233,19 +233,27 @@ function Conversation({ chat, user, search }) {
 			>
 				<CustomColor
 					colorModalHandler={colorModalHandler}
+					
 					id={id}
 					name={name}
 					chat={chat}
 					user={user}
 				/>
 			</Modal>
-			<Modal isOpen={menuOpen}>
-				<MessageMenu 
+			<Modal 
+				isOpen={menuOpen} 
+				ariaHideApp={false}
+				appElement={document.getElementById('root')}
+				className="content"
+				overlayClassName="overlay"
+				onRequestClose={menuModalHandler}
+			>
+				<RemindModal 
 					menuModalHandler={menuModalHandler} 
 					member={chat.member} 
 					remindRequest={remindRequest}
 					remindSetting={remindSetting}>
-				</MessageMenu>
+				</RemindModal>
 			</Modal>
 			<Member>
 				<ul>
@@ -321,12 +329,12 @@ function Conversation({ chat, user, search }) {
 									>
 										<p className="sender">{el.sender}</p>
 										<div 
-                      className="msg"
-                      onClick={() => {
+											className="msg"
+											onClick={() => {
 															menuModalHandler(true);
 															remindSetting({message: el.message});
 														}}
-                      >{el.message}</div>
+                      					>{el.message}</div>
 										<p className="time">{logDate(el.time)}</p>
 									</li>
 								);
