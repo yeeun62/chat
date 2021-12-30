@@ -134,8 +134,8 @@ function RemindModal({ remindModalHandler, member, user, msg }) {
             <ul>
                 {
                     Object.values(member).map(el => {
-                        return <li key={el.userId} className="remindMember" onClick={() => setReceiver(el.userName);
-								setReceiverPhone(el.userPhoneNumber);}>
+                        return <li key={el.userId} className="remindMember" onClick={() => {setReceiver(el.userName);
+								setReceiverPhone(el.userPhoneNumber)}}>
                             {el.userName}
                         </li>
                     })

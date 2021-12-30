@@ -10,6 +10,7 @@ const TaskInformation = styled.div`
   line-height: 20px;
   background-color: #2d2d2d;
   padding: auto 2rem;
+  overflow: hidden;
 
   .nowStep {
     @media screen and (max-width: 500px) {
@@ -27,7 +28,7 @@ const TaskInformation = styled.div`
 const Progress = styled.div`
   width: 90%;
   height: 70%;
-  background-color: #FFFEB3;
+  background-color: #fffeb3;
   margin: 1.05% auto;
   border-radius: 2rem;
   position: relative;
@@ -37,13 +38,13 @@ const Bar = styled.div`
   width: 50%;
   height: 80%;
   border-radius: 2rem;
-  background-color: #E0DE1B;
+  background-color: #e0de1b;
   position: absolute;
   left: 7px;
   top: 10%;
   text-align: center;
   line-height: 30px;
-  color: #2D2D2D;
+  color: #2d2d2d;
   font-weight: 900;
 `;
 
@@ -54,7 +55,7 @@ const MoreInfo = styled.div`
     font-size: 12px;
     width: 40px;
     height: 20px;
-    background-color: #01010194;
+    background-color: #010101;
     color: #fff;
   }
 `;
