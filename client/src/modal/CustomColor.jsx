@@ -19,18 +19,6 @@ const ColorModal = styled.div`
 		margin: 0.3rem;
 		cursor: pointer;
 	}
-
-	div {
-		margin: 1rem;
-		display: flex;
-		justify-content: space-around;
-
-		p {
-			color: #fff;
-			font-weight: bold;
-			cursor: pointer;
-		}
-	}
 `;
 
 const CustomColor = ({ colorModalHandler, id, name, user, chat }) => {
@@ -66,9 +54,13 @@ const CustomColor = ({ colorModalHandler, id, name, user, chat }) => {
 					></div>
 				);
 			})}
-			<div>
-				<p onClick={colorChange}>변경</p>
-				<p onClick={colorModalHandler}>닫기</p>
+			<div className="modalButton">
+				<p onClick={colorChange} className="modalComfirm">
+					변경
+				</p>
+				<p onClick={colorModalHandler} className="modalClose">
+					닫기
+				</p>
 			</div>
 		</ColorModal>
 	);
