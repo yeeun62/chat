@@ -9,61 +9,61 @@ import "../App.css";
 import "../modal/modal.css";
 
 const ChatWrap = styled.div`
-	width: 100%;
-	height: 79%;
-	border: 3px solid #2d2d2d;
+  width: 100%;
+  height: 79%;
+  border: 3px solid #2d2d2d;
 `;
 
 const Member = styled.div`
-	padding: 0rem 2rem;
-	height: 9%;
-	display: flex;
-	justify-content: space-between;
-	background-color: #2d2d2d;
-	ul {
-		display: flex;
-		align-items: center;
-		li {
-			width: 30px;
-			height: 30px;
-			border-radius: 50%;
-			background-color: #00adc7;
-			color: #2d2d2d;
-			text-align: center;
-			font-weight: bold;
-			line-height: 30px;
-			margin-right: 0.4rem;
-			cursor: pointer;
-		}
-	}
-	.inviteLink {
-		font-size: 0.8rem;
-		font-weight: bold;
-		line-height: 50px;
-		cursor: pointer;
+  padding: 0rem 2rem;
+  height: 9%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #2d2d2d;
+  ul {
+    display: flex;
+    align-items: center;
+    li {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #00adc7;
+      color: #2d2d2d;
+      text-align: center;
+      font-weight: bold;
+      line-height: 30px;
+      margin-right: 0.4rem;
+      cursor: pointer;
+    }
+  }
+  .inviteLink {
+    font-size: 0.8rem;
+    font-weight: bold;
+    line-height: 50px;
+    cursor: pointer;
 
-		p {
-			color: #3e9ece;
-		}
-	}
+    p {
+      color: #3e9ece;
+    }
+  }
 `;
 
 const Content = styled.div`
-	width: 100%;
-	height: 91%;
-	background-color: #686868;
-	color: #fff;
-	ul {
-		width: 100%;
-		height: 100%;
-		position: relative;
-	}
-	.chatMsg {
-		position: relative;
-		width: 40%;
-		margin-top: 1rem;
-		height: auto;
-		overflow: hidden;
+  width: 100%;
+  height: 91%;
+  background-color: #686868;
+  color: #fff;
+  ul {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .chatMsg {
+    position: relative;
+    width: 40%;
+    margin-top: 1rem;
+    height: auto;
+    overflow: hidden;
 
 		.sender {
 			font-weight: bold;
@@ -133,41 +133,33 @@ const Content = styled.div`
 	}
 `;
 
-function Conversation({ chat, user, search }) {
-	const scroll = useRef(null);
-	const [colorOpen, setColorOpen] = useState(false);
-	const [remindOpen, setRemindOpen] = useState(false);
-	const [id, setId] = useState("");
-	const [name, setName] = useState("");
-	const [customUser, setCustomUser] = useState(null);
-	const [msg, setMsg] = useState("");
+function Conversation({ chat, user, result }) {
+  const scroll = useRef(null);
+  const [colorOpen, setColorOpen] = useState(false);
+  const [remindOpen, setRemindOpen] = useState(false);
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [customUser, setCustomUser] = useState(null);
+  const [msg, setMsg] = useState("");
 
-	const scrollDown = () => {
-		const { scrollHeight, clientHeight } = scroll.current;
-		scroll.current.scrollTop = scrollHeight - clientHeight;
-	};
+  const scrollDown = () => {
+    const { scrollHeight, clientHeight } = scroll.current;
+    scroll.current.scrollTop = scrollHeight - clientHeight;
+  };
 
-	useEffect(() => {
-		if (chat) {
-			scrollDown();
-		}
-	}, [chat]);
+  useEffect(() => {
+    if (chat) {
+      scrollDown();
+    }
+  }, [chat]);
 
-	useEffect(() => {
-		if (chat.color) {
-			if (Object.keys(chat.color).includes(user.userId)) {
-				setCustomUser(chat.color[user.userId]);
-			}
-		}
-	}, []);
-
-	const colorModalHandler = () => {
-		setColorOpen(!colorOpen);
-	};
-
-	const remindModalHandler = () => {
-		setRemindOpen(!remindOpen);
-	};
+  useEffect(() => {
+    if (chat.color) {
+      if (Object.keys(chat.color).includes(user.userId)) {
+        setCustomUser(chat.color[user.userId]);
+      }
+    }
+  }, []);
 
 	let logDate = (time) => {
 		let returnDate;
@@ -185,40 +177,50 @@ function Conversation({ chat, user, search }) {
 		return returnDate;
 	};
 
-	function calculateTime(time) {
-		const today = new Date();
-		const timeValue = new Date(time * 1000);
-		const betweenTime = Math.floor(
-			(today.getTime() - timeValue.getTime()) / 1000 / 60
-		);
-		if (betweenTime < 1) return "방금전";
-		if (betweenTime < 60) {
-			return `${betweenTime}분전`;
-		}
-		const betweenTimeHour = Math.floor(betweenTime / 60);
-		if (betweenTimeHour < 24) {
-			return `${betweenTimeHour}시간전`;
-		}
-		const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-		if (betweenTimeDay < 365) {
-			return `${betweenTimeDay}일전`;
-		}
-		return `${Math.floor(betweenTimeDay / 365)}년전`;
-	}
+  const colorModalHandler = () => {
+    setColorOpen(!colorOpen);
+  };
 
-	const searchResult = (sea) => {
-		if (sea.length > 0) {
-			return Object.values(chat.send).filter((el) => {
-				if (el.message.includes(sea) || el.sender.includes(sea)) {
-					return el;
-				}
-			});
-		} else if (chat.send) {
-			return Object.values(chat.send);
-		}
-	};
+  const remindModalHandler = () => {
+    console.log("!");
+    setRemindOpen(!remindOpen);
+  };
 
-	let result = searchResult(search);
+  let logDate = (time) => {
+    let returnDate;
+    let date = new Date(time * 1000);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+    let hour = ("0" + date.getHours()).slice(-2);
+    let minute = ("0" + date.getMinutes()).slice(-2);
+    if (hour.slice(0, 1) !== "0") {
+      returnDate = `${hour}시${minute}분 (${calculateTime(time)})`;
+    } else {
+      returnDate = `${month}월 ${day}일 ${hour}시${minute}분`;
+    }
+    return returnDate;
+  };
+
+  function calculateTime(time) {
+    const today = new Date();
+    const timeValue = new Date(time * 1000);
+    const betweenTime = Math.floor(
+      (today.getTime() - timeValue.getTime()) / 1000 / 60
+    );
+    if (betweenTime < 1) return "방금전";
+    if (betweenTime < 60) {
+      return `${betweenTime}분전`;
+    }
+    const betweenTimeHour = Math.floor(betweenTime / 60);
+    if (betweenTimeHour < 24) {
+      return `${betweenTimeHour}시간전`;
+    }
+    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+    if (betweenTimeDay < 365) {
+      return `${betweenTimeDay}일전`;
+    }
+    return `${Math.floor(betweenTimeDay / 365)}년전`;
+  }
 
 	return (
 		<ChatWrap>

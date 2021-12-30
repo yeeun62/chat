@@ -124,5 +124,4 @@ const CustomColor = ({ colorModalHandler, id, name, user, chat }) => {
 		</ColorModal>
 	);
 };
-
 export default CustomColor;

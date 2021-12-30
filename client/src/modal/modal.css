@@ -1,8 +1,8 @@
 .content {
 	position: fixed;
 	background: #2d2d2d;
-	width: 50%;
-	min-width: 300px;
+  width: 40%;
+  min-width: calc(250px + 5rem);
 	height: 80%;
 	top: 50%;
 	left: 50%;
@@ -19,13 +19,13 @@
 }
 
 .overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(207, 207, 207, 0.45);
-	z-index: 5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(207, 207, 207, 0.45);
+  z-index: 5;
 }
 
 .modalButton {
