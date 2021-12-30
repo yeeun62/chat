@@ -2,7 +2,8 @@
 	position: fixed;
 	justify-content: center;
 	background: #2d2d2d;
-	width: 80%;
+	width: 50%;
+	min-width: 300px;
 	height: 80%;
 	top: 50%;
 	left: 50%;
@@ -12,7 +13,7 @@
 	-ms-transform: translate(-50%, -50%);
 	-o-transform: translate(-50%, -50%);
 	-webkit-overflow-scrolling: touch;
-	border-radius: 4px;
+	border-radius: 1rem;
 	outline: none;
 	padding: 1rem;
 	z-index: 5;
@@ -29,13 +30,31 @@
 }
 
 .modalButton {
-	margin: 1rem;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin: 1rem 0;
 	display: flex;
 	justify-content: space-around;
+	text-align: center;
 }
 
 .modalButton p {
 	color: #fff;
 	font-weight: bold;
 	cursor: pointer;
+	display: block;
+	width: 60px;
+	margin: auto;
+	border-radius: 50px;
+	height: 50px;
+	line-height: 50px;
+	background: linear-gradient(45deg, #292929, #303030);
+	box-shadow:  30px -30px 59px #252525, -30px 30px 59px #353535;
 }
+
+.modalButton p:hover {
+	
+}
+

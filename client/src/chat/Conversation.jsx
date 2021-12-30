@@ -228,6 +228,7 @@ function Conversation({ chat, user, search }) {
 			>
 				<CustomColor
 					colorModalHandler={colorModalHandler}
+					
 					id={id}
 					name={name}
 					chat={chat}
