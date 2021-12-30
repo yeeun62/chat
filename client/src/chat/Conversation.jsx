@@ -85,26 +85,28 @@ const Content = styled.div`
 			margin-bottom: 1rem;
 			font-weight: bold;
 		}
+	}
 
-		.contextMenu {
-			box-sizing: border-box;
-			width: 120px;
-			height: 50px;
-			background-color: #2d2d2d;
-			border-radius: 0.5rem;
+	.contextMenu {
+		box-sizing: border-box;
+		width: 80px;
+		height: 40px;
+		background-color: #2d2d2d;
+		border-radius: 0.5rem;
 
-			.remindBtn {
-				padding: 0.3rem;
-				color: #fff;
-				cursor: pointer;
-				font-weight: bold;
-				font-size: 0.7rem;
-				&:hover {
-					color: #e0de1b;
-				}
+		.remindBtn {
+			padding: 0.4rem;
+			color: #fff;
+			cursor: pointer;
+			font-weight: bold;
+			font-size: 0.8rem;
+
+			&:hover {
+				color: #e0de1b;
 			}
 		}
 	}
+
 	.me {
 		right: -58%;
 		.msg {
@@ -170,11 +172,12 @@ function Conversation({ chat, user, search }) {
 	let logDate = (time) => {
 		let returnDate;
 		let date = new Date(time * 1000);
+		let today = ("0" + new Date(Math.floor(Date.now())).getDate()).slice(-2);
 		let month = ("0" + (date.getMonth() + 1)).slice(-2);
 		let day = ("0" + date.getDate()).slice(-2);
 		let hour = ("0" + date.getHours()).slice(-2);
 		let minute = ("0" + date.getMinutes()).slice(-2);
-		if (hour.slice(0, 1) !== "0") {
+		if (day >= today) {
 			returnDate = `${hour}시${minute}분 (${calculateTime(time)})`;
 		} else {
 			returnDate = `${month}월 ${day}일 ${hour}시${minute}분`;
@@ -228,7 +231,6 @@ function Conversation({ chat, user, search }) {
 			>
 				<CustomColor
 					colorModalHandler={colorModalHandler}
-					
 					id={id}
 					name={name}
 					chat={chat}
@@ -319,15 +321,20 @@ function Conversation({ chat, user, search }) {
 									return (
 										<li key={el.time} className="chatMsg me">
 											<p className="sender">{el.sender}</p>
-											<div
-												className="msg"
-												onClick={() => {
-													remindModalHandler();
-													setMsg(el.message);
-												}}
-											>
-												{el.message}
-											</div>
+											<ContextMenuTrigger id="trigger">
+												<div
+													className="msg"
+													onClick={() => {
+														remindModalHandler();
+														setMsg(el.message);
+													}}
+													style={{
+														border: `2px solid ${origin.userColor}`,
+													}}
+												>
+													{el.message}
+												</div>
+											</ContextMenuTrigger>
 											<p className="time">{logDate(el.time)}</p>
 										</li>
 									);
@@ -341,40 +348,45 @@ function Conversation({ chat, user, search }) {
 												return (
 													<li key={el.time} className="chatMsg you">
 														<p className="sender">{el.sender}</p>
-														<div
-															className="msg"
-															onClick={() => {
-																remindModalHandler();
-																setMsg(el.message);
-															}}
-															style={{
-																border: `2px solid ${customUser[custom]}`,
-															}}
-														>
-															{el.message}
-														</div>
+														<ContextMenuTrigger id="trigger">
+															<div
+																className="msg"
+																onClick={() => {
+																	remindModalHandler();
+																	setMsg(el.message);
+																}}
+																style={{
+																	border: `2px solid ${customUser[custom]}`,
+																}}
+															>
+																{el.message}
+															</div>
+														</ContextMenuTrigger>
 														<p className="time">{logDate(el.time)}</p>
 													</li>
 												);
 											} else {
 												// 커스텀 유저목록에 없다면 일치하는 유저찾아 본인의 색
+												console.log("여기");
 												return Object.values(chat.member).map((origin) => {
 													if (origin.userId === el.userId) {
 														return (
 															<li key={el.time} className="chatMsg you">
 																<p className="sender">{el.sender}</p>
-																<div
-																	className="msg"
-																	onClick={() => {
-																		remindModalHandler();
-																		setMsg(el.message);
-																	}}
-																	style={{
-																		border: `2px solid ${origin.userColor}`,
-																	}}
-																>
-																	{el.message}
-																</div>
+																<ContextMenuTrigger id="trigger">
+																	<div
+																		className="msg"
+																		onClick={() => {
+																			remindModalHandler();
+																			setMsg(el.message);
+																		}}
+																		style={{
+																			border: `2px solid ${origin.userColor}`,
+																		}}
+																	>
+																		{el.message}
+																	</div>
+																</ContextMenuTrigger>
 																<p className="time">{logDate(el.time)}</p>
 															</li>
 														);
@@ -383,24 +395,26 @@ function Conversation({ chat, user, search }) {
 											}
 										}
 									} else {
-										// 커스텀유저가 존재하지 읺는다면 본인의 색
+										// 커스텀유저가 존재하지 않는다면 본인의 색
 										return Object.values(chat.member).map((origin) => {
 											if (origin.userId === el.userId) {
 												return (
 													<li key={el.time} className="chatMsg you">
 														<p className="sender">{el.sender}</p>
-														<div
-															className="msg"
-															onClick={() => {
-																remindModalHandler();
-																setMsg(el.message);
-															}}
-															style={{
-																border: `2px solid ${origin.userColor}`,
-															}}
-														>
-															{el.message}
-														</div>
+														<ContextMenuTrigger id="trigger">
+															<div
+																className="msg"
+																onClick={() => {
+																	remindModalHandler();
+																	setMsg(el.message);
+																}}
+																style={{
+																	border: `2px solid ${origin.userColor}`,
+																}}
+															>
+																{el.message}
+															</div>
+														</ContextMenuTrigger>
 														<p className="time">{logDate(el.time)}</p>
 													</li>
 												);
@@ -411,6 +425,11 @@ function Conversation({ chat, user, search }) {
 						  })
 						: null}
 				</ul>
+				<ContextMenu id="trigger">
+					<MenuItem onClick={remindModalHandler} className="contextMenu">
+						<p className="remindBtn">리마인더</p>
+					</MenuItem>
+				</ContextMenu>
 			</Content>
 		</ChatWrap>
 	);
