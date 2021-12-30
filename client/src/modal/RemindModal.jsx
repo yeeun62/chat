@@ -2,66 +2,46 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const MenuWrap = styled.div `
-    text-align: center;
-    overflow-y: auto;
-    overflow-x: hidden;
+const RemindWrap = styled.div`
+	width: 100%;
+	text-align: center;
+	overflow-y: auto;
+	overflow-x: hidden;
 
-    .remindTitle {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #fff;
-            text-align: center;
-            margin: 1rem;
-            padding-bottom: 30px;
-        }
+	.remindTitle {
+		margin: 30px 0;
+		font-size: 1.3rem;
+		font-weight: bold;
+		color: #dadada;
+	}
 
-    > div {
-        width: 100%;
-        margin-bottom: 40px;
+	.remindList {
+		font-weight: bold;
+		color: #00adc7;
+		margin: 3rem 0 1rem;
+	}
 
-        .whenRemind {
-            font-size: 1rem;
-            color: #fff;
-            font-weight: bold;
-        }
+	input {
+		cursor: pointer;
+	}
 
-        > input {
-            display: block;
-            margin: 20px auto;
-            cursor: pointer;
-        }
-    }
-    
-    .memberList {
-        font-size: 1rem;
-        color: #fff;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-    
-    > ul {
-        width: 40%;
-        padding: 10px 0;
-        text-align: center;
-        margin: auto;
-        overflow-y: auto;
-        cursor: pointer;
-        border-radius: 1rem;
+	ul {
+		width: 45%;
+		margin: auto;
+		overflow-y: auto;
+		cursor: pointer;
 
-        .remindMember {
-            width: 90%;
-            border-bottom: 1px solid #4b4b4b;
-            color: #fff;
-            margin: auto;
-            height: 1.6rem;
-            line-height: 1.5rem;
-            background: linear-gradient(45deg, #2f2d2d, #383636);
-            box-shadow:  23px -23px 100px #2e2c2c,
-                        -23px 23px 100px #3a3838;
-        }
-    }
-
+		.remindMember {
+			width: 100%;
+			border-bottom: 1px solid #2d2d2d;
+			background-color: #dadada;
+			color: #2d2d2d;
+			font-size: 0.8rem;
+			font-weight: bold;
+			height: 1.6rem;
+			line-height: 1.5rem;
+		}
+	}
 `;
 
 function RemindModal({ remindModalHandler, member, user, msg }) {
@@ -81,9 +61,7 @@ function RemindModal({ remindModalHandler, member, user, msg }) {
 		);
 		setShortUrl(shortUrl.data.url);
 	}, []);
-	console.log(shortUrl);
 
-	//! 나중에 https://chat.handle.market/chat/${window.location.pathname.slice(6)} 변경 & 단축 url
 	let messageContent = `
     안녕하세요 언제나 친절한 handle입니다??
     ${receiver} 고객님의 확인이 필요한 메시지가 있습니다.?
@@ -123,38 +101,54 @@ function RemindModal({ remindModalHandler, member, user, msg }) {
 	};
 
 	return (
-        <MenuWrap>
-            <p className="remindTitle">메세지 리마인드 보내기</p>
-            <div>
-                <p className="whenRemind">리마인드 날짜 지정</p>
-                <input type="date" id="dateInput" onChange={e => setDate({...date, data: e.target.value})}></input>
-                <input type="time" id="timeInput" onChange={e => setDate({...date, time: e.target.value})}></input>
-            </div>
-            <p className="memberList">리마인드 받는 사람 지정</p>
-            <ul>
-                {
-                    Object.values(member).map(el => {
-                        return <li key={el.userId} className="remindMember" onClick={() => {setReceiver(el.userName);
-								setReceiverPhone(el.userPhoneNumber)}}>
-                            {el.userName}
-                        </li>
-                    })
-                }
-            </ul>
-            <div className="modalButton">
-                <p 
-                    onClick={() => {
-                      remindModalHandler();
-						          remindRequest();
-                    }}
-                    className="confirm"
-                >
-                    생성
-                </p>
-                <p className="modalClose" onClick={remindModalHandler}>닫기</p>
-            </div>
-            
-        </MenuWrap>
+		<RemindWrap>
+			<p className="remindTitle">메세지 리마인드 보내기</p>
+			<p className="remindList">리마인드를 받으실 날짜를 지정해주세요</p>
+			<input
+				type="date"
+				className=""
+				onChange={(e) => setDate({ ...date, data: e.target.value })}
+			/>
+			<input
+				type="time"
+				className=""
+				onChange={(e) => setDate({ ...date, time: e.target.value })}
+			/>
+			<p className="remindList">리마인드 받는 분을 선택해주세요</p>
+			<ul>
+				{Object.values(member).map((el) => {
+					return (
+						<li
+							key={el.userId}
+							className="remindMember"
+							onClick={() => {
+								setReceiver(el.userName);
+								setReceiverPhone(el.userPhoneNumber);
+							}}
+							style={
+								receiver === el.userName ? { background: "#00adc7" } : null
+							}
+						>
+							{el.userName}
+						</li>
+					);
+				})}
+			</ul>
+			<div className="modalButton">
+				<p
+					onClick={() => {
+						remindModalHandler();
+						remindRequest();
+					}}
+					className="confirm"
+				>
+					생성
+				</p>
+				<p className="modalClose" onClick={remindModalHandler}>
+					닫기
+				</p>
+			</div>
+		</RemindWrap>
 	);
 }
 export default RemindModal;
