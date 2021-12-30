@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CustomColor from "../modal/CustomColor";
+import RemindModal from "../modal/RemindModal";
 import styled from "styled-components";
 import Modal from "react-modal";
-import RemindModal from "../modal/RemindModal";
 import "../App.css";
 import "../modal/modal.css";
-import axios from "axios";
 
 const ChatWrap = styled.div`
 	width: 100%;
@@ -85,6 +85,25 @@ const Content = styled.div`
 			margin-bottom: 1rem;
 			font-weight: bold;
 		}
+
+		.contextMenu {
+			box-sizing: border-box;
+			width: 120px;
+			height: 50px;
+			background-color: #2d2d2d;
+			border-radius: 0.5rem;
+
+			.remindBtn {
+				padding: 0.3rem;
+				color: #fff;
+				cursor: pointer;
+				font-weight: bold;
+				font-size: 0.7rem;
+				&:hover {
+					color: #e0de1b;
+				}
+			}
+		}
 	}
 	.me {
 		right: -58%;
@@ -113,19 +132,13 @@ const Content = styled.div`
 `;
 
 function Conversation({ chat, user, search }) {
-	let code = window.location.pathname.slice(6);
 	const scroll = useRef(null);
 	const [colorOpen, setColorOpen] = useState(false);
-	const [menuOpen, setMenuOpen] = useState(false);
+	const [remindOpen, setRemindOpen] = useState(false);
 	const [id, setId] = useState("");
 	const [name, setName] = useState("");
 	const [customUser, setCustomUser] = useState(null);
-	const [reqBody, setReqBody] = useState({
-		template: "",
-		receiver: localStorage.getItem(code).userName,
-		subject: "",
-		message: "",
-	});
+	const [msg, setMsg] = useState("");
 
 	const scrollDown = () => {
 		const { scrollHeight, clientHeight } = scroll.current;
@@ -150,26 +163,8 @@ function Conversation({ chat, user, search }) {
 		setColorOpen(!colorOpen);
 	};
 
-	const menuModalHandler = (boolean) => {
-		setMenuOpen(boolean);
-	};
-
-	const remindSetting = (atr) => {
-		let tem = `안녕하세요 #{고객명}님
-
-		handle 서비스에 가입해 주셔서 대단히 감사드립니다.
-		
-		#{고객명}님께 부여된 handle 주소는 아래와 같습니다.
-		
-		https://handle.im/my/#{고객휴대폰}`;
-
-		setReqBody({...reqBody, ...atr});
-	};
-
-	const remindRequest = async () => {
-		await axios.post("", reqBody).then((res) => {
-			if (res.status === 200) alert("요청이 완료되었습니다.");
-		});
+	const remindModalHandler = () => {
+		setRemindOpen(!remindOpen);
 	};
 
 	let logDate = (time) => {
@@ -240,20 +235,19 @@ function Conversation({ chat, user, search }) {
 					user={user}
 				/>
 			</Modal>
-			<Modal 
-				isOpen={menuOpen} 
-				ariaHideApp={false}
-				appElement={document.getElementById('root')}
+			<Modal
+				isOpen={remindOpen}
+				onRequestClose={remindModalHandler}
 				className="content"
 				overlayClassName="overlay"
-				onRequestClose={menuModalHandler}
+				ariaHideApp={false}
 			>
-				<RemindModal 
-					menuModalHandler={menuModalHandler} 
-					member={chat.member} 
-					remindRequest={remindRequest}
-					remindSetting={remindSetting}>
-				</RemindModal>
+				<RemindModal
+					remindModalHandler={remindModalHandler}
+					member={chat.member}
+					user={user}
+					msg={msg}
+				/>
 			</Modal>
 			<Member>
 				<ul>
@@ -320,93 +314,100 @@ function Conversation({ chat, user, search }) {
 				<ul ref={scroll}>
 					{chat.send && user
 						? result.map((el) => {
-								return (
-									<li
-										key={el.time}
-										className={
-											el.sender === user.userName ? "chatMsg me" : "chatMsg you"
+								//본인이라면
+								if (el.userId === user.userId) {
+									return (
+										<li key={el.time} className="chatMsg me">
+											<p className="sender">{el.sender}</p>
+											<div
+												className="msg"
+												onClick={() => {
+													remindModalHandler();
+													setMsg(el.message);
+												}}
+											>
+												{el.message}
+											</div>
+											<p className="time">{logDate(el.time)}</p>
+										</li>
+									);
+								} else {
+									//본인이아니라면
+									// 커스텀 유저가 존재한다면
+									if (customUser) {
+										for (let custom in customUser) {
+											// 커스텀 유저목록에 있다면
+											if (el.userId === custom) {
+												return (
+													<li key={el.time} className="chatMsg you">
+														<p className="sender">{el.sender}</p>
+														<div
+															className="msg"
+															onClick={() => {
+																remindModalHandler();
+																setMsg(el.message);
+															}}
+															style={{
+																border: `2px solid ${customUser[custom]}`,
+															}}
+														>
+															{el.message}
+														</div>
+														<p className="time">{logDate(el.time)}</p>
+													</li>
+												);
+											} else {
+												// 커스텀 유저목록에 없다면 일치하는 유저찾아 본인의 색
+												return Object.values(chat.member).map((origin) => {
+													if (origin.userId === el.userId) {
+														return (
+															<li key={el.time} className="chatMsg you">
+																<p className="sender">{el.sender}</p>
+																<div
+																	className="msg"
+																	onClick={() => {
+																		remindModalHandler();
+																		setMsg(el.message);
+																	}}
+																	style={{
+																		border: `2px solid ${origin.userColor}`,
+																	}}
+																>
+																	{el.message}
+																</div>
+																<p className="time">{logDate(el.time)}</p>
+															</li>
+														);
+													}
+												});
+											}
 										}
-									>
-										<p className="sender">{el.sender}</p>
-										<div 
-											className="msg"
-											onClick={() => {
-															menuModalHandler(true);
-															remindSetting({message: el.message});
-														}}
-                      					>{el.message}</div>
-										<p className="time">{logDate(el.time)}</p>
-									</li>
-								);
-								// if (customUser) {
-								// 	for (let custom in customUser) {
-								// 		if (el.userId === custom) {
-								// 			return (
-								// 				<li
-								// 					key={el.time}
-								// 					className={
-								// 						el.sender === user.userName
-								// 							? "chatMsg me"
-								// 							: "chatMsg you"
-								// 					}
-								// 				>
-								// 					<p className="sender">{el.sender}</p>
-								// 					<div
-								// 						className="msg"
-								// 						style={{
-								// 							border: `2px solid ${customUser[custom]}`,
-								// 						}}
-								// 					>
-								// 						{el.message}
-								// 					</div>
-								// 					<p className="time">{logDate(el.time)}</p>
-								// 				</li>
-								// 			);
-								// 		} else {
-								// 			return (
-								// 				<li
-								// 					key={el.time}
-								// 					className={
-								// 						el.sender === user.userName
-								// 							? "chatMsg me"
-								// 							: "chatMsg you"
-								// 					}
-								// 				>
-								// 					<p className="sender">{el.sender}</p>
-								// 					<div className="msg">{el.message}</div>
-								// 					<p className="time">{logDate(el.time)}</p>
-								// 				</li>
-								// 			);
-								// 		}
-								// 	}
-								// } else {
-								// 	return Object.values(chat.member).map((origin) => {
-								// 		if (origin.userId === el.userId) {
-								// 			return (
-								// 				<li
-								// 					key={el.time}
-								// 					className={
-								// 						el.sender === user.userName
-								// 							? "chatMsg me"
-								// 							: "chatMsg you"
-								// 					}
-								// 					onClick={() => {
-								// 						menuModalHandler(true, el.message);
-								// 					}}
-								// 				>
-								// 					<p className="sender">{el.sender}</p>
-								// 					<div
-								// 						className="msg"
-								// 						style={{ border: `2px solid ${origin.userColor}` }}
-								// 					>
-								// 						{el.message}
-								// 					</div>
-								// 					<p className="time">{logDate(el.time)}</p>
-								// 				</li>
-								// 			);
-								// 		}
-								// 	});
-								// }
+									} else {
+										// 커스텀유저가 존재하지 읺는다면 본인의 색
+										return Object.values(chat.member).map((origin) => {
+											if (origin.userId === el.userId) {
+												return (
+													<li key={el.time} className="chatMsg you">
+														<p className="sender">{el.sender}</p>
+														<div
+															className="msg"
+															onClick={() => {
+																remindModalHandler();
+																setMsg(el.message);
+															}}
+															style={{
+																border: `2px solid ${origin.userColor}`,
+															}}
+														>
+															{el.message}
+														</div>
+														<p className="time">{logDate(el.time)}</p>
+													</li>
+												);
+											}
+										});
+									}
+								}
 						  })
 						: null}
 				</ul>

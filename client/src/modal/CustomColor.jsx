@@ -83,10 +83,13 @@ const CustomColor = ({ colorModalHandler, id, name, user, chat }) => {
 					></ColorBall>
 				);
 			})}
-			</div>
 			<div className="modalButton">
-				<p onClick={colorChange} className="confirm">변경</p>
-				<p onClick={colorModalHandler} className="modalClose">닫기</p>
+				<p onClick={colorChange} className="modalComfirm">
+					변경
+				</p>
+				<p onClick={colorModalHandler} className="modalClose">
+					닫기
+				</p>
 			</div>
 		</ColorModal>
 	);
