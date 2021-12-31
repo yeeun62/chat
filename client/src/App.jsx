@@ -37,26 +37,35 @@ const GlobalStyles = createGlobalStyle`
 		display: flex;
 		flex-direction: column;
 		margin-top: 2rem;
+		width: 85%;
+		margin: 30px auto;
 	}
 
 	.inviteSection {
 		display: flex;
+		flex-direction: row;
 		justify-content: space-between;
-		margin: 0.4rem 3.2rem;
+		margin: 0.8rem 3.2rem;
 	}
 
 	.inviteTitle {
 		color: #4b4b4b;
-		font-size: 1.2rem;
+		font-size: 1rem;
 		font-weight: bold;
 	}
 
 	.inviteInput {
+		height: 2rem;
 		border: none;
-		background-color: #b8b513;
 		border-radius: 0.2rem;
 		padding-left: 0.4rem;
 		font-weight: bold;
+		background-color: #b8b513;
+
+		&:focus {
+			border: 2px solid #006495;
+			background-color: #d6edf8;
+		}
 	}
 
 	.inviteButton {
@@ -86,16 +95,16 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 function App() {
-	return (
-		<BrowserRouter>
-			<GlobalStyles />
-			<Routes>
-				<Route path="/" element={<Create />}></Route>
-				<Route path="/chat/:code" element={<Chat />}></Route>
-				<Route path="/chat/invited/:code" element={<Invited />}></Route>
-			</Routes>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <GlobalStyles />
+      <Routes>
+        <Route path="/" element={<Create />}></Route>
+        <Route path="/chat/:code" element={<Chat />}></Route>
+        <Route path="/chat/invited/:code" element={<Invited />}></Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
