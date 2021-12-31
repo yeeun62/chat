@@ -354,7 +354,6 @@ function Conversation({ chat, user, result }) {
 												);
 											} else {
 												// 커스텀 유저목록에 없다면 일치하는 유저찾아 본인의 색
-												console.log("여기");
 												return Object.values(chat.member).map((origin) => {
 													if (origin.userId === el.userId) {
 														return (
