@@ -153,10 +153,10 @@ function Conversation({ chat, user, result }) {
   };
 
   useEffect(() => {
-    if (chat) {
+    if (result) {
       scrollDown();
     }
-  }, [chat]);
+  }, [result]);
 
   useEffect(() => {
     if (chat.color) {
