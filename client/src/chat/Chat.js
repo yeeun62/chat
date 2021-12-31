@@ -20,6 +20,7 @@ function Chat() {
   let { code } = useParams();
   const [chat, setChat] = useState(null);
   const [user, setUser] = useState(null);
+  const [result, setResult] = useState([]);
 
   useEffect(() => {
     const db = getDatabase();
@@ -27,6 +28,7 @@ function Chat() {
     onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
       let boolean = true;
+      console.log(Object.values(data));
       Object.values(data).map((el) => {
         if (el.site.code === code && true) {
           setChat(el);
@@ -55,8 +57,6 @@ function Chat() {
     }
   };
 
-  const [result, setResult] = useState([]);
-
   return (
     <ChatWrap>
       {chat ? (
@@ -67,12 +67,7 @@ function Chat() {
             setResult={setResult}
           ></ChatHeader>
           <TaskInfo></TaskInfo>
-          <Conversation
-            chat={chat}
-            user={user}
-            code={code}
-            result={result}
-          ></Conversation>
+          <Conversation chat={chat} user={user} result={result}></Conversation>
           <Input code={code}></Input>
         </>
       ) : (
