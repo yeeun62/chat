@@ -9,11 +9,11 @@ import Input from "./Input";
 import Loading from "./Loading";
 
 const ChatWrap = styled.div`
-  width: 100%;
-  height: 100vh;
-  min-height: 500px;
-  border: 3px solid #2d2d2d;
-  background-color: #2d2d2d;
+	width: 100%;
+	height: 100vh;
+	min-height: 500px;
+	border: 3px solid #2d2d2d;
+	background-color: #2d2d2d;
 `;
 
 function Chat() {
@@ -28,7 +28,6 @@ function Chat() {
     onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
       let boolean = true;
-      console.log(Object.values(data));
       Object.values(data).map((el) => {
         if (el.site.code === code && true) {
           setChat(el);
@@ -39,23 +38,23 @@ function Chat() {
     });
   }, []);
 
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem(code)));
-  }, []);
+	useEffect(() => {
+		setUser(JSON.parse(localStorage.getItem(code)));
+	}, []);
 
-  const searchResult = (sea) => {
-    if (sea.length > 0) {
-      setResult(
-        Object.values(chat.send).filter((el) => {
-          if (el.message.includes(sea) || el.sender.includes(sea)) {
-            return el;
-          }
-        })
-      );
-    } else if (chat.send) {
-      setResult(Object.values(chat.send));
-    }
-  };
+	const searchResult = (sea) => {
+		if (sea.length > 0) {
+			setResult(
+				Object.values(chat.send).filter((el) => {
+					if (el.message.includes(sea) || el.sender.includes(sea)) {
+						return el;
+					}
+				})
+			);
+		} else if (chat.send) {
+			setResult(Object.values(chat.send));
+		}
+	};
 
   return (
     <ChatWrap>
@@ -76,5 +75,4 @@ function Chat() {
     </ChatWrap>
   );
 }
-
 export default Chat;
