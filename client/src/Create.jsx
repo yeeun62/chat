@@ -26,10 +26,16 @@ function Create() {
   });
 
   const createChatHandler = (e) => {
-    if (e.target.name === "userPhoneNumber") {
-      setCreateChat({ ...createChat, [e.target.name]: e.target.value });
-    }
     setCreateChat({ ...createChat, [e.target.name]: e.target.value });
+    if (e.target.name === "userPhoneNumber") {
+      let num = e.target.value
+        .split("")
+        .filter((s) => {
+          return Number(s);
+        })
+        .join("");
+      setCreateChat({ ...createChat, [e.target.name]: num });
+    }
   };
 
   const createChatRoom = async () => {
@@ -91,104 +97,106 @@ function Create() {
   let n = " ";
 
   return (
-    <div className="inviteWrap">
-      <p className="title">
-        <span className="handle-logo-font">handle</span>
-        {n}채팅방에 오신걸환영합니다🥳
-      </p>
-      <form className="form" onSubmit={(e) => e.preventDefault()}>
-        <div className="inviteSection">
-          <span className="inviteTitle">사용자 이름</span>
-          <input
-            name="userName"
-            className="inviteInput"
-            onChange={(e) => {
-              createChatHandler(e);
-            }}
-          ></input>
-        </div>
-        <div className="inviteSection">
-          <span className="inviteTitle">사용자 아이디</span>
-          <input
-            name="userId"
-            className="inviteInput"
-            onChange={(e) => {
-              createChatHandler(e);
-            }}
-          ></input>
-        </div>
-        <div className="inviteSection">
-          <span className="inviteTitle">사용자 전화번호</span>
-          <input
-            maxLength={11}
-            placeholder="01012345678"
-            name="userPhoneNumber"
-            className="inviteInput"
-            onChange={(e) => {
-              createChatHandler(e);
-            }}
-          ></input>
-        </div>
-        <div className="inviteSection">
-          <span className="inviteTitle">사이트 명</span>
-          <input
-            name="name"
-            className="inviteInput"
-            onChange={(e) => {
-              createChatHandler(e);
-            }}
-          />
-        </div>
-        <div className="inviteSection">
-          <span className="inviteTitle">채팅방 이름</span>
-          <input
-            name="title"
-            className="inviteInput"
-            onChange={(e) => {
-              createChatHandler(e);
-            }}
-          ></input>
-        </div>
-        <div className="inviteSection">
-          <span className="inviteTitle">부가정보 1</span>
-          <input
-            name="addon1"
-            className="inviteInput"
-            onChange={(e) => {
-              createChatHandler(e);
-            }}
-          ></input>
-        </div>
-        <div className="inviteSection">
-          <span className="inviteTitle">부가정보 2</span>
-          <input
-            name="addon2"
-            className="inviteInput"
-            onChange={(e) => {
-              createChatHandler(e);
-            }}
-          ></input>
-        </div>
-        <p
-          style={{
-            textAlign: "center",
-            fontSize: "0.7rem",
-            marginTop: "0.2rem",
-            fontWeight: "bold",
-          }}
-          className="addon"
-        >
-          *부가정보는 선택사항입니다.
+    <div className="background">
+      <div className="inviteWrap">
+        <p className="title">
+          <span className="handle-logo-font">handle</span>
+          {n}채팅방에 오신걸환영합니다🥳
         </p>
-        <button
-          type="button"
-          className="handle-button"
-          onClick={createChatRoom}
-          style={{ fontWeight: "bold" }}
-        >
-          채팅방 입장
-        </button>
-      </form>
+        <form className="form" onSubmit={(e) => e.preventDefault()}>
+          <div className="inviteSection">
+            <span className="inviteTitle">사용자 이름</span>
+            <input
+              name="userName"
+              className="inviteInput"
+              onChange={(e) => {
+                createChatHandler(e);
+              }}
+            ></input>
+          </div>
+          <div className="inviteSection">
+            <span className="inviteTitle">사용자 아이디</span>
+            <input
+              name="userId"
+              className="inviteInput"
+              onChange={(e) => {
+                createChatHandler(e);
+              }}
+            ></input>
+          </div>
+          <div className="inviteSection">
+            <span className="inviteTitle">사용자 전화번호</span>
+            <input
+              maxLength={11}
+              placeholder="01012345678"
+              name="userPhoneNumber"
+              className="inviteInput"
+              onChange={(e) => {
+                createChatHandler(e);
+              }}
+            ></input>
+          </div>
+          <div className="inviteSection">
+            <span className="inviteTitle">사이트 명</span>
+            <input
+              name="name"
+              className="inviteInput"
+              onChange={(e) => {
+                createChatHandler(e);
+              }}
+            />
+          </div>
+          <div className="inviteSection">
+            <span className="inviteTitle">채팅방 이름</span>
+            <input
+              name="title"
+              className="inviteInput"
+              onChange={(e) => {
+                createChatHandler(e);
+              }}
+            ></input>
+          </div>
+          <div className="inviteSection">
+            <span className="inviteTitle">부가정보 1</span>
+            <input
+              name="addon1"
+              className="inviteInput"
+              onChange={(e) => {
+                createChatHandler(e);
+              }}
+            ></input>
+          </div>
+          <div className="inviteSection">
+            <span className="inviteTitle">부가정보 2</span>
+            <input
+              name="addon2"
+              className="inviteInput"
+              onChange={(e) => {
+                createChatHandler(e);
+              }}
+            ></input>
+          </div>
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "0.7rem",
+              marginTop: "0.2rem",
+              fontWeight: "bold",
+            }}
+            className="addon"
+          >
+            *부가정보는 선택사항입니다.
+          </p>
+          <button
+            type="button"
+            className="handle-button"
+            onClick={createChatRoom}
+            style={{ fontWeight: "bold" }}
+          >
+            채팅방 입장
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

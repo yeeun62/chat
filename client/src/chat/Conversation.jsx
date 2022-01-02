@@ -187,7 +187,6 @@ function Conversation({ chat, user, result }) {
   };
 
   const remindModalHandler = () => {
-    console.log("!");
     setRemindOpen(!remindOpen);
   };
 
@@ -344,7 +343,6 @@ function Conversation({ chat, user, result }) {
                               <div
                                 className="msg"
                                 onClick={() => {
-                                  remindModalHandler();
                                   setMsg(el.message);
                                 }}
                                 style={{
@@ -369,7 +367,6 @@ function Conversation({ chat, user, result }) {
                                   <div
                                     className="msg"
                                     onClick={() => {
-                                      remindModalHandler();
                                       setMsg(el.message);
                                     }}
                                     style={{
@@ -397,7 +394,6 @@ function Conversation({ chat, user, result }) {
                               <div
                                 className="msg"
                                 onClick={() => {
-                                  remindModalHandler();
                                   setMsg(el.message);
                                 }}
                                 style={{
