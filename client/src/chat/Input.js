@@ -109,7 +109,7 @@ function Input({ code }) {
 						})
 					}
 					onKeyPress={(e) => {
-						if (e.key == "Enter") msgSend();
+						if (e.key === "Enter") msgSend();
 					}}
 				/>
 				<span className="send" onClick={msgSend}>
