@@ -11,22 +11,17 @@ const TaskInformation = styled.div`
   background-color: #2d2d2d;
   padding: auto 2rem;
   overflow: hidden;
-
-  .nowStep {
-    @media screen and (max-width: 500px) {
-      font-size: 14px;
-      line-height: 14px;
-    }
-    margin-top: 5px;
-  }
   border-bottom: 1px slid #999 !important;
-  .false {
-    display: none;
+  display: flex;
+
+  > select {
+    margin: auto;
+    width: 14%;
   }
 `;
 
 const Progress = styled.div`
-  width: 90%;
+  width: 80%;
   height: 70%;
   background-color: #fffeb3;
   margin: 1.05% auto;
@@ -60,7 +55,7 @@ const MoreInfo = styled.div`
   }
 `;
 
-function TaskInfo() {
+function TaskInfo({ translatedResult, result }) {
   const [more, setMore] = useState(false);
   const moreButton = () => setMore(true);
   const closeButton = () => setMore(false);
@@ -70,6 +65,12 @@ function TaskInfo() {
       <Progress>
         <Bar>{"task"}</Bar>
       </Progress>
+      <select onChange={(e) => translatedResult(result, e.target.value)}>
+        <option value="ko">한국어</option>
+        <option value="en">영어</option>
+        <option value="ja jp">일본어</option>
+        <option value="zh-CN cn">중국어 간체</option>
+      </select>
       {/* <button onClick={moreButton}>추가 정보 표시</button>
       <MoreInfo className={more}>
         <h5>업무 관련 자세한 정보</h5>
