@@ -16,13 +16,17 @@ const GlobalStyles = createGlobalStyle`
 		text-decoration: none;
 		box-sizing: border-box;
 	}
+
+	.background {
+		height: 100vh;
+		width: 100%;
+		background: #e0de1b;
+	}
 	
 	.inviteWrap {
 		margin: 3rem auto;
 		width: 30rem;
-		height: 80vh;
-		background: #e0de1b;
-		border-radius: 1rem;
+		height: auto;
 	}
 
 	.title{
@@ -63,8 +67,8 @@ const GlobalStyles = createGlobalStyle`
 		background-color: #b8b513;
 
 		&:focus {
-			border: 2px solid #006495;
-			background-color: #d6edf8;
+			border: 2px solid #fffb16;
+			background-color: #f1f0b4;
 		}
 	}
 
@@ -74,7 +78,6 @@ const GlobalStyles = createGlobalStyle`
 		color: #3d3d3d;
 		font-weight: bold;
 		background-color: #b8b513;
-		margin: 2rem auto;
 	}
 
 	button[type="button"],
@@ -91,6 +94,7 @@ const GlobalStyles = createGlobalStyle`
 		border: 1px solid #b8b513;
 		border-bottom-left-radius: 7px;
 		cursor: pointer;
+		margin: 2rem auto;
 	}
 `;
 
