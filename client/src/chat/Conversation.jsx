@@ -83,6 +83,9 @@ const Content = styled.div`
       margin: 0.2rem 0;
       background-color: #dadada;
       font-weight: bold;
+      .msg-search {
+        background-color: #e0de1b;
+      }
     }
     .time {
       font-size: 0.6em;
@@ -323,7 +326,15 @@ function Conversation({ chat, user, result }) {
                             border: `2px solid ${origin.userColor}`,
                           }}
                         >
-                          {el.message}
+                          {el.search ? (
+                            <>
+                              <span>{el.message.split(el.search)[0]}</span>
+                              <span className="msg-search">{el.search}</span>
+                              <span>{el.message.split(el.search)[1]}</span>
+                            </>
+                          ) : (
+                            el.message
+                          )}
                         </div>
                       </ContextMenuTrigger>
                       <p className="time">{logDate(el.time)}</p>
@@ -349,7 +360,21 @@ function Conversation({ chat, user, result }) {
                                   border: `2px solid ${customUser[custom]}`,
                                 }}
                               >
-                                {el.message}
+                                {el.search ? (
+                                  <>
+                                    <span>
+                                      {el.message.split(el.search)[0]}
+                                    </span>
+                                    <span className="msg-search">
+                                      {el.search}
+                                    </span>
+                                    <span>
+                                      {el.message.split(el.search)[1]}
+                                    </span>
+                                  </>
+                                ) : (
+                                  el.message
+                                )}
                               </div>
                             </ContextMenuTrigger>
                             <p className="time">{logDate(el.time)}</p>
@@ -357,7 +382,6 @@ function Conversation({ chat, user, result }) {
                         );
                       } else {
                         // 커스텀 유저목록에 없다면 일치하는 유저찾아 본인의 색
-                        console.log("여기");
                         return Object.values(chat.member).map((origin) => {
                           if (origin.userId === el.userId) {
                             return (
@@ -373,7 +397,21 @@ function Conversation({ chat, user, result }) {
                                       border: `2px solid ${origin.userColor}`,
                                     }}
                                   >
-                                    {el.message}
+                                    {el.search ? (
+                                      <>
+                                        <span>
+                                          {el.message.split(el.search)[0]}
+                                        </span>
+                                        <span className="msg-search">
+                                          {el.search}
+                                        </span>
+                                        <span>
+                                          {el.message.split(el.search)[1]}
+                                        </span>
+                                      </>
+                                    ) : (
+                                      el.message
+                                    )}
                                   </div>
                                 </ContextMenuTrigger>
                                 <p className="time">{logDate(el.time)}</p>
@@ -400,7 +438,21 @@ function Conversation({ chat, user, result }) {
                                   border: `2px solid ${origin.userColor}`,
                                 }}
                               >
-                                {el.message}
+                                {el.search ? (
+                                  <>
+                                    <span>
+                                      {el.message.split(el.search)[0]}
+                                    </span>
+                                    <span className="msg-search">
+                                      {el.search}
+                                    </span>
+                                    <span>
+                                      {el.message.split(el.search)[1]}
+                                    </span>
+                                  </>
+                                ) : (
+                                  el.message
+                                )}
                               </div>
                             </ContextMenuTrigger>
                             <p className="time">{logDate(el.time)}</p>
