@@ -18,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
 	}
 
 	.background {
-		height: 100%;
+		height: 100vh;
 		width: 100%;
 		background: #e0de1b;
 	}
