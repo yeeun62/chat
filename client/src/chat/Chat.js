@@ -17,26 +17,28 @@ const ChatWrap = styled.div`
 `;
 
 function Chat() {
-  let { code } = useParams();
-  const [chat, setChat] = useState(null);
-  const [user, setUser] = useState(null);
-  const [result, setResult] = useState([]);
+	let { code } = useParams();
+	const [chat, setChat] = useState(null);
+	const [user, setUser] = useState(null);
+	const [result, setResult] = useState([]);
 
-  useEffect(() => {
-    const db = getDatabase();
-    const dbRef = ref(db, "chat");
-    onValue(dbRef, (snapshot) => {
-      const data = snapshot.val();
-      let boolean = true;
-      Object.values(data).map((el) => {
-        if (el.site.code === code && true) {
-          setChat(el);
-          setResult(Object.values(el.send));
-          boolean = false;
-        }
-      });
-    });
-  }, []);
+	useEffect(() => {
+		const db = getDatabase();
+		const dbRef = ref(db, "chat");
+		onValue(dbRef, (snapshot) => {
+			const data = snapshot.val();
+			let boolean = true;
+			Object.values(data).map((el) => {
+				if (el.site.code === code && boolean) {
+					setChat(el);
+					boolean = false;
+				}
+				if (el.send) {
+					setResult(Object.values(el.send));
+				}
+			});
+		});
+	}, []);
 
 	useEffect(() => {
 		setUser(JSON.parse(localStorage.getItem(code)));
@@ -56,23 +58,23 @@ function Chat() {
 		}
 	};
 
-  return (
-    <ChatWrap>
-      {chat ? (
-        <>
-          <ChatHeader
-            chat={chat}
-            searchResult={searchResult}
-            setResult={setResult}
-          ></ChatHeader>
-          <TaskInfo></TaskInfo>
-          <Conversation chat={chat} user={user} result={result}></Conversation>
-          <Input code={code}></Input>
-        </>
-      ) : (
-        <Loading></Loading>
-      )}
-    </ChatWrap>
-  );
+	return (
+		<ChatWrap>
+			{chat ? (
+				<>
+					<ChatHeader
+						chat={chat}
+						searchResult={searchResult}
+						setResult={setResult}
+					></ChatHeader>
+					<TaskInfo></TaskInfo>
+					<Conversation chat={chat} user={user} result={result}></Conversation>
+					<Input code={code}></Input>
+				</>
+			) : (
+				<Loading></Loading>
+			)}
+		</ChatWrap>
+	);
 }
 export default Chat;
