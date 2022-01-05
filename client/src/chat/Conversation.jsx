@@ -70,30 +70,30 @@ const Content = styled.div`
 		height: auto;
 		overflow: hidden;
 
-    .sender {
-      font-weight: bold;
-      color: #2d2d2d;
-      text-align: right;
-    }
-    .msg {
-      width: 100%;
-      height: auto;
-      overflow: hidden;
-      padding: 0.5rem;
-      margin: 0.2rem 0;
-      background-color: #dadada;
-      font-weight: bold;
-      .msg-search {
-        background-color: #e0de1b;
-      }
-    }
-    .time {
-      font-size: 0.6em;
-      color: #2d2d2d;
-      margin-bottom: 1rem;
-      font-weight: bold;
-    }
-  }
+		.sender {
+			font-weight: bold;
+			color: #2d2d2d;
+			text-align: right;
+		}
+		.msg {
+			width: 100%;
+			height: auto;
+			overflow: hidden;
+			padding: 0.5rem;
+			margin: 0.2rem 0;
+			background-color: #dadada;
+			font-weight: bold;
+			.msg-search {
+				background-color: #e0de1b;
+			}
+		}
+		.time {
+			font-size: 0.6em;
+			color: #2d2d2d;
+			margin-bottom: 1rem;
+			font-weight: bold;
+		}
+	}
 
 	.contextMenu {
 		box-sizing: border-box;
@@ -141,7 +141,7 @@ const Content = styled.div`
 	}
 `;
 
-function Conversation({ chat, user, result }) {
+function Conversation({ chat, user, sendData, translateSend }) {
 	const scroll = useRef(null);
 	const [colorOpen, setColorOpen] = useState(false);
 	const [remindOpen, setRemindOpen] = useState(false);
@@ -156,10 +156,10 @@ function Conversation({ chat, user, result }) {
 	};
 
 	useEffect(() => {
-		if (result) {
+		if (sendData) {
 			scrollDown();
 		}
-	}, [result]);
+	}, [sendData]);
 
 	useEffect(() => {
 		if (chat.color) {
@@ -226,264 +226,271 @@ function Conversation({ chat, user, result }) {
 		return `${Math.floor(betweenTimeDay / 365)}년전`;
 	}
 
-  return (
-    <ChatWrap>
-      <Modal
-        isOpen={colorOpen}
-        onRequestClose={colorModalHandler}
-        className="content"
-        overlayClassName="overlay"
-        ariaHideApp={false}
-      >
-        <CustomColor
-          colorModalHandler={colorModalHandler}
-          id={id}
-          name={name}
-          chat={chat}
-          user={user}
-        />
-      </Modal>
-      <Modal
-        isOpen={remindOpen}
-        onRequestClose={remindModalHandler}
-        className="content"
-        overlayClassName="overlay"
-        ariaHideApp={false}
-      >
-        <RemindModal
-          remindModalHandler={remindModalHandler}
-          member={chat.member}
-          user={user}
-          msg={msg}
-        />
-      </Modal>
-      <Member>
-        <ul>
-          {Object.values(chat.member).map((el, i) => {
-            if (customUser) {
-              for (let user in customUser) {
-                if (el.userId === user) {
-                  return (
-                    <li
-                      style={{ background: customUser[user] }}
-                      key={Object.keys(el)[i]}
-                      onClick={() => {
-                        colorModalHandler();
-                        setId(el.userId);
-                        setName(el.userName);
-                      }}
-                    >
-                      {el.userName.slice(0, 1)}
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li
-                      style={{ background: el.userColor }}
-                      key={Object.keys(el)[i]}
-                      onClick={() => {
-                        colorModalHandler();
-                        setId(el.userId);
-                        setName(el.userName);
-                      }}
-                    >
-                      {el.userName.slice(0, 1)}
-                    </li>
-                  );
-                }
-              }
-            } else {
-              return (
-                <li
-                  style={{ background: el.userColor }}
-                  key={Object.keys(el)[i]}
-                  onClick={() => {
-                    colorModalHandler();
-                    setId(el.userId);
-                    setName(el.userName);
-                  }}
-                >
-                  {el.userName.slice(0, 1)}
-                </li>
-              );
-            }
-          })}
-        </ul>
-        <div className="inviteLink">
-          <CopyToClipboard
-            text={`http://localhost:3000/chat/invited/${chat.site.code}`}
-            // text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
-          >
-            <p>초대링크복사📎</p>
-          </CopyToClipboard>
-        </div>
-      </Member>
-      <Content>
-        <ul ref={scroll}>
-          {chat.send && user
-            ? result.map((el) => {
-                //본인이라면
-                if (el.userId === user.userId) {
-                  return (
-                    <li key={el.time} className="chatMsg me">
-                      <p className="sender">{el.sender}</p>
-                      <ContextMenuTrigger id="trigger">
-                        <div
-                          className="msg"
-                          onClick={() => {
-                            remindModalHandler();
-                            setMsg(el.message);
-                          }}
-                          style={{
-                            border: `2px solid ${origin.userColor}`,
-                          }}
-                        >
-                          {el.search ? (
-                            <>
-                              <span>{el.message.split(el.search)[0]}</span>
-                              <span className="msg-search">{el.search}</span>
-                              <span>{el.message.split(el.search)[1]}</span>
-                            </>
-                          ) : (
-                            el.message
-                          )}
-                        </div>
-                      </ContextMenuTrigger>
-                      <p className="time">{logDate(el.time)}</p>
-                    </li>
-                  );
-                } else {
-                  //본인이아니라면
-                  // 커스텀 유저가 존재한다면
-                  if (customUser) {
-                    for (let custom in customUser) {
-                      // 커스텀 유저목록에 있다면
-                      if (el.userId === custom) {
-                        return (
-                          <li key={el.time} className="chatMsg you">
-                            <p className="sender">{el.sender}</p>
-                            <ContextMenuTrigger id="trigger">
-                              <div
-                                className="msg"
-                                onClick={() => {
-                                  setMsg(el.message);
-                                }}
-                                style={{
-                                  border: `2px solid ${customUser[custom]}`,
-                                }}
-                              >
-                                {el.search ? (
-                                  <>
-                                    <span>
-                                      {el.message.split(el.search)[0]}
-                                    </span>
-                                    <span className="msg-search">
-                                      {el.search}
-                                    </span>
-                                    <span>
-                                      {el.message.split(el.search)[1]}
-                                    </span>
-                                  </>
-                                ) : (
-                                  el.message
-                                )}
-                              </div>
-                            </ContextMenuTrigger>
-                            <p className="time">{logDate(el.time)}</p>
-                          </li>
-                        );
-                      } else {
-                        // 커스텀 유저목록에 없다면 일치하는 유저찾아 본인의 색
-                        return Object.values(chat.member).map((origin) => {
-                          if (origin.userId === el.userId) {
-                            return (
-                              <li key={el.time} className="chatMsg you">
-                                <p className="sender">{el.sender}</p>
-                                <ContextMenuTrigger id="trigger">
-                                  <div
-                                    className="msg"
-                                    onClick={() => {
-                                      setMsg(el.message);
-                                    }}
-                                    style={{
-                                      border: `2px solid ${origin.userColor}`,
-                                    }}
-                                  >
-                                    {el.search ? (
-                                      <>
-                                        <span>
-                                          {el.message.split(el.search)[0]}
-                                        </span>
-                                        <span className="msg-search">
-                                          {el.search}
-                                        </span>
-                                        <span>
-                                          {el.message.split(el.search)[1]}
-                                        </span>
-                                      </>
-                                    ) : (
-                                      el.message
-                                    )}
-                                  </div>
-                                </ContextMenuTrigger>
-                                <p className="time">{logDate(el.time)}</p>
-                              </li>
-                            );
-                          }
-                        });
-                      }
-                    }
-                  } else {
-                    // 커스텀유저가 존재하지 않는다면 본인의 색
-                    return Object.values(chat.member).map((origin) => {
-                      if (origin.userId === el.userId) {
-                        return (
-                          <li key={el.time} className="chatMsg you">
-                            <p className="sender">{el.sender}</p>
-                            <ContextMenuTrigger id="trigger">
-                              <div
-                                className="msg"
-                                onClick={() => {
-                                  setMsg(el.message);
-                                }}
-                                style={{
-                                  border: `2px solid ${origin.userColor}`,
-                                }}
-                              >
-                                {el.search ? (
-                                  <>
-                                    <span>
-                                      {el.message.split(el.search)[0]}
-                                    </span>
-                                    <span className="msg-search">
-                                      {el.search}
-                                    </span>
-                                    <span>
-                                      {el.message.split(el.search)[1]}
-                                    </span>
-                                  </>
-                                ) : (
-                                  el.message
-                                )}
-                              </div>
-                            </ContextMenuTrigger>
-                            <p className="time">{logDate(el.time)}</p>
-                          </li>
-                        );
-                      }
-                    });
-                  }
-                }
-              })
-            : null}
-        </ul>
-        <ContextMenu id="trigger">
-          <MenuItem onClick={remindModalHandler} className="contextMenu">
-            <p className="remindBtn">리마인더</p>
-          </MenuItem>
-        </ContextMenu>
-      </Content>
-    </ChatWrap>
-  );
+	return (
+		<ChatWrap>
+			<Modal
+				isOpen={colorOpen}
+				onRequestClose={colorModalHandler}
+				className="content"
+				overlayClassName="overlay"
+				ariaHideApp={false}
+			>
+				<CustomColor
+					colorModalHandler={colorModalHandler}
+					id={id}
+					name={name}
+					chat={chat}
+					user={user}
+				/>
+			</Modal>
+			<Modal
+				isOpen={remindOpen}
+				onRequestClose={remindModalHandler}
+				className="content"
+				overlayClassName="overlay"
+				ariaHideApp={false}
+			>
+				<RemindModal
+					remindModalHandler={remindModalHandler}
+					member={chat.member}
+					user={user}
+					msg={msg}
+				/>
+			</Modal>
+			<Member>
+				<ul>
+					{Object.values(chat.member).map((el, i) => {
+						if (customUser) {
+							for (let user in customUser) {
+								if (el.userId === user) {
+									return (
+										<li
+											style={{ background: customUser[user] }}
+											key={Object.keys(el)[i]}
+											onClick={() => {
+												colorModalHandler();
+												setId(el.userId);
+												setName(el.userName);
+											}}
+										>
+											{el.userName.slice(0, 1)}
+										</li>
+									);
+								} else {
+									return (
+										<li
+											style={{ background: el.userColor }}
+											key={Object.keys(el)[i]}
+											onClick={() => {
+												colorModalHandler();
+												setId(el.userId);
+												setName(el.userName);
+											}}
+										>
+											{el.userName.slice(0, 1)}
+										</li>
+									);
+								}
+							}
+						} else {
+							return (
+								<li
+									style={{ background: el.userColor }}
+									key={Object.keys(el)[i]}
+									onClick={() => {
+										colorModalHandler();
+										setId(el.userId);
+										setName(el.userName);
+									}}
+								>
+									{el.userName.slice(0, 1)}
+								</li>
+							);
+						}
+					})}
+				</ul>
+				<div className="inviteLink">
+					<CopyToClipboard
+						text={`http://localhost:3000/chat/invited/${chat.site.code}`}
+						// text={`https://chat.handle.market/chat/invited/${chat.site.code}`}
+					>
+						<p>초대링크복사📎</p>
+					</CopyToClipboard>
+				</div>
+			</Member>
+			<Content>
+				<ul ref={scroll}>
+					{chat.send && user
+						? sendData.map((el, i) => {
+								//본인이라면
+								if (el.userId === user.userId) {
+									return (
+										<li key={el.time} className="chatMsg me">
+											<p className="sender">{el.sender}</p>
+											<ContextMenuTrigger id="trigger">
+												<div
+													className="msg"
+													onClick={() => {
+														setMsg(el.message);
+													}}
+													style={{
+														border: `2px solid ${origin.userColor}`,
+													}}
+												>
+													{el.search ? (
+														<>
+															<span>{el.message.split(el.search)[0]}</span>
+															<span className="msg-search">{el.search}</span>
+															<span>{el.message.split(el.search)[1]}</span>
+														</>
+													) : translateSend ? (
+														translateSend[i].message
+													) : (
+														el.message
+													)}
+												</div>
+											</ContextMenuTrigger>
+											<p className="time">{logDate(el.time)}</p>
+										</li>
+									);
+								} else {
+									//본인이아니라면
+									// 커스텀 유저가 존재한다면
+									if (customUser) {
+										for (let custom in customUser) {
+											// 커스텀 유저목록에 있다면
+											if (el.userId === custom) {
+												return (
+													<li key={el.time} className="chatMsg you">
+														<p className="sender">{el.sender}</p>
+														<ContextMenuTrigger id="trigger">
+															<div
+																className="msg"
+																onClick={() => {
+																	setMsg(el.message);
+																}}
+																style={{
+																	border: `2px solid ${customUser[custom]}`,
+																}}
+															>
+																{el.search ? (
+																	<>
+																		<span>
+																			{el.message.split(el.search)[0]}
+																		</span>
+																		<span className="msg-search">
+																			{el.search}
+																		</span>
+																		<span>
+																			{el.message.split(el.search)[1]}
+																		</span>
+																	</>
+																) : translateSend ? (
+																	translateSend[i].message
+																) : (
+																	el.message
+																)}
+															</div>
+														</ContextMenuTrigger>
+														<p className="time">{logDate(el.time)}</p>
+													</li>
+												);
+											} else {
+												// 커스텀 유저목록에 없다면 일치하는 유저찾아 본인의 색
+												return Object.values(chat.member).map((origin) => {
+													if (origin.userId === el.userId) {
+														return (
+															<li key={el.time} className="chatMsg you">
+																<p className="sender">{el.sender}</p>
+																<ContextMenuTrigger id="trigger">
+																	<div
+																		className="msg"
+																		onClick={() => {
+																			setMsg(el.message);
+																		}}
+																		style={{
+																			border: `2px solid ${origin.userColor}`,
+																		}}
+																	>
+																		{el.search ? (
+																			<>
+																				<span>
+																					{el.message.split(el.search)[0]}
+																				</span>
+																				<span className="msg-search">
+																					{el.search}
+																				</span>
+																				<span>
+																					{el.message.split(el.search)[1]}
+																				</span>
+																			</>
+																		) : translateSend ? (
+																			translateSend[i].message
+																		) : (
+																			el.message
+																		)}
+																	</div>
+																</ContextMenuTrigger>
+																<p className="time">{logDate(el.time)}</p>
+															</li>
+														);
+													}
+												});
+											}
+										}
+									} else {
+										// 커스텀유저가 존재하지 않는다면 본인의 색
+										return Object.values(chat.member).map((origin) => {
+											if (origin.userId === el.userId) {
+												return (
+													<li key={el.time} className="chatMsg you">
+														<p className="sender">{el.sender}</p>
+														<ContextMenuTrigger id="trigger">
+															<div
+																className="msg"
+																onClick={() => {
+																	setMsg(el.message);
+																}}
+																style={{
+																	border: `2px solid ${origin.userColor}`,
+																}}
+															>
+																{el.search ? (
+																	<>
+																		<span>
+																			{el.message.split(el.search)[0]}
+																		</span>
+																		<span className="msg-search">
+																			{el.search}
+																		</span>
+																		<span>
+																			{el.message.split(el.search)[1]}
+																		</span>
+																	</>
+																) : translateSend ? (
+																	translateSend[i].message
+																) : (
+																	el.message
+																)}
+															</div>
+														</ContextMenuTrigger>
+														<p className="time">{logDate(el.time)}</p>
+													</li>
+												);
+											}
+										});
+									}
+								}
+						  })
+						: null}
+				</ul>
+				<ContextMenu id="trigger">
+					<MenuItem onClick={remindModalHandler} className="contextMenu">
+						<p className="remindBtn">리마인더</p>
+					</MenuItem>
+				</ContextMenu>
+			</Content>
+		</ChatWrap>
+	);
 }
 export default Conversation;

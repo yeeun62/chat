@@ -46,12 +46,12 @@ const Convenience = styled.div`
 	text-align: center;
 `;
 
-function ChatHeader({ chat, searchResult, setResult }) {
+function ChatHeader({ chat, searchResult, setSendData }) {
 	const [search, setSearch] = useState("");
 
 	const searchHandler = (e) => {
 		setSearch(e.target.value);
-		if (!e.target.value.length) setResult(Object.values(chat.send));
+		if (!e.target.value.length) setSendData(Object.values(chat.send));
 	};
 
 	return (
