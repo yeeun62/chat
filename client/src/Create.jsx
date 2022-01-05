@@ -7,91 +7,95 @@ axios.defaults.withCredentials = true;
 function Create() {
   const navigate = useNavigate();
   const [createChat, setCreateChat] = useState({
-    name: "handle",
-    title: "채팅방",
-    userName: "방예은",
-    userPhoneNumber: "01099720602",
-    userId: "byebye62",
-    userColor: "#00adc7",
-    addon1: "-",
-    addon2: "-",
-    // name: "",
-    // title: "",
-    // userName: "",
-    // userPhoneNumber: "",
-    // userId: "",
+    // name: "handle",
+    // title: "채팅방",
+    // userName: "방예은",
+    // userPhoneNumber: "01099720602",
+    // userId: "byebye62",
     // userColor: "#00adc7",
     // addon1: "-",
     // addon2: "-",
+    name: "",
+    title: "",
+    userName: "",
+    userPhoneNumber: "",
+    userId: "",
+    userColor: "#00adc7",
+    addon1: "--",
+    addon2: "--",
   });
 
   const createChatHandler = (e) => {
     setCreateChat({ ...createChat, [e.target.name]: e.target.value });
     if (e.target.name === "userPhoneNumber") {
-      let num = e.target.value
+      e.target.value
         .split("")
         .filter((s) => {
           return Number(s);
         })
         .join("");
-      setCreateChat({ ...createChat, [e.target.name]: num });
+      setCreateChat({ ...createChat, [e.target.name]: e.target.value });
     }
   };
 
   const createChatRoom = async () => {
-    const db = getDatabase();
-    const dbRef = ref(db, "chat");
+    if (Object.values(createChat).filter((el) => el.length === 0).length > 0) {
+      alert("모든 칸을 채워주세요 🙏");
+    } else {
+      const db = getDatabase();
+      const dbRef = ref(db, "chat");
 
-    const newdbRef = push(dbRef);
-    const chatId = newdbRef._path;
+      const newdbRef = push(dbRef);
+      const chatId = newdbRef._path;
 
-    const member = ref(db, `${chatId}/member`);
-    const memberRef = push(member);
-    const memberId = memberRef._path;
+      const member = ref(db, `${chatId}/member`);
+      const memberRef = push(member);
+      const memberId = memberRef._path;
 
-    const uuid = await axios.get(process.env.REACT_APP_UUID);
-    const time = Math.floor(Date.now() / 1000);
+      const uuid = await axios.get(process.env.REACT_APP_UUID);
+      const time = Math.floor(Date.now() / 1000);
 
-    const {
-      userName,
-      userPhoneNumber,
-      userId,
-      title,
-      name,
-      userColor,
-      addon1,
-      addon2,
-    } = createChat;
-
-    let chat = {
-      room: {
+      const {
+        userName,
+        userPhoneNumber,
+        userId,
         title,
-        siteCode: uuid.data.code,
-        regDate: time,
-        addon: { addon1, addon2 },
-      },
-      site: { name, color: "#E0DE1B", code: uuid.data.code },
-    };
-
-    set(newdbRef, chat);
-    set(memberRef, {
-      userName,
-      userPhoneNumber,
-      userId,
-      userColor,
-    });
-
-    localStorage.setItem(
-      uuid.data.code,
-      JSON.stringify({
-        userName: userName,
-        userId: userId,
-        userNum: memberId.pieces_[3],
-        roomNum: chatId.pieces_[1],
+        name,
         userColor,
-      })
-    );
-    navigate(`/chat/${uuid.data.code}`);
+        addon1,
+        addon2,
+      } = createChat;
+
+      let chat = {
+        room: {
+          title,
+          siteCode: uuid.data.code,
+          regDate: time,
+          addon: { addon1, addon2 },
+        },
+        site: { name, color: "#E0DE1B", code: uuid.data.code },
+      };
+
+      set(newdbRef, chat);
+      set(memberRef, {
+        userName,
+        userPhoneNumber,
+        userId,
+        userColor,
+      });
+
+      localStorage.setItem(
+        uuid.data.code,
+        JSON.stringify({
+          userName: userName,
+          userId: userId,
+          userNum: memberId.pieces_[3],
+          roomNum: chatId.pieces_[1],
+          userColor,
+        })
+      );
+      navigate(`/chat/${uuid.data.code}`);
+    }
   };
 
   let n = " ";
@@ -101,7 +105,7 @@ function Create() {
       <div className="inviteWrap">
         <p className="title">
           <span className="handle-logo-font">handle</span>
-          {n}채팅방에 오신걸환영합니다🥳
+          {n}채팅방에 오신걸환영합니다{n}🥳
         </p>
         <form className="form" onSubmit={(e) => e.preventDefault()}>
           <div className="inviteSection">
