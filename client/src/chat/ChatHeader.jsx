@@ -46,40 +46,41 @@ const Convenience = styled.div`
   text-align: center;
 `;
 
-function ChatHeader({ chat, searchResult, setResult }) {
+function ChatHeader({ chat, searchResult, setSendData }) {
   const [search, setSearch] = useState("");
 
   const searchHandler = (e) => {
+    if (!e.target.value.length) {
+      setSendData(
+        Object.values(chat.send).map((el) => {
+          if (el.search) {
+            delete el.search;
+          }
+          return el;
+        })
+      );
+    }
     setSearch(e.target.value);
-    if (e.target.value.length === 0) setResult(Object.values(chat.send));
   };
 
   return (
     <Header>
-      {chat ? (
-        <>
-          <p>{chat.room.title}</p>
-          <Convenience>🌤</Convenience>
-          <div>
-            <input
-              className="searchInput"
-              type="text"
-              onChange={(e) => searchHandler(e)}
-              onKeyPress={(e) =>
-                e.key === "Enter" ? searchResult(search) : null
-              }
-            />
-            <img
-              className="searchImg"
-              src={searchButton}
-              alt="검색"
-              onClick={() => searchResult(search)}
-            />
-          </div>
-        </>
-      ) : (
-        <p>로딩중~</p>
-      )}
+      <p>{chat.room.title}</p>
+      <Convenience>🌤</Convenience>
+      <div>
+        <input
+          className="searchInput"
+          type="text"
+          onChange={(e) => searchHandler(e)}
+          onKeyPress={(e) => (e.key === "Enter" ? searchResult(search) : null)}
+        />
+        <img
+          className="searchImg"
+          src={searchButton}
+          alt="검색"
+          onClick={() => searchResult(search)}
+        />
+      </div>
     </Header>
   );
 }
