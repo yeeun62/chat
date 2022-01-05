@@ -24,6 +24,7 @@ function Chat() {
 	const [user, setUser] = useState(null);
 	const [sendData, setSendData] = useState([]);
 	const [translateSend, setTranslateSend] = useState(null);
+	const [translateLoding, setTranslateLoding] = useState(true);
 
 	useEffect(() => {
 		const db = getDatabase();
@@ -50,10 +51,12 @@ function Chat() {
 	useEffect(async () => {
 		if (chat) {
 			if (chat.language && Object.keys(chat.language).includes(user.userId)) {
+				setTranslateLoding(false);
+				let userNum = Object.keys(chat.language).indexOf(user.userId);
 				translation(
-					Object.values(chat.language)[0].lang,
+					Object.values(chat.language)[userNum].lang,
 					true,
-					Object.values(chat.language)[0].origin
+					Object.values(chat.language)[userNum].origin
 				);
 			}
 		} else {
@@ -62,6 +65,7 @@ function Chat() {
 	}, [chat]);
 
 	const translation = async (lang, boolean, ol) => {
+		setTranslateLoding(false);
 		const db = getDatabase();
 		let translationRef = ref(
 			db,
@@ -122,19 +126,21 @@ function Chat() {
 				});
 				setTranslateSend(translateArr);
 				update(translationRef, { lang: dbLang, origin: dbOrigin });
+				setTranslateLoding(true);
 			})
-			.catch((err) => console.log("130번 에러", err));
+			.catch((err) => console.log("131번 에러", err));
 	};
 
 	const searchResult = (sea) => {
 		if (sea.length > 0) {
-			let res = Object.values(chat.send).filter((el) => {
-				if (el.message.includes(sea) || el.sender.includes(sea)) {
-					el["search"] = sea;
-					return el;
-				}
-			});
-			setSendData(res);
+			setSendData(
+				sendData.filter((el) => {
+					if (el.message.includes(sea) || el.sender.includes(sea)) {
+						el.search = sea;
+						return el;
+					}
+				})
+			);
 		} else if (chat.send) {
 			setSendData(Object.values(chat.send));
 		}
@@ -142,12 +148,12 @@ function Chat() {
 
 	return (
 		<ChatWrap>
-			{chat ? (
+			{chat && translateLoding ? (
 				<>
 					<ChatHeader
 						chat={chat}
-						searchResult={searchResult}
 						setSendData={setSendData}
+						searchResult={searchResult}
 					></ChatHeader>
 					<TaskInfo translation={translation}></TaskInfo>
 					<Conversation
