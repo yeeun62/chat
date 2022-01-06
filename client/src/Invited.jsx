@@ -12,6 +12,8 @@ function Invited() {
     }
   }, []);
 
+  const [isFull, setIsFull] = useState("fillMe");
+
   const [createChat, setCreateChat] = useState({
     userName: "아바타",
     userPhoneNumber: "01011000000",
@@ -28,38 +30,43 @@ function Invited() {
   };
 
   const invite = async () => {
-    const db = getDatabase();
-    const dbRef = ref(db, "chat");
+    if (
+      Object.values(createChat).filter((el) => createChat[el].length === 0)
+        .length === 0
+    ) {
+      const db = getDatabase();
+      const dbRef = ref(db, "chat");
 
-    onValue(
-      dbRef,
-      async (snapshot) => {
-        let data = snapshot.val();
-        for (let el in data) {
-          if (data[el].site.code === code) {
-            const member = ref(db, `chat/${el}/member`);
-            const memberRef = push(member);
-            const memberId = memberRef._path;
-            localStorage.setItem(
-              data[el].site.code,
-              JSON.stringify({
-                userName: createChat.userName,
-                userId: createChat.userId,
-                userColor: createChat.userColor,
-                userNum: memberId.pieces_[3],
-                roomNum: el,
-              })
-            );
-            update(memberRef, createChat);
-            navigate(`/chat/${code}`);
-            break;
+      onValue(
+        dbRef,
+        async (snapshot) => {
+          let data = snapshot.val();
+          for (let el in data) {
+            if (data[el].site.code === code) {
+              const member = ref(db, `chat/${el}/member`);
+              const memberRef = push(member);
+              const memberId = memberRef._path;
+              localStorage.setItem(
+                data[el].site.code,
+                JSON.stringify({
+                  userName: createChat.userName,
+                  userId: createChat.userId,
+                  userColor: createChat.userColor,
+                  userNum: memberId.pieces_[3],
+                  roomNum: el,
+                })
+              );
+              update(memberRef, createChat);
+              navigate(`/chat/${code}`);
+              break;
+            }
           }
+        },
+        {
+          onlyOnce: true,
         }
-      },
-      {
-        onlyOnce: true,
-      }
-    );
+      );
+    } else alert("모든 칸을 다 입력해 주세요! 👐");
   };
 
   return (

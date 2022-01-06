@@ -11,11 +11,11 @@ import Loading from "./Loading";
 axios.defaults.withCredentials = true;
 
 const ChatWrap = styled.div`
-	width: 100%;
-	height: 100vh;
-	min-height: 500px;
-	border: 3px solid #2d2d2d;
-	background-color: #2d2d2d;
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+  border: 3px solid #2d2d2d;
+  background-color: #2d2d2d;
 `;
 
 function Chat() {
@@ -26,27 +26,27 @@ function Chat() {
 	const [translateSend, setTranslateSend] = useState(null);
 	const [translateLoading, setTranslateLoading] = useState(true);
 
-	useEffect(() => {
-		const db = getDatabase();
-		const dbRef = ref(db, "chat");
-		onValue(dbRef, (snapshot) => {
-			const data = snapshot.val();
-			let boolean = true;
-			Object.values(data).map((el) => {
-				if (el.site.code === code && boolean) {
-					if (el.send) {
-						setSendData(Object.values(el.send));
-					}
-					setChat(el);
-					boolean = false;
-				}
-			});
-		});
-	}, []);
+  useEffect(() => {
+    const db = getDatabase();
+    const dbRef = ref(db, "chat");
+    onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      let boolean = true;
+      Object.values(data).map((el) => {
+        if (el.site.code === code && boolean) {
+          if (el.send) {
+            setSendData(Object.values(el.send));
+          }
+          setChat(el);
+          boolean = false;
+        }
+      });
+    });
+  }, []);
 
-	useEffect(() => {
-		setUser(JSON.parse(localStorage.getItem(code)));
-	}, []);
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem(code)));
+  }, []);
 
 	useEffect(async () => {
 		if (chat) {
@@ -79,9 +79,9 @@ function Chat() {
 			`chat/${user.roomNum}/language/${user.userId}`
 		);
 
-		let transArr = sendData.map((el) => {
-			return el.message;
-		});
+    let transArr = sendData.map((el) => {
+      return el.message;
+    });
 
 		let dbOrigin;
 		let dbLang;
@@ -140,43 +140,43 @@ function Chat() {
 			.catch((err) => console.log("131번 에러", err));
 	};
 
-	const searchResult = (sea) => {
-		if (sea.length > 0) {
-			setSendData(
-				sendData.filter((el) => {
-					if (el.message.includes(sea) || el.sender.includes(sea)) {
-						el.search = sea;
-						return el;
-					}
-				})
-			);
-		} else if (chat.send) {
-			setSendData(Object.values(chat.send));
-		}
-	};
+  const searchResult = (sea) => {
+    if (sea.length > 0) {
+      setSendData(
+        sendData.filter((el) => {
+          if (el.message.includes(sea) || el.sender.includes(sea)) {
+            el.search = sea;
+            return el;
+          }
+        })
+      );
+    } else if (chat.send) {
+      setSendData(Object.values(chat.send));
+    }
+  };
 
-	return (
-		<ChatWrap>
-			{chat && translateLoading ? (
-				<>
-					<ChatHeader
-						chat={chat}
-						setSendData={setSendData}
-						searchResult={searchResult}
-					></ChatHeader>
-					<TaskInfo translation={translation}></TaskInfo>
-					<Conversation
-						chat={chat}
-						user={user}
-						sendData={sendData}
-						translateSend={translateSend}
-					></Conversation>
-					<Input code={code}></Input>
-				</>
-			) : (
-				<Loading></Loading>
-			)}
-		</ChatWrap>
-	);
+  return (
+    <ChatWrap>
+      {chat && translateLoading ? (
+        <>
+          <ChatHeader
+            chat={chat}
+            setSendData={setSendData}
+            searchResult={searchResult}
+          ></ChatHeader>
+          <TaskInfo translation={translation}></TaskInfo>
+          <Conversation
+            chat={chat}
+            user={user}
+            sendData={sendData}
+            translateSend={translateSend}
+          ></Conversation>
+          <Input code={code}></Input>
+        </>
+      ) : (
+        <Loading></Loading>
+      )}
+    </ChatWrap>
+  );
 }
 export default Chat;
