@@ -43,23 +43,24 @@ const Bar = styled.div`
 `;
 
 function TaskInfo({ translation }) {
-  const choice = (e) => {
-    if (e === "choice") return;
-    else translation(e, false);
-  };
-  return (
-    <TaskInformation>
-      <Progress>
-        <Bar>{"task"}</Bar>
-      </Progress>
-      <select onChange={(e) => choice(e.target.value)}>
-        <option value="choice">번역선택</option>
-        <option value="kr">한국어</option>
-        <option value="en">영어</option>
-        <option value="jp">일본어</option>
-        <option value="cn">중국어</option>
-      </select>
-    </TaskInformation>
-  );
+	const choice = (e) => {
+		if (e === "choice") return;
+		else translation(e, false);
+	};
+
+	return (
+		<TaskInformation>
+			<Progress>
+				<Bar>{"task"}</Bar>
+			</Progress>
+			<select onChange={(e) => choice(e.target.value)}>
+				<option value="choice">번역선택</option>
+				<option value="kr">한국어</option>
+				<option value="en">영어</option>
+				<option value="jp">일본어</option>
+				<option value="cn">중국어</option>
+			</select>
+		</TaskInformation>
+	);
 }
 export default TaskInfo;

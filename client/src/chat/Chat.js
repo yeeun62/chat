@@ -19,12 +19,12 @@ const ChatWrap = styled.div`
 `;
 
 function Chat() {
-  let { code } = useParams();
-  const [chat, setChat] = useState(null);
-  const [user, setUser] = useState(null);
-  const [sendData, setSendData] = useState([]);
-  const [translateSend, setTranslateSend] = useState(null);
-  const [translateLoading, setTranslateLoading] = useState(true);
+	let { code } = useParams();
+	const [chat, setChat] = useState(null);
+	const [user, setUser] = useState(null);
+	const [sendData, setSendData] = useState([]);
+	const [translateSend, setTranslateSend] = useState(null);
+	const [translateLoading, setTranslateLoading] = useState(true);
 
   useEffect(() => {
     const db = getDatabase();
@@ -48,97 +48,97 @@ function Chat() {
     setUser(JSON.parse(localStorage.getItem(code)));
   }, []);
 
-  useEffect(async () => {
-    if (chat) {
-      let userId = user.userId;
-      if (
-        chat.language &&
-        userId in chat.language &&
-        chat.language[userId].lang === "kr"
-      ) {
-        setTranslateLoading(true);
-      } else if (chat.language && userId in chat.language) {
-        setTranslateLoading(false);
-        let userNum = Object.keys(chat.language).indexOf(userId);
-        translation(
-          Object.values(chat.language)[userNum].lang,
-          true,
-          Object.values(chat.language)[userNum].origin
-        );
-      }
-    } else {
-      return;
-    }
-  }, [chat]);
+	useEffect(async () => {
+		if (chat) {
+			let userId = user.userId;
+			if (
+				chat.language &&
+				Object.keys(chat.language).includes(userId) &&
+				chat.language[userId].lang === "kr"
+			) {
+				setTranslateLoading(true);
+			} else if (chat.language && Object.keys(chat.language).includes(userId)) {
+				setTranslateLoading(false);
+				let userNum = Object.keys(chat.language).indexOf(userId);
+				translation(
+					Object.values(chat.language)[userNum].lang,
+					true,
+					Object.values(chat.language)[userNum].origin
+				);
+			}
+		} else {
+			return;
+		}
+	}, [chat]);
 
-  const translation = async (lang, boolean, ol) => {
-    setTranslateLoading(false);
-    const db = getDatabase();
-    let translationRef = ref(
-      db,
-      `chat/${user.roomNum}/language/${user.userId}`
-    );
+	const translation = async (lang, boolean, ol) => {
+		setTranslateLoading(false);
+		const db = getDatabase();
+		let translationRef = ref(
+			db,
+			`chat/${user.roomNum}/language/${user.userId}`
+		);
 
     let transArr = sendData.map((el) => {
       return el.message;
     });
 
-    let dbOrigin;
-    let dbLang;
-    // !번역옵션을 클릭해서 번역하는 거라면
-    if (!boolean) {
-      // !디비를 돌아 랭기지에 본인아이디가 존재한다면 -> 내가 번역을 선택한 적이 있다면
-      if (chat.language && Object.keys(chat.language).includes(user.userId)) {
-        let userNum = Object.keys(chat.language).indexOf(user.userId);
-        if (Object.values(chat.language)[userNum].lang === lang) {
-          window.alert("이미 번역되어 있습니다👀");
-          setTranslateLoading(true);
-          return;
-        }
-        // !한국어로 바꾸고 싶다면 기존메세지로 교체 (한국어 번역이 이상하게되기 때문)
-        if (lang === "kr") {
-          setTranslateSend(sendData);
-          // !기존언어를 Origin, lang을 kr로 업데이트
-          update(translationRef, {
-            lang: "kr",
-            origin: Object.values(chat.language)[userNum].lang,
-          });
-          return;
-        } else {
-          // !한국어가 아니라면 본인이 전에 선택한 원본언어를 보내준다.
-          // !디비의 lang언어를 디비의 origin에 온클릭 언어를 lang에 업데이트
-          dbOrigin = Object.values(chat.language)[userNum].lang;
-          dbLang = lang;
-        }
-      } else {
-        // !디비를 돌아 랭기지에 본인아이디가 존재하지 않는다면 -> 번역을 선택한적이 없다면
-        // !origin은 kr, 온클릭 언어를 lang에 업데이트
-        dbOrigin = "kr";
-        dbLang = lang;
-      }
-    } else if (boolean) {
-      // !렌더링시 번역이라면
-      dbOrigin = ol;
-      dbLang = lang;
-    }
+		let dbOrigin;
+		let dbLang;
+		// !번역옵션을 클릭해서 번역하는 거라면
+		if (!boolean) {
+			// !디비를 돌아 랭기지에 본인아이디가 존재한다면 -> 내가 번역을 선택한 적이 있다면
+			if (chat.language && Object.keys(chat.language).includes(user.userId)) {
+				let userNum = Object.keys(chat.language).indexOf(user.userId);
+				if (Object.values(chat.language)[userNum].lang === lang) {
+					window.alert("이미 번역되어 있습니다👀");
+					setTranslateLoading(true);
+					return;
+				}
+				// !한국어로 바꾸고 싶다면 기존메세지로 교체 (한국어 번역이 이상하게되기 때문)
+				if (lang === "kr") {
+					setTranslateSend(sendData);
+					// !기존언어를 Origin, lang을 kr로 업데이트
+					update(translationRef, {
+						lang: "kr",
+						origin: Object.values(chat.language)[userNum].lang,
+					});
+					return;
+				} else {
+					// !한국어가 아니라면 본인이 전에 선택한 원본언어를 보내준다.
+					// !디비의 lang언어를 디비의 origin에 온클릭 언어를 lang에 업데이트
+					dbOrigin = Object.values(chat.language)[userNum].lang;
+					dbLang = lang;
+				}
+			} else {
+				// !디비를 돌아 랭기지에 본인아이디가 존재하지 않는다면 -> 번역을 선택한적이 없다면
+				// !origin은 kr, 온클릭 언어를 lang에 업데이트
+				dbOrigin = "kr";
+				dbLang = lang;
+			}
+		} else if (boolean) {
+			// !렌더링시 번역이면
+			dbOrigin = ol;
+			dbLang = lang;
+		}
 
-    let translateArr = JSON.parse(JSON.stringify(sendData));
-    await axios
-      .post(`${process.env.REACT_APP_HANDLE_API}/v1/translation/kakao`, {
-        text: transArr,
-        source: "kr",
-        lang: dbLang,
-      })
-      .then((res) => {
-        translateArr.map((txt, i) => {
-          txt.message = res.data.data[i];
-        });
-        setTranslateSend(translateArr);
-        update(translationRef, { lang: dbLang, origin: dbOrigin });
-        setTranslateLoading(true);
-      })
-      .catch((err) => console.log("131번 에러", err));
-  };
+		let translateArr = JSON.parse(JSON.stringify(sendData));
+		await axios
+			.post(`${process.env.REACT_APP_HANDLE_API}/v1/translation/kakao`, {
+				text: transArr,
+				source: "kr",
+				lang: dbLang,
+			})
+			.then((res) => {
+				translateArr.map((txt, i) => {
+					txt.message = res.data.data[i];
+				});
+				setTranslateSend(translateArr);
+				update(translationRef, { lang: dbLang, origin: dbOrigin });
+				setTranslateLoading(true);
+			})
+			.catch((err) => console.log("131번 에러", err));
+	};
 
   const searchResult = (sea) => {
     if (sea.length > 0) {
