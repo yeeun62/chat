@@ -24,7 +24,7 @@ function Chat() {
 	const [user, setUser] = useState(null);
 	const [sendData, setSendData] = useState([]);
 	const [translateSend, setTranslateSend] = useState(null);
-	const [translateLoding, setTranslateLoding] = useState(true);
+	const [translateLoading, setTranslateLoading] = useState(true);
 
 	useEffect(() => {
 		const db = getDatabase();
@@ -50,9 +50,16 @@ function Chat() {
 
 	useEffect(async () => {
 		if (chat) {
-			if (chat.language && Object.keys(chat.language).includes(user.userId)) {
-				setTranslateLoding(false);
-				let userNum = Object.keys(chat.language).indexOf(user.userId);
+			let userId = user.userId;
+			if (
+				chat.language &&
+				Object.keys(chat.language).includes(userId) &&
+				chat.language[userId].lang === "kr"
+			) {
+				setTranslateLoading(true);
+			} else if (chat.language && Object.keys(chat.language).includes(userId)) {
+				setTranslateLoading(false);
+				let userNum = Object.keys(chat.language).indexOf(userId);
 				translation(
 					Object.values(chat.language)[userNum].lang,
 					true,
@@ -65,7 +72,7 @@ function Chat() {
 	}, [chat]);
 
 	const translation = async (lang, boolean, ol) => {
-		setTranslateLoding(false);
+		setTranslateLoading(false);
 		const db = getDatabase();
 		let translationRef = ref(
 			db,
@@ -82,8 +89,10 @@ function Chat() {
 		if (!boolean) {
 			// !디비를 돌아 랭기지에 본인아이디가 존재한다면 -> 내가 번역을 선택한 적이 있다면
 			if (chat.language && Object.keys(chat.language).includes(user.userId)) {
-				if (Object.values(chat.language)[0].lang === lang) {
+				let userNum = Object.keys(chat.language).indexOf(user.userId);
+				if (Object.values(chat.language)[userNum].lang === lang) {
 					window.alert("이미 번역되어 있습니다👀");
+					setTranslateLoading(true);
 					return;
 				}
 				// !한국어로 바꾸고 싶다면 기존메세지로 교체 (한국어 번역이 이상하게되기 때문)
@@ -92,13 +101,13 @@ function Chat() {
 					// !기존언어를 Origin, lang을 kr로 업데이트
 					update(translationRef, {
 						lang: "kr",
-						origin: Object.values(chat.language)[0].lang,
+						origin: Object.values(chat.language)[userNum].lang,
 					});
 					return;
 				} else {
 					// !한국어가 아니라면 본인이 전에 선택한 원본언어를 보내준다.
 					// !디비의 lang언어를 디비의 origin에 온클릭 언어를 lang에 업데이트
-					dbOrigin = Object.values(chat.language)[0].lang;
+					dbOrigin = Object.values(chat.language)[userNum].lang;
 					dbLang = lang;
 				}
 			} else {
@@ -108,7 +117,7 @@ function Chat() {
 				dbLang = lang;
 			}
 		} else if (boolean) {
-			// !렌더링시 번역이라면
+			// !렌더링시 번역이면
 			dbOrigin = ol;
 			dbLang = lang;
 		}
@@ -126,7 +135,7 @@ function Chat() {
 				});
 				setTranslateSend(translateArr);
 				update(translationRef, { lang: dbLang, origin: dbOrigin });
-				setTranslateLoding(true);
+				setTranslateLoading(true);
 			})
 			.catch((err) => console.log("131번 에러", err));
 	};
@@ -148,7 +157,7 @@ function Chat() {
 
 	return (
 		<ChatWrap>
-			{chat && translateLoding ? (
+			{chat && translateLoading ? (
 				<>
 					<ChatHeader
 						chat={chat}
